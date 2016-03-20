@@ -5368,7 +5368,7 @@ RES.addEventListener('complete', function() {
 //  var script = new ENJ.Script_3();
   //ENJ.invalid = true;
   //update();
-  var prevBtn =  new jQuick('#prev-btn');
+  /*var prevBtn =  new jQuick('#prev-btn');
   var nextBtn =  new jQuick('#next-btn');
   var gotoBtn =  new jQuick('#goto-btn');
   var editor = new jQuick('#editor');
@@ -5392,7 +5392,7 @@ RES.addEventListener('complete', function() {
 
   script.addEventListener('stepComplete',function(){
     editor.val(script.currentIndex + 1);
-  });
+  });*/
 
   new ENJ.Experiment(lab, scene, script);
 
