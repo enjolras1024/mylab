@@ -5418,7 +5418,7 @@ RES.loadManifest({
     { id: "引流棒", src: "YinLiuBang.png" },
     { id: "标签", src: "BiaoQian.png" },
     { id: "吸球", src: "XiQiu.png" },
-    { id: "吸嘴", src: "XiZui.png" },
+    { id: "吸嘴", src: "吸嘴.png" },
     { id: "蝴蝶夹", src: "HuDieJia.png" },
     { id: "滴定架", src: "DiDingJia.png" },
     { id: "滴定管", src: "DiDingGuan.png" },
