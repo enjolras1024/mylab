@@ -1,4 +1,4 @@
-//##############################################################################
+ï»¿//##############################################################################
 // src/entry.js
 //##############################################################################
 
@@ -253,7 +253,7 @@ ENJ.NumLabel = (function() {
       ready: function() {
         var field, label;
 
-        label = new Bitmap(RES.getRes('±êÇ©'));
+        label = new Bitmap(RES.getRes('æ ‡ç­¾'));
 
         field = new Text();
         field.set({
@@ -479,10 +479,10 @@ ENJ.SuckBall = (function() {
     ready: function() {
       var ball, mouth;
 
-      ball = new Bitmap(RES.getRes("ÎüÇò"));
+      ball = new Bitmap(RES.getRes("å¸çƒ"));
       ball.x = -22;
 
-      mouth =  new Bitmap(RES.getRes("Îü×ì"));
+      mouth =  new Bitmap(RES.getRes("å¸å˜´"));
       mouth.x = -6;
       mouth.y = -48;
 
@@ -540,9 +540,9 @@ ENJ.Buret = (function() {
       shape = new Shape(graphics);
       shape.x = 20;
 
-      liquid = LiquidContainer.createLiquid("µÎ¶¨¹ÜÒºÌå", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("æ»´å®šç®¡æ¶²ä½“", self.store('color'), shape);
 
-      pipe = new Bitmap(RES.getRes("µÎ¶¨¹Ü"));
+      pipe = new Bitmap(RES.getRes("æ»´å®šç®¡"));
 
       self.addChild(liquid/*, shape*/, pipe);
 
@@ -631,9 +631,9 @@ ENJ.Beaker = (function() {
       label = new ENJ.NumLabel({ unit: 'ml' });
       label.x = 10;
 
-      liquid = LiquidContainer.createLiquid("ÉÕ±­ÒºÌå", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("çƒ§æ¯æ¶²ä½“", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("ÉÕ±­"));
+      bottle = new Bitmap(RES.getRes("çƒ§æ¯"));
 
       self.addChild(liquid, level, bottle);
 
@@ -737,8 +737,8 @@ ENJ.Cylinder = (function() {
       shape = new Shape(graphics);
       shape.x = 35;
 
-      liquid = LiquidContainer.createLiquid("Á¿Í²ÒºÌå", self.store('color'), shape);
-      barrel = new Bitmap(RES.getRes("Á¿Í²"));
+      liquid = LiquidContainer.createLiquid("é‡ç­’æ¶²ä½“", self.store('color'), shape);
+      barrel = new Bitmap(RES.getRes("é‡ç­’"));
 
       self.addChild(liquid, barrel);
 
@@ -775,10 +775,10 @@ ENJ.WaterBottle = (function() {
     ready: function() {
       var bottle, flow;
 
-      bottle = new CRE.Bitmap(RES.getRes("ÕôÁóË®Æ¿"));
+      bottle = new CRE.Bitmap(RES.getRes("è’¸é¦æ°´ç“¶"));
 
       var data = {
-        images: [RES.getRes("Ë®Á÷")],
+        images: [RES.getRes("æ°´æµ")],
         frames: { width: 200, height: 242 }
       };
       var sheet = new CRE.SpriteSheet(data);
@@ -846,11 +846,11 @@ ENJ.VolumetricFlask = (function() {
       label.visible = false;
       label.x = 75;
 
-      liquid = LiquidContainer.createLiquid("ÈİÁ¿Æ¿ÒºÌå", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("å®¹é‡ç“¶æ¶²ä½“", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("ÈİÁ¿Æ¿"));
+      bottle = new Bitmap(RES.getRes("å®¹é‡ç“¶"));
 
-      cap = new Bitmap(RES.getRes("ÈİÁ¿Æ¿¸Ç"));
+      cap = new Bitmap(RES.getRes("å®¹é‡ç“¶ç›–"));
       cap.set({ x: 45, y: -40 });
 
       self.addChild(liquid, bottle, cap, label);
@@ -958,11 +958,11 @@ ENJ.SoySauce = (function() {
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 75;
 
-      liquid = LiquidContainer.createLiquid("½´ÓÍ", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("é…±æ²¹", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("½´ÓÍÆ¿"));
+      bottle = new Bitmap(RES.getRes("é…±æ²¹ç“¶"));
 
-      cap = new Bitmap(RES.getRes("½´ÓÍÆ¿¸Ç"));
+      cap = new Bitmap(RES.getRes("é…±æ²¹ç“¶ç›–"));
       cap.set({ x: 26, y: -15 });
 
 
@@ -1050,9 +1050,9 @@ ENJ.ReagenBottle = (function() {
       shape.x = 50;
       //shape.y = 50;
 
-      liquid = LiquidContainer.createLiquid("ÊÔ¼ÁÆ¿ÒºÌå", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("è¯•å‰‚ç“¶æ¶²ä½“", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("ÊÔ¼ÁÆ¿"));
+      bottle = new Bitmap(RES.getRes("è¯•å‰‚ç“¶"));
 
       icon = new Bitmap(RES.getRes(self.store('icon')));
       icon.set({ x: 10, y: 80 });
@@ -1122,10 +1122,10 @@ ENJ.PHElectrode = (function() {
     ready: function() {
       var electrode, cap;
 
-      cap = new Bitmap(RES.getRes("PHµç¼«Ì×"));
+      cap = new Bitmap(RES.getRes("PHç”µæå¥—"));
       cap.x = -2.5;
       cap.y = 150;
-      electrode = new Bitmap(RES.getRes("PHµç¼«"));
+      electrode = new Bitmap(RES.getRes("PHç”µæ"));
 
       this.addChild(electrode, cap);
 
@@ -1181,9 +1181,9 @@ ENJ.PHInstrument = (function() {
     ready: function() {
       var instrument, plane, label, btn1, btn2;
 
-      instrument = new Bitmap(RES.getRes ("PHÒÇ"));
+      instrument = new Bitmap(RES.getRes ("PHä»ª"));
 
-      plane = new Bitmap(RES.getRes ("PHÒÇÃæ°å"));
+      plane = new Bitmap(RES.getRes ("PHä»ªé¢æ¿"));
       plane.set({
         x: 160, y: 160, visible: false,
         regX: 80, regY: 80
@@ -1323,8 +1323,8 @@ ENJ.MagneticStirrer = (function() {
     ready: function () {
       var stirrer, button;
 
-      stirrer = new Bitmap(RES.getRes("´ÅÁ¦½Á°èÆ÷"));
-      button = new Bitmap(RES.getRes("´ÅÁ¦½Á°èÆ÷ĞıÅ¥"));
+      stirrer = new Bitmap(RES.getRes("ç£åŠ›æ…æ‹Œå™¨"));
+      button = new Bitmap(RES.getRes("ç£åŠ›æ…æ‹Œå™¨æ—‹é’®"));
       button.set({ x: 98.5, y: 109, regX: 12.5, regY: 13 });
 
       this.addChild(stirrer, button);
@@ -1378,10 +1378,10 @@ ENJ.TitrationStand = (function() {
     ready: function() {
       var stand, clip, data;
 
-      stand = new Bitmap(RES.getRes("µÎ¶¨¼Ü"));
+      stand = new Bitmap(RES.getRes("æ»´å®šæ¶"));
 
       data = {
-        images: [ RES.getRes("ºûµû¼Ğ") ],
+        images: [ RES.getRes("è´è¶å¤¹") ],
         frames: { width: 82, height: 111 }/*,
          animations: { open: 0, close: 1 }*/
       };
@@ -1452,9 +1452,9 @@ ENJ.Pipet = (function() {
       label.visible = false;
       label.x = 10;
 
-      liquid = LiquidContainer.createLiquid("ÒÆÒº¹ÜÒºÌå", self.store('color'), shape);
+      liquid = LiquidContainer.createLiquid("ç§»æ¶²ç®¡æ¶²ä½“", self.store('color'), shape);
 
-      pipe = new Bitmap(RES.getRes("ÒÆÒº¹Ü"));
+      pipe = new Bitmap(RES.getRes("ç§»æ¶²ç®¡"));
 
       self.addChild(liquid, pipe, label);
 
@@ -1515,9 +1515,9 @@ ENJ.ResultTable_2 = (function() {
     ready: function() {
       var self = this, bg, btn, label, i, names = ['v1_1', 'v1_2', 'v1', 'v2_1', 'v2_2', 'xx'];
 
-      bg = new Bitmap(RES.getRes("½á¹û±¨¸æ2"));
+      bg = new Bitmap(RES.getRes("ç»“æœæŠ¥å‘Š2"));
 
-      btn = new Bitmap(RES.getRes("¹Ø±Õ°´Å¥"));
+      btn = new Bitmap(RES.getRes("å…³é—­æŒ‰é’®"));
       btn.set({ regX: 24, regY: 24, cursor: 'pointer' });
       btn.set({ x: 700, y: 10 });
 
@@ -1689,21 +1689,21 @@ ENJ.Scene_2 = (function() {
         suckBall, soySauce, pipet;
 
       // @todo CSS background maybe better.
-      bg = new Bitmap(RES.getRes("±³¾°"));
+      bg = new Bitmap(RES.getRes("èƒŒæ™¯"));
 
-      paper = new Bitmap(RES.getRes("Ö½½í"));
+      paper = new Bitmap(RES.getRes("çº¸å·¾"));
       paper.visible = false;
 
 
-      drainageBar = new Bitmap(RES.getRes("ÒıÁ÷°ô"));
+      drainageBar = new Bitmap(RES.getRes("å¼•æµæ£’"));
 
       curve = new CRE.Shape(new CRE.Graphics());
 
-      drop = new Bitmap(RES.getRes("Ë®µÎ"));
+      drop = new Bitmap(RES.getRes("æ°´æ»´"));
       drop.visible = false;
 
       data = {
-        images: [RES.getRes("¼ôµ¶")],
+        images: [RES.getRes("å‰ªåˆ€")],
         frames: { width: 133, height: 73 },
         animations: { close: 1, open: 0 }
       };
@@ -1714,7 +1714,7 @@ ENJ.Scene_2 = (function() {
       scissors.set({ /*rotation: 45, */regX: 73, regY: 36 });
 
       data = {
-        images: [RES.getRes("ÊÖ")],
+        images: [RES.getRes("æ‰‹")],
         frames: { width: 100, height: 129 },
         animations: { up: 0, down: 1 }
       };
@@ -1726,7 +1726,7 @@ ENJ.Scene_2 = (function() {
 
 
       data = {
-        images: [RES.getRes("×ª×Ó")],
+        images: [RES.getRes("è½¬å­")],
         frames: { width: 40, height: 19 }
       };
       sheet = new CRE.SpriteSheet(data);
@@ -1740,7 +1740,7 @@ ENJ.Scene_2 = (function() {
       }
 
       data = {
-        images: [RES.getRes("´ü×Ó")],
+        images: [RES.getRes("è¢‹å­")],
         frames: { width: 100, height: 96 },
         animations: { normal: 0, open: 1 }
       };
@@ -1754,22 +1754,22 @@ ENJ.Scene_2 = (function() {
         bags.push(bag);
       }
 
-      powder = new Bitmap(RES.getRes("·ÛÄ©"));
+      powder = new Bitmap(RES.getRes("ç²‰æœ«"));
       powder.visible = false;
 
-      //beaker = new Bitmap(RES.getRes("ÉÕ±­"));
+      //beaker = new Bitmap(RES.getRes("çƒ§æ¯"));
       //beaker.set({ x: 200, y: 500 });
 
       stirrer = new ENJ.MagneticStirrer();
 
-      waterBottle = new ENJ.WaterBottle(RES.getRes("ÕôÁóË®Æ¿"));
+      waterBottle = new ENJ.WaterBottle(RES.getRes("è’¸é¦æ°´ç“¶"));
 
-      cap = new Bitmap(RES.getRes("¸Ç×Ó¼×"));
+      cap = new Bitmap(RES.getRes("ç›–å­ç”²"));
 
-      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "ÇâÑõ»¯ÄÆ±êÇ©" } );
+      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "æ°¢æ°§åŒ–é’ æ ‡ç­¾" } );
 
 
-      pipetStand = new Bitmap(RES.getRes("ÒÆÒº¹Ü¼Ü"));
+      pipetStand = new Bitmap(RES.getRes("ç§»æ¶²ç®¡æ¶"));
 
       titrationStand = new ENJ.TitrationStand();
       titrationStand.scaleX = -1;
@@ -1787,7 +1787,7 @@ ENJ.Scene_2 = (function() {
 
       phElectrode = new ENJ.PHElectrode();
 
-      phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PHÒÇ"));
+      phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PHä»ª"));
 
       cylinder = new ENJ.Cylinder({ volume: 0, color: 0x990000ff });
 
@@ -1816,7 +1816,7 @@ ENJ.Scene_2 = (function() {
       tip.set({x: 50, y: 50, color: "#fff", font: "bold 18px Arial"});
 
 
-      board = new ENJ.Board(/*{title:"Ğ£×¼PH¼Æ"}*/);
+      board = new ENJ.Board(/*{title:"æ ¡å‡†PHè®¡"}*/);
       board.visible = false;
 
       self.addChild(
@@ -2050,8 +2050,8 @@ ENJ.Step_CutBag = (function() {
   
   return ENJ.defineClass({
     /**
-     * ¼ô¿ª´ü×Ó
-     * ËùÓÃ£º¼ôµ¶¡¢´ü×Ó
+     * å‰ªå¼€è¢‹å­
+     * æ‰€ç”¨ï¼šå‰ªåˆ€ã€è¢‹å­
      *
      * @constructor
      */
@@ -2064,7 +2064,7 @@ ENJ.Step_CutBag = (function() {
 
       var store = this.store, scene = this.scene, bag, scissors,
         handlers = this.handlers = [];//, pipet, bottle, suckBall;
-      // @todo ¾«¼ò
+      // @todo ç²¾ç®€
       bag = this.bag = scene.bags[store['bag']];
       scissors = this.scissors = scene.scissors;
 
@@ -2177,8 +2177,8 @@ ENJ.Step_WashBag = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÇåÏ´´ü×ÓÄÚ²¿²ĞÁô·ÛÄ©
-     * ËùÓÃ£ºÕôÁóË®¡¢´ü×Ó¡¢ÉÕ±­¡¢·ÛÄ©
+     * æ¸…æ´—è¢‹å­å†…éƒ¨æ®‹ç•™ç²‰æœ«
+     * æ‰€ç”¨ï¼šè’¸é¦æ°´ã€è¢‹å­ã€çƒ§æ¯ã€ç²‰æœ«
      *
      * @constructor
      */
@@ -2295,8 +2295,8 @@ ENJ.Step_DumpPowder = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«´üÖĞ·ÛÄ©µ¹ÈëÉÕ±­ÖĞ
-     * ËùÓÃ£º´ü×Ó¡¢·ÛÄ©£¨¶¯»­£©¡¢ÉÕ±­
+     * å°†è¢‹ä¸­ç²‰æœ«å€’å…¥çƒ§æ¯ä¸­
+     * æ‰€ç”¨ï¼šè¢‹å­ã€ç²‰æœ«ï¼ˆåŠ¨ç”»ï¼‰ã€çƒ§æ¯
      *
      * @constructor
      */
@@ -2310,7 +2310,7 @@ ENJ.Step_DumpPowder = (function() {
       var store = this.store, scene = this.scene,
         handlers = this.handlers = [], flags = this.flags = [],
         bag, beaker;//, pipet, bottle, suckBall;
-      // @todo ¾«¼ò
+      // @todo ç²¾ç®€
       bag = this.bag = scene.bags[store.bag];
       beaker = this.beaker = scene.beakers[store.beaker];
       this.powder = scene.powder;
@@ -2392,8 +2392,8 @@ ENJ.Step_DumpWater = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«ÕôÁóË®µ¹ÈëÉÕ±­£¬£¨ÇåÏ´ÒıÁ÷°ô£©
-     * ËùÓÃ£ºÕôÁóË®¡¢ÉÕ±­¡¢£¨ÒıÁ÷°ô£©¡¢Ë®Á÷¶¯»­
+     * å°†è’¸é¦æ°´å€’å…¥çƒ§æ¯ï¼Œï¼ˆæ¸…æ´—å¼•æµæ£’ï¼‰
+     * æ‰€ç”¨ï¼šè’¸é¦æ°´ã€çƒ§æ¯ã€ï¼ˆå¼•æµæ£’ï¼‰ã€æ°´æµåŠ¨ç”»
      *
      * @constructor
      */
@@ -2506,8 +2506,8 @@ ENJ.Step_BlowLiquid = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«ÒÆÒº¹ÜÖĞÒºÌåÂıÂı×¢ÈëÈİÆ÷
-     * ËùÓÃ£ºÊÖ¡¢ÒÆÒº¹Ü¡¢ÈİÆ÷
+     * å°†ç§»æ¶²ç®¡ä¸­æ¶²ä½“æ…¢æ…¢æ³¨å…¥å®¹å™¨
+     * æ‰€ç”¨ï¼šæ‰‹ã€ç§»æ¶²ç®¡ã€å®¹å™¨
      *
      * @constructor
      */
@@ -2651,8 +2651,8 @@ ENJ.Step_SuckLiquid = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÎüÈ¡ÒºÌå
-     * ËùÓÃ£ºÒÆÒº¹Ü¡¢ÎüÇò¡¢ÊÔ¼ÁÆ¿
+     * å¸å–æ¶²ä½“
+     * æ‰€ç”¨ï¼šç§»æ¶²ç®¡ã€å¸çƒã€è¯•å‰‚ç“¶
      *
      * @constructor
      */
@@ -2665,7 +2665,7 @@ ENJ.Step_SuckLiquid = (function() {
       var store = this.store, scene = this.scene,
         handlers = this.handlers = [], self = this,
         hand, pipet, bottle, suckBall;//, pipet, bottle, suckBall;
-      // @todo ¾«¼ò
+      // @todo ç²¾ç®€
       hand = this.hand = scene.hand;
       pipet = this.pipet = scene.pipet;
       bottle = this.bottle = scene[store.bottle];
@@ -2892,8 +2892,8 @@ ENJ.Step_StirLiquid = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½Á°èÉÕ±­ÖĞµÄÒºÌå
-     * ËùÓÃ£ºÉÕ±­¡¢ÒıÁ÷°ô
+     * æ…æ‹Œçƒ§æ¯ä¸­çš„æ¶²ä½“
+     * æ‰€ç”¨ï¼šçƒ§æ¯ã€å¼•æµæ£’
      *
      * @constructor
      */
@@ -2964,8 +2964,8 @@ ENJ.Step_TransferLiquid = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«ÉÕ±­ÖĞµÄÒºÌå×ªÒÆµ½ÈİÁ¿Æ¿ÖĞ
-     * ËùÓÃ£ºÈİÁ¿Æ¿¡¢ÉÕ±­¡¢ÒıÁ÷°ô
+     * å°†çƒ§æ¯ä¸­çš„æ¶²ä½“è½¬ç§»åˆ°å®¹é‡ç“¶ä¸­
+     * æ‰€ç”¨ï¼šå®¹é‡ç“¶ã€çƒ§æ¯ã€å¼•æµæ£’
      *
      * @constructor
      */
@@ -3088,8 +3088,8 @@ ENJ.Step_ConstantVolume = (function() {
   
   return ENJ.defineClass({
     /**
-     * ¶¨Èİ
-     * ËùÓÃ£ºÕôÁóË®¡¢ÈİÁ¿Æ¿
+     * å®šå®¹
+     * æ‰€ç”¨ï¼šè’¸é¦æ°´ã€å®¹é‡ç“¶
      *
      * @constructor
      */
@@ -3168,8 +3168,8 @@ ENJ.Step_ShakeUp = (function() {
   
   return ENJ.defineClass({
     /**
-     * Ò¡ÔÈ
-     * ËùÓÃ£ºÈİÁ¿Æ¿
+     * æ‘‡åŒ€
+     * æ‰€ç”¨ï¼šå®¹é‡ç“¶
      *
      * @constructor
      */
@@ -3238,8 +3238,8 @@ ENJ.Step_WashElectrode = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÇåÏ´µç¼«
-     * ËùÓÃ£ºÕôÁóË®¡¢ÉÕ±­¡¢µç¼«
+     * æ¸…æ´—ç”µæ
+     * æ‰€ç”¨ï¼šè’¸é¦æ°´ã€çƒ§æ¯ã€ç”µæ
      *
      * @constructor
      */
@@ -3373,8 +3373,8 @@ ENJ.Step_WipeUpElectrode = (function() {
   
   return ENJ.defineClass({
     /**
-     * ²Á¸Éµç¼«
-     * ËùÓÃ£ºÖ½½í¡¢µç¼«
+     * æ“¦å¹²ç”µæ
+     * æ‰€ç”¨ï¼šçº¸å·¾ã€ç”µæ
      *
      * @constructor
      */
@@ -3454,8 +3454,8 @@ ENJ.Step_DumpFromFlask = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«ÈİÁ¿Æ¿ÖĞÒºÌåµ¹ÈëÉÕ±­
-     * ËùÓÃ£ºÈİÁ¿Æ¿¡¢ÉÕ±­
+     * å°†å®¹é‡ç“¶ä¸­æ¶²ä½“å€’å…¥çƒ§æ¯
+     * æ‰€ç”¨ï¼šå®¹é‡ç“¶ã€çƒ§æ¯
      *
      * @constructor
      */
@@ -3545,8 +3545,8 @@ ENJ.Step_AddRotor = (function() {
 
   return ENJ.defineClass({
     /**
-     * ¼ÓÈë×ª×Ó
-     * ËùÓÃ£ºÉÕ±­¡¢×ª×Ó
+     * åŠ å…¥è½¬å­
+     * æ‰€ç”¨ï¼šçƒ§æ¯ã€è½¬å­
      *
      * @constructor
      */
@@ -3606,8 +3606,8 @@ ENJ.Step_StartStirrer = (function() {
   
   return ENJ.defineClass({
     /**
-     * ¿ªÆô´ÅÁ¦½Á°èÆ÷
-     * ËùÓÃ£ºÉÕ±­¡¢µç¼«¡¢×ª×Ó¡¢´ÅÁ¦½Á°èÆ÷
+     * å¼€å¯ç£åŠ›æ…æ‹Œå™¨
+     * æ‰€ç”¨ï¼šçƒ§æ¯ã€ç”µæã€è½¬å­ã€ç£åŠ›æ…æ‹Œå™¨
      *
      * @constructor
      */
@@ -3665,8 +3665,8 @@ ENJ.Step_StopStirrer = (function() {
   
   return ENJ.defineClass({
     /**
-     * ¹Ø±Õ´ÅÁ¦½Á°èÆ÷
-     * ËùÓÃ£ºÉÕ±­¡¢µç¼«¡¢×ª×Ó¡¢´ÅÁ¦½Á°èÆ÷
+     * å…³é—­ç£åŠ›æ…æ‹Œå™¨
+     * æ‰€ç”¨ï¼šçƒ§æ¯ã€ç”µæã€è½¬å­ã€ç£åŠ›æ…æ‹Œå™¨
      *
      * @constructor
      */
@@ -3733,8 +3733,8 @@ ENJ.Step_CorrectPHInstrument = (function() {
   
   return ENJ.defineClass({
     /**
-     * Ğ£×¼PHÒÇ
-     * ËùÓÃ£ºPHÒÇ
+     * æ ¡å‡†PHä»ª
+     * æ‰€ç”¨ï¼šPHä»ª
      *
      * @constructor
      */
@@ -3783,8 +3783,8 @@ ENJ.Step_WashPipe = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÈóÏ´ÒÆÒº¹Ü
-     * ËùÓÃ£ºÒÆÒº¹Ü¡¢ÊÖ
+     * æ¶¦æ´—ç§»æ¶²ç®¡
+     * æ‰€ç”¨ï¼šç§»æ¶²ç®¡ã€æ‰‹
      *
      * @constructor
      */
@@ -3904,8 +3904,8 @@ ENJ.Step_EmptyPipet = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÅÅ¿ÕÒÆÒº¹Ü
-     * ËùÓÃ£ºÒÆÒº¹Ü¡¢ÎüÇò¡¢´óÉÕ±­
+     * æ’ç©ºç§»æ¶²ç®¡
+     * æ‰€ç”¨ï¼šç§»æ¶²ç®¡ã€å¸çƒã€å¤§çƒ§æ¯
      *
      * @constructor
      */
@@ -4050,8 +4050,8 @@ ENJ.Step_DumpToCylinder = (function() {
   
   return ENJ.defineClass({
     /**
-     * ÏòÁ¿Í²ÖĞ¼ÓË®
-     * ËùÓÃ£ºÕôÁóË®¡¢Á¿Í²
+     * å‘é‡ç­’ä¸­åŠ æ°´
+     * æ‰€ç”¨ï¼šè’¸é¦æ°´ã€é‡ç­’
      *
      * @constructor
      */
@@ -4138,8 +4138,8 @@ ENJ.Step_DumpFromCylinder = (function() {
     
   return ENJ.defineClass({
     /**
-     * µ¹³öÁ¿Í²ÖĞÒºÌå
-     * ËùÓÃ£ºÁ¿Í²¡¢ÉÕ±­
+     * å€’å‡ºé‡ç­’ä¸­æ¶²ä½“
+     * æ‰€ç”¨ï¼šé‡ç­’ã€çƒ§æ¯
      * 
      * @constructor
      */
@@ -4231,8 +4231,8 @@ ENJ.Step_DumpToBuret = (function() {
 
   return ENJ.defineClass({
     /**
-     * ÏòµÎ¶¨¹ÜÖĞ×¢ÈëÊÔ¼Á
-     * ËùÓÃ£ºµÎ¶¨¹Ü¡¢ÊÔ¼ÁÆ¿¡¢¸Ç×Ó
+     * å‘æ»´å®šç®¡ä¸­æ³¨å…¥è¯•å‰‚
+     * æ‰€ç”¨ï¼šæ»´å®šç®¡ã€è¯•å‰‚ç“¶ã€ç›–å­
      *
      * @constructor
      */
@@ -4332,8 +4332,8 @@ ENJ.Step_BlowBuret = (function() {
   
   return ENJ.defineClass({
     /**
-     * ½«ÒÆÒº¹ÜÖĞÒºÌåÂıÂı×¢ÈëÈİÆ÷
-     * ËùÓÃ£ºÊÖ¡¢ÒÆÒº¹Ü¡¢ÈİÆ÷
+     * å°†ç§»æ¶²ç®¡ä¸­æ¶²ä½“æ…¢æ…¢æ³¨å…¥å®¹å™¨
+     * æ‰€ç”¨ï¼šæ‰‹ã€ç§»æ¶²ç®¡ã€å®¹å™¨
      *
      * @constructor
      */
@@ -4632,8 +4632,8 @@ ENJ.Step_Interlude_1 = (function() {
 
   return ENJ.defineClass({
     /**
-     * ¹ı³¡
-     * ËùÓÃ£º
+     * è¿‡åœº
+     * æ‰€ç”¨ï¼š
      *
      * @constructor
      */
@@ -4675,8 +4675,8 @@ ENJ.Step_Interlude_2 = (function() {
 
   return ENJ.defineClass({
     /**
-     * ¹ı³¡
-     * ËùÓÃ£º
+     * è¿‡åœº
+     * æ‰€ç”¨ï¼š
      *
      * @constructor
      */
@@ -4736,8 +4736,8 @@ ENJ.Step_Record_2 = (function() {
 
   return ENJ.defineClass({
     /**
-     * ¼ÇÂ¼ÊµÑéÊı¾İ
-     * ËùÓÃ£º½á¹û±¨¸æ2
+     * è®°å½•å®éªŒæ•°æ®
+     * æ‰€ç”¨ï¼šç»“æœæŠ¥å‘Š2
      *
      * @constructor
      */
@@ -4875,7 +4875,7 @@ ENJ.Script = (function() {
 
       var tip = this.tips[currentIndex];
       if (tip) {
-        this.scene.tip.text = 'ÌáÊ¾£º' + tip;
+        this.scene.tip.text = 'æç¤ºï¼š' + tip;
       } else {
         this.scene.tip.text = '';
       }
@@ -4965,149 +4965,149 @@ ENJ.Script_2 = (function() {
 
       configs  = [
 
-        [ENJ.Step_Interlude_1, { title: "Ğ£×¼PH¼Æ" }, ''],
-        // Ğ£×¼1
-        [ENJ.Step_CutBag, { bag: 1 }, "¼ô¿ªÒ»´üPH±ê×¼»º³åÒº£¨6.86£©·ÛÄ©"],
-        [ENJ.Step_DumpPowder, { bag: 1, beaker: 3 }, "½«·ÛÄ©µ¹Èë¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: true, volume: 5 }, "ÓÃÕôÁóË®ÇåÏ´·ÛÄ©´ü×Ó"],
-        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: false, volume: 10 }, "ÓÃÕôÁóË®ÇåÏ´·ÛÄ©´ü×Ó"],
-        [ENJ.Step_DumpWater, { beaker: 3, volume: 20 }, "¼ÓË®Ï¡ÊÍ"],
-        [ENJ.Step_StirLiquid, { beaker: 3, remain: true }, "ÓÃ²£Á§±­½Á°èÒ»ÏÂ"],
-        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "½«Ï¡ÊÍÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "¼ÓË®ÇåÏ´ÉÕ±­ºÍ²£Á§±­"],
-        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "½«ÇåÏ´ÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "¼ÓË®ÇåÏ´ÉÕ±­ºÍ²£Á§±­"],
-        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1 }, "½«ÇåÏ´ÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_ConstantVolume, { flask: 1, volume: 100 }, "²¹¼ÓÕôÁóË®£¬¶¨ÈİÖÁ100ml"],
-        [ENJ.Step_ShakeUp, { flask: 1 }, "Ò¡ÔÈ"],
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpFromFlask, { beaker: 2, flask: 1, volume: 30 }, "µ¹Ò»Ğ©PH±ê×¼»º³åÒº£¨6.86£©ÖÁ¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_CorrectPHInstrument, {}, "Ğ£×¼PH¼Æ"],
-        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
+        [ENJ.Step_Interlude_1, { title: "æ ¡å‡†PHè®¡" }, ''],
+        // æ ¡å‡†1
+        [ENJ.Step_CutBag, { bag: 1 }, "å‰ªå¼€ä¸€è¢‹PHæ ‡å‡†ç¼“å†²æ¶²ï¼ˆ6.86ï¼‰ç²‰æœ«"],
+        [ENJ.Step_DumpPowder, { bag: 1, beaker: 3 }, "å°†ç²‰æœ«å€’å…¥å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: true, volume: 5 }, "ç”¨è’¸é¦æ°´æ¸…æ´—ç²‰æœ«è¢‹å­"],
+        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: false, volume: 10 }, "ç”¨è’¸é¦æ°´æ¸…æ´—ç²‰æœ«è¢‹å­"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20 }, "åŠ æ°´ç¨€é‡Š"],
+        [ENJ.Step_StirLiquid, { beaker: 3, remain: true }, "ç”¨ç»ç’ƒæ¯æ…æ‹Œä¸€ä¸‹"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "å°†ç¨€é‡Šæ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "åŠ æ°´æ¸…æ´—çƒ§æ¯å’Œç»ç’ƒæ¯"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "å°†æ¸…æ´—æ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "åŠ æ°´æ¸…æ´—çƒ§æ¯å’Œç»ç’ƒæ¯"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1 }, "å°†æ¸…æ´—æ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_ConstantVolume, { flask: 1, volume: 100 }, "è¡¥åŠ è’¸é¦æ°´ï¼Œå®šå®¹è‡³100ml"],
+        [ENJ.Step_ShakeUp, { flask: 1 }, "æ‘‡åŒ€"],
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpFromFlask, { beaker: 2, flask: 1, volume: 30 }, "å€’ä¸€äº›PHæ ‡å‡†ç¼“å†²æ¶²ï¼ˆ6.86ï¼‰è‡³å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_CorrectPHInstrument, {}, "æ ¡å‡†PHè®¡"],
+        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
 
-        // Ğ£×¼2
-        [ENJ.Step_CutBag, { bag: 0 }, "¼ô¿ªÒ»´üPH±ê×¼»º³åÒº£¨9.18£©·ÛÄ©"],
-        [ENJ.Step_DumpPowder, { bag: 0, beaker: 1 }, "½«·ÛÄ©µ¹Èë¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: true, volume: 5 }, "ÓÃÕôÁóË®ÇåÏ´·ÛÄ©´ü×Ó"],
-        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: false, volume: 10 }, "ÓÃÕôÁóË®ÇåÏ´·ÛÄ©´ü×Ó"],
-        [ENJ.Step_DumpWater, { beaker: 1, volume: 20 }, "¼ÓË®Ï¡ÊÍ"],
-        [ENJ.Step_StirLiquid, { beaker: 1, remain: true }, "ÓÃ²£Á§±­½Á°èÒ»ÏÂ"],
-        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "½«Ï¡ÊÍÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "¼ÓË®ÇåÏ´ÉÕ±­ºÍ²£Á§±­"],
-        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "½«ÇåÏ´ÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "¼ÓË®ÇåÏ´ÉÕ±­ºÍ²£Á§±­"],
-        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0 }, "½«ÇåÏ´ÒºÒÆÈëÈİÁ¿Æ¿ÖĞ"],
-        [ENJ.Step_ConstantVolume, { flask: 0, volume: 100 }, "²¹¼ÓÕôÁóË®£¬¶¨ÈİÖÁ100ml"],
-        [ENJ.Step_ShakeUp, { flask: 0 }, "Ò¡ÔÈ"],
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpFromFlask, { beaker: 0, flask: 0, volume: 30 }, "µ¹Ò»Ğ©PH±ê×¼»º³åÒº£¨9.18£©ÖÁ¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 0, rotor: 0 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 0 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_CorrectPHInstrument, {}, "Ğ£×¼PH¼Æ"],
-        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 0 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
+        // æ ¡å‡†2
+        [ENJ.Step_CutBag, { bag: 0 }, "å‰ªå¼€ä¸€è¢‹PHæ ‡å‡†ç¼“å†²æ¶²ï¼ˆ9.18ï¼‰ç²‰æœ«"],
+        [ENJ.Step_DumpPowder, { bag: 0, beaker: 1 }, "å°†ç²‰æœ«å€’å…¥å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: true, volume: 5 }, "ç”¨è’¸é¦æ°´æ¸…æ´—ç²‰æœ«è¢‹å­"],
+        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: false, volume: 10 }, "ç”¨è’¸é¦æ°´æ¸…æ´—ç²‰æœ«è¢‹å­"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20 }, "åŠ æ°´ç¨€é‡Š"],
+        [ENJ.Step_StirLiquid, { beaker: 1, remain: true }, "ç”¨ç»ç’ƒæ¯æ…æ‹Œä¸€ä¸‹"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "å°†ç¨€é‡Šæ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "åŠ æ°´æ¸…æ´—çƒ§æ¯å’Œç»ç’ƒæ¯"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "å°†æ¸…æ´—æ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "åŠ æ°´æ¸…æ´—çƒ§æ¯å’Œç»ç’ƒæ¯"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0 }, "å°†æ¸…æ´—æ¶²ç§»å…¥å®¹é‡ç“¶ä¸­"],
+        [ENJ.Step_ConstantVolume, { flask: 0, volume: 100 }, "è¡¥åŠ è’¸é¦æ°´ï¼Œå®šå®¹è‡³100ml"],
+        [ENJ.Step_ShakeUp, { flask: 0 }, "æ‘‡åŒ€"],
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpFromFlask, { beaker: 0, flask: 0, volume: 30 }, "å€’ä¸€äº›PHæ ‡å‡†ç¼“å†²æ¶²ï¼ˆ9.18ï¼‰è‡³å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 0, rotor: 0 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 0 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_CorrectPHInstrument, {}, "æ ¡å‡†PHè®¡"],
+        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 0 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
 
         //
-        [ENJ.Step_Interlude_2, {title: "µÚÒ»´ÎÈ¡ÑùºÍ²âÊÔ"}, ''],
+        [ENJ.Step_Interlude_2, {title: "ç¬¬ä¸€æ¬¡å–æ ·å’Œæµ‹è¯•"}, ''],
 
 
-        //È¡Ñù1
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "ÓÃÒÆÒº¹ÜÎüÈ¡ÉÙÁ¿Ê³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_WashPipe, { pipe: 'pipet' }, "ÈóÏ´Ò»ÏÂÒÆÒº¹Ü"],
-        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_EmptyPipet, { remain: true }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "ÔÙÎüÈ¡ÉÙÁ¿Ê³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_WashPipe, { pipe: 'pipet' }, "¶ş´ÎÈóÏ´Ò»ÏÂÒÆÒº¹Ü"],
-        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_EmptyPipet, { remain: true }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "ÎüÈ¡×ãÁ¿Ê³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "ÁôÏÂ4mlµÄÊ³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, rotation: 15, offsetX: -20, offsetY: 20, showLabel: true}, "Ïò¸É¾»ÉÕ±­ÖĞ¼ÓÈë2mlµÄÊ³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "¶àÓàµÄÑùÆ·£¬ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_EmptyPipet, {}, "¶àÓàµÄÑùÆ·£¬ÅÅÈë·ÏÒº¸×"],
+        //å–æ ·1
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "ç”¨ç§»æ¶²ç®¡å¸å–å°‘é‡é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_WashPipe, { pipe: 'pipet' }, "æ¶¦æ´—ä¸€ä¸‹ç§»æ¶²ç®¡"],
+        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_EmptyPipet, { remain: true }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "å†å¸å–å°‘é‡é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_WashPipe, { pipe: 'pipet' }, "äºŒæ¬¡æ¶¦æ´—ä¸€ä¸‹ç§»æ¶²ç®¡"],
+        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_EmptyPipet, { remain: true }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "å¸å–è¶³é‡é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "ç•™ä¸‹4mlçš„é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, rotation: 15, offsetX: -20, offsetY: 20, showLabel: true}, "å‘å¹²å‡€çƒ§æ¯ä¸­åŠ å…¥2mlçš„é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "å¤šä½™çš„æ ·å“ï¼Œæ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_EmptyPipet, {}, "å¤šä½™çš„æ ·å“ï¼Œæ’å…¥åºŸæ¶²ç¼¸"],
 
-        //²â¶¨1
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpToCylinder, {volume: 20}, "Á¿È¡20mlµÄÕôÁóË®"],
-        [ENJ.Step_DumpFromCylinder, {beaker: 0}, "¼ÓÈëµ½µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_DumpToBuret, {volume: 20}, "ÏòµÎ¶¨¹ÜÖĞ¼ÓÈëÉÙÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
-        [ENJ.Step_WashPipe, { pipe: 'buret' }, "ÈóÏ´Ò»ÏÂµÎ¶¨¹Ü"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 0 }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_DumpToBuret, {volume: 20}, "ÔÙÏòµÎ¶¨¹ÜÖĞ¼ÓÈëÉÙÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
-        [ENJ.Step_WashPipe, { pipe: 'buret' }, "¶ş´ÎÈóÏ´Ò»ÏÂµÎ¶¨¹Ü"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 0 }, "ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "ÏòµÎ¶¨¹ÜÖĞ¼ÓÈë×ãÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "µÎ¶¨¹ÜÖĞÒºÃæ½µÖÁÁã¿Ì¶ÈÏß"],
-        [ENJ.Step_InstallBuret, {}, "¼ĞºÃµÎ¶¨¹Ü"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "µÎ¶¨..."],
-        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
+        //æµ‹å®š1
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpToCylinder, {volume: 20}, "é‡å–20mlçš„è’¸é¦æ°´"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 0}, "åŠ å…¥åˆ°çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_DumpToBuret, {volume: 20}, "å‘æ»´å®šç®¡ä¸­åŠ å…¥å°‘é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
+        [ENJ.Step_WashPipe, { pipe: 'buret' }, "æ¶¦æ´—ä¸€ä¸‹æ»´å®šç®¡"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 0 }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_DumpToBuret, {volume: 20}, "å†å‘æ»´å®šç®¡ä¸­åŠ å…¥å°‘é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
+        [ENJ.Step_WashPipe, { pipe: 'buret' }, "äºŒæ¬¡æ¶¦æ´—ä¸€ä¸‹æ»´å®šç®¡"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 0 }, "æ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_DumpToBuret, {volume: 82}, "å‘æ»´å®šç®¡ä¸­åŠ å…¥è¶³é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "æ»´å®šç®¡ä¸­æ¶²é¢é™è‡³é›¶åˆ»åº¦çº¿"],
+        [ENJ.Step_InstallBuret, {}, "å¤¹å¥½æ»´å®šç®¡"],
+        [ENJ.Step_DropFromBuret, {volume: 70}, "æ»´å®š..."],
+        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
 
-        [ENJ.Step_Record_2, { v1_1: 16.41 }, '¼ÇÂ¼µÚÒ»´ÎµÎ¶¨Ìå»ı'],
-
-
-        [ENJ.Step_Interlude_1, {title: "µÚ¶ş´ÎÈ¡ÑùºÍ²âÊÔ"}, ''],
-        //È¡Ñù2
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "ÎüÈ¡×ãÁ¿Ê³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotate: true }, "ÁôÏÂ4mlµÄÊ³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1 }, "Ïò¸É¾»ÉÕ±­ÖĞ¼ÓÈë2mlµÄÊ³ÓÃ´×ÑùÆ·"],
-        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "¶àÓàµÄÑùÆ·£¬ÅÅÈë·ÏÒº¸×"],
-        [ENJ.Step_EmptyPipet, {}, "¶àÓàµÄÑùÆ·£¬ÅÅÈë·ÏÒº¸×"],
-
-        //²â¶¨2
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpToCylinder, {volume: 20}, "Á¿È¡20mlµÄÕôÁóË®"],
-        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "¼ÓÈëµ½µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 2, rotor: 0 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 0 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "ÏòµÎ¶¨¹ÜÖĞ¼ÓÈë×ãÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "µÎ¶¨¹ÜÖĞÒºÃæ½µÖÁÁã¿Ì¶ÈÏß"],
-        [ENJ.Step_InstallBuret, {}, "¼ĞºÃµÎ¶¨¹Ü"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "µÎ¶¨..."],
-        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
-
-        [ENJ.Step_Record_2, { v1_2: 16.42, v1: 16.42 }, '¼ÇÂ¼µÚ¶ş´ÎµÎ¶¨Ìå»ı£¬Çó³öÆ½¾ùÖµ'],
+        [ENJ.Step_Record_2, { v1_1: 16.41 }, 'è®°å½•ç¬¬ä¸€æ¬¡æ»´å®šä½“ç§¯'],
 
 
-        [ENJ.Step_Interlude_2, {title: "µÚÒ»´Î¿Õ°×ÊµÑé"}, ''],
+        [ENJ.Step_Interlude_1, {title: "ç¬¬äºŒæ¬¡å–æ ·å’Œæµ‹è¯•"}, ''],
+        //å–æ ·2
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "å¸å–è¶³é‡é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotate: true }, "ç•™ä¸‹4mlçš„é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1 }, "å‘å¹²å‡€çƒ§æ¯ä¸­åŠ å…¥2mlçš„é£Ÿç”¨é†‹æ ·å“"],
+        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "å¤šä½™çš„æ ·å“ï¼Œæ’å…¥åºŸæ¶²ç¼¸"],
+        [ENJ.Step_EmptyPipet, {}, "å¤šä½™çš„æ ·å“ï¼Œæ’å…¥åºŸæ¶²ç¼¸"],
 
-        //¿Õ°×1
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpToCylinder, {volume: 22}, "Á¿È¡22mlµÄÕôÁóË®"],
-        [ENJ.Step_DumpFromCylinder, {beaker: 0}, "¼ÓÈëµ½¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "ÏòµÎ¶¨¹ÜÖĞ¼ÓÈë×ãÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
+        //æµ‹å®š2
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpToCylinder, {volume: 20}, "é‡å–20mlçš„è’¸é¦æ°´"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "åŠ å…¥åˆ°çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 2, rotor: 0 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 0 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_DumpToBuret, {volume: 82}, "å‘æ»´å®šç®¡ä¸­åŠ å…¥è¶³é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "æ»´å®šç®¡ä¸­æ¶²é¢é™è‡³é›¶åˆ»åº¦çº¿"],
+        [ENJ.Step_InstallBuret, {}, "å¤¹å¥½æ»´å®šç®¡"],
+        [ENJ.Step_DropFromBuret, {volume: 70}, "æ»´å®š..."],
+        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
+
+        [ENJ.Step_Record_2, { v1_2: 16.42, v1: 16.42 }, 'è®°å½•ç¬¬äºŒæ¬¡æ»´å®šä½“ç§¯ï¼Œæ±‚å‡ºå¹³å‡å€¼'],
+
+
+        [ENJ.Step_Interlude_2, {title: "ç¬¬ä¸€æ¬¡ç©ºç™½å®éªŒ"}, ''],
+
+        //ç©ºç™½1
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpToCylinder, {volume: 22}, "é‡å–22mlçš„è’¸é¦æ°´"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 0}, "åŠ å…¥åˆ°å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_DumpToBuret, {volume: 82}, "å‘æ»´å®šç®¡ä¸­åŠ å…¥è¶³é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
         [ENJ.Step_DropFromBuret, {volume: 70}, ""],
-        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
+        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
 
-        [ENJ.Step_Record_2, { v2_1: 0.01 }, '¼ÇÂ¼µÚÒ»´Î¿Õ°×µÎ¶¨Ìå»ı'],
+        [ENJ.Step_Record_2, { v2_1: 0.01 }, 'è®°å½•ç¬¬ä¸€æ¬¡ç©ºç™½æ»´å®šä½“ç§¯'],
 
-        [ENJ.Step_Interlude_2, {title: "µÚ¶ş´Î¿Õ°×ÊµÑé"}, ''],
+        [ENJ.Step_Interlude_2, {title: "ç¬¬äºŒæ¬¡ç©ºç™½å®éªŒ"}, ''],
 
-        //¿Õ°×2
-        [ENJ.Step_WashElectrode, {}, "ÇåÏ´PHµç¼«"],
-        [ENJ.Step_WipeUpElectrode, {}, "²Á¸ÉPHµç¼«"],
-        [ENJ.Step_DumpToCylinder, {volume: 22}, "Á¿È¡22mlµÄÕôÁóË®"],
-        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "¼ÓÈëµ½¸É¾»µÄÉÕ±­ÖĞ"],
-        [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "¼ÓÈëÒ»¿Å×ª×Ó"],
-        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "´ò¿ªµç×Ó½Á°èÆ÷£¬¿ªÊ¼×Ô¶¯½Á°è"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "ÏòµÎ¶¨¹ÜÖĞ¼ÓÈë×ãÁ¿ÇâÑõ»¯ÄÆÈÜÒº"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "µÎ¶¨¹ÜÖĞÒºÃæ½µÖÁÁã¿Ì¶ÈÏß"],
-        [ENJ.Step_InstallBuret, {}, "¼ĞºÃµÎ¶¨¹Ü"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "µÎ¶¨..."],
-        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "¹Ø±Õµç×Ó½Á°èÆ÷"],
+        //ç©ºç™½2
+        [ENJ.Step_WashElectrode, {}, "æ¸…æ´—PHç”µæ"],
+        [ENJ.Step_WipeUpElectrode, {}, "æ“¦å¹²PHç”µæ"],
+        [ENJ.Step_DumpToCylinder, {volume: 22}, "é‡å–22mlçš„è’¸é¦æ°´"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "åŠ å…¥åˆ°å¹²å‡€çš„çƒ§æ¯ä¸­"],
+        [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "åŠ å…¥ä¸€é¢—è½¬å­"],
+        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "æ‰“å¼€ç”µå­æ…æ‹Œå™¨ï¼Œå¼€å§‹è‡ªåŠ¨æ…æ‹Œ"],
+        [ENJ.Step_DumpToBuret, {volume: 82}, "å‘æ»´å®šç®¡ä¸­åŠ å…¥è¶³é‡æ°¢æ°§åŒ–é’ æº¶æ¶²"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "æ»´å®šç®¡ä¸­æ¶²é¢é™è‡³é›¶åˆ»åº¦çº¿"],
+        [ENJ.Step_InstallBuret, {}, "å¤¹å¥½æ»´å®šç®¡"],
+        [ENJ.Step_DropFromBuret, {volume: 70}, "æ»´å®š..."],
+        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "å…³é—­ç”µå­æ…æ‹Œå™¨"],
 
-        [ENJ.Step_Record_2, { v2_2: 0.02, xx: 5.84, canClose: false }, '¼ÇÂ¼µÚ¶ş´Î¿Õ°×µÎ¶¨Ìå»ı£¬¼ÆËãÊ³ÓÃ´××ÜËá¶È']
+        [ENJ.Step_Record_2, { v2_2: 0.02, xx: 5.84, canClose: false }, 'è®°å½•ç¬¬äºŒæ¬¡ç©ºç™½æ»´å®šä½“ç§¯ï¼Œè®¡ç®—é£Ÿç”¨é†‹æ€»é…¸åº¦']
       ];
 
       for(i = 0, n = configs.length; i < n; ++i) {
@@ -5407,49 +5407,49 @@ RES.addEventListener('progress', function(evt) {
 RES.loadManifest({
   path: './assets/',
   manifest: [
-    { id: "ÊÖ", src: "ÊÖ.PNG" },
-    { id: "Ë®µÎ", src: "Ë®µÎ.PNG" },
-    { id: "Ë®Á÷", src: "Ë®Á÷.PNG" },
-    { id: "Ö½½í", src: "Ö½½í.PNG" },
-    { id: "×ª×Ó", src: "×ª×Ó.PNG" },
-    { id: "´ü×Ó", src: "´ü×Ó.PNG" },
-    { id: "·ÛÄ©", src: "·ÛÄ©.PNG" },
-    { id: "¼ôµ¶", src: "¼ôµ¶.PNG" },
-    { id: "ÒıÁ÷°ô", src: "ÒıÁ÷°ô.PNG" },
-    { id: "±êÇ©", src: "±êÇ©.PNG" },
-    { id: "ÎüÇò", src: "ÎüÇò.PNG" },
-    { id: "Îü×ì", src: "Îü×ì.PNG" },
-    { id: "ºûµû¼Ğ", src: "ºûµû¼Ğ.PNG" },
-    { id: "µÎ¶¨¼Ü", src: "µÎ¶¨¼Ü.PNG" },
-    { id: "µÎ¶¨¹Ü", src: "µÎ¶¨¹Ü.PNG" },
-    { id: "µÎ¶¨¹ÜÒºÌå", src: "µÎ¶¨¹ÜÒºÌå.PNG" },
-    { id: "´ÅÁ¦½Á°èÆ÷", src: "´ÅÁ¦½Á°èÆ÷.PNG" },
-    { id: "´ÅÁ¦½Á°èÆ÷ĞıÅ¥", src: "´ÅÁ¦½Á°èÆ÷ĞıÅ¥.PNG" },
-    { id: "PHÒÇ", src: "PHÒÇ.PNG" },
-    { id: "PHÒÇÃæ°å", src: "PHÒÇÃæ°å.PNG" },
-    { id: "PHµç¼«", src: "PHµç¼«.PNG" },
-    { id: "PHµç¼«Ì×", src: "PHµç¼«Ì×.PNG" },
-    { id: "½´ÓÍÆ¿", src: "½´ÓÍÆ¿.PNG" },
-    { id: "½´ÓÍÆ¿¸Ç", src: "½´ÓÍÆ¿¸Ç.PNG" },
-    { id: "½´ÓÍ", src: "½´ÓÍ.PNG" },
-    { id: "ÈİÁ¿Æ¿", src: "ÈİÁ¿Æ¿.PNG" },
-    { id: "ÈİÁ¿Æ¿¸Ç", src: "ÈİÁ¿Æ¿¸Ç.PNG" },
-    { id: "ÈİÁ¿Æ¿ÒºÌå", src: "ÈİÁ¿Æ¿ÒºÌå.PNG" },
-    { id: "Á¿Í²", src: "Á¿Í².PNG" },
-    { id: "Á¿Í²ÒºÌå", src: "Á¿Í²ÒºÌå.PNG" },
-    { id: "¸Ç×Ó¼×", src: "¸Ç×Ó¼×.PNG" },
-    { id: "ÊÔ¼ÁÆ¿", src: "ÊÔ¼ÁÆ¿.PNG" },
-    { id: "ÊÔ¼ÁÆ¿ÒºÌå", src: "ÊÔ¼ÁÆ¿ÒºÌå.PNG" },
-    { id: "ÇâÑõ»¯ÄÆ±êÇ©", src: "ÇâÑõ»¯ÄÆ±êÇ©.PNG" },
-    { id: "ÒÆÒº¹Ü", src: "ÒÆÒº¹Ü.PNG" },
-    { id: "ÒÆÒº¹ÜÒºÌå", src: "ÒÆÒº¹ÜÒºÌå.PNG" },
-    { id: "ÒÆÒº¹Ü¼Ü", src: "ÒÆÒº¹Ü¼Ü.PNG" },
-    { id: "ÕôÁóË®Æ¿", src: "ÕôÁóË®Æ¿.PNG" },
-    { id: "ÉÕ±­", src: "ÉÕ±­.PNG" },
-    { id: "ÉÕ±­ÒºÌå", src: "ÉÕ±­ÒºÌå.PNG" },
-    { id: "¹Ø±Õ°´Å¥", src: "¹Ø±Õ°´Å¥.PNG" },
-    { id: "½á¹û±¨¸æ2", src: "½á¹û±¨¸æ2.PNG" },
-    { id: "±³¾°", src: "±³¾°.PNG" }
+    { id: "æ‰‹", src: "Shou.PNG" },
+    { id: "æ°´æ»´", src: "ShuiDi.PNG" },
+    { id: "æ°´æµ", src: "ShuiLiu.PNG" },
+    { id: "çº¸å·¾", src: "ZhiJin.PNG" },
+    { id: "è½¬å­", src: "ZhuanZi.PNG" },
+    { id: "è¢‹å­", src: "DaiZi.PNG" },
+    { id: "ç²‰æœ«", src: "FenMo.PNG" },
+    { id: "å‰ªåˆ€", src: "JianDao.PNG" },
+    { id: "å¼•æµæ£’", src: "YinLiuBang.PNG" },
+    { id: "æ ‡ç­¾", src: "BiaoQian.PNG" },
+    { id: "å¸çƒ", src: "XiQiu.PNG" },
+    { id: "å¸å˜´", src: "XiZui.PNG" },
+    { id: "è´è¶å¤¹", src: "HuDieJia.PNG" },
+    { id: "æ»´å®šæ¶", src: "DiDingJia.PNG" },
+    { id: "æ»´å®šç®¡", src: "DiDingGuan.PNG" },
+    { id: "æ»´å®šç®¡æ¶²ä½“", src: "DiDingGuanYeTi.PNG" },
+    { id: "ç£åŠ›æ…æ‹Œå™¨", src: "CiLiJiaoBanQi.PNG" },
+    { id: "ç£åŠ›æ…æ‹Œå™¨æ—‹é’®", src: "CiLiJiaoBanQiXuanNiu.PNG" },
+    { id: "PHä»ª", src: "PHYi.PNG" },
+    { id: "PHä»ªé¢æ¿", src: "PHYiMianBan.PNG" },
+    { id: "PHç”µæ", src: "PHDianJi.PNG" },
+    { id: "PHç”µæå¥—", src: "PHDianJiTao.PNG" },
+    { id: "é…±æ²¹ç“¶", src: "JiangYouPing.PNG" },
+    { id: "é…±æ²¹ç“¶ç›–", src: "JiangYouPingGai.PNG" },
+    { id: "é…±æ²¹", src: "JiangYou.PNG" },
+    { id: "å®¹é‡ç“¶", src: "RongLiangPing.PNG" },
+    { id: "å®¹é‡ç“¶ç›–", src: "RongLiangPingGai.PNG" },
+    { id: "å®¹é‡ç“¶æ¶²ä½“", src: "RongLiangPingYeTi.PNG" },
+    { id: "é‡ç­’", src: "LiangTong.PNG" },
+    { id: "é‡ç­’æ¶²ä½“", src: "LiangTongYeTi.PNG" },
+    { id: "ç›–å­ç”²", src: "GaiZiJia.PNG" },
+    { id: "è¯•å‰‚ç“¶", src: "ShiJiPing.PNG" },
+    { id: "è¯•å‰‚ç“¶æ¶²ä½“", src: "ShiJiPingYeTi.PNG" },
+    { id: "æ°¢æ°§åŒ–é’ æ ‡ç­¾", src: "NaOH.PNG" },
+    { id: "ç§»æ¶²ç®¡", src: "YiYeGuan.PNG" },
+    { id: "ç§»æ¶²ç®¡æ¶²ä½“", src: "YiYeGuanYeTi.PNG" },
+    { id: "ç§»æ¶²ç®¡æ¶", src: "YiYeGuanJia.PNG" },
+    { id: "è’¸é¦æ°´ç“¶", src: "ZhengLiuShuiPing.PNG" },
+    { id: "çƒ§æ¯", src: "ShaoBei.PNG" },
+    { id: "çƒ§æ¯æ¶²ä½“", src: "ShaoBeiYeTi.PNG" },
+    { id: "å…³é—­æŒ‰é’®", src: "CloseButton.PNG" },
+    { id: "ç»“æœæŠ¥å‘Š2", src: "JiqGuoBaoGao2.PNG" },
+    { id: "èƒŒæ™¯", src: "background.PNG" }
   ]
 });
 
