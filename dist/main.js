@@ -5453,7 +5453,6 @@ RES.loadManifest({
   ]
 });
 
-//var $ = jQuick;
 
 
 
