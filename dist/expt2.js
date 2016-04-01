@@ -638,6 +638,7 @@ ENJ.Beaker = (function() {
       self.addChild(liquid, level, bottle);
 
       self.set({
+        liquid: liquid,
         label: label,
         level: level,
         shape: shape
@@ -674,6 +675,11 @@ ENJ.Beaker = (function() {
 
           label.store('num', value);
           label.y = shape.y - 10;
+          break;
+        case 'color':
+          self.liquid = LiquidContainer.createLiquid("烧杯液体", value, shape);
+          self.removeChildAt(0);
+          self.addChildAt(self.liquid, 0);
           break;
       }
     },
@@ -779,7 +785,7 @@ ENJ.WaterBottle = (function() {
 
       var data = {
         images: [RES.getRes("水流")],
-        frames: { width: 200, height: 242 }
+        frames: { width: 200, height: 200 }
       };
       var sheet = new CRE.SpriteSheet(data);
 
@@ -1018,9 +1024,12 @@ ENJ.SoySauce = (function() {
 //##############################################################################
 ENJ.ReagenBottle = (function() {
   var LiquidContainer = ENJ.LiquidContainer,
+    Tween = CRE.Tween,
     Shape = CRE.Shape,
     Bitmap = CRE.Bitmap,
     Graphics = CRE.Graphics;
+
+  var base = LiquidContainer.prototype;
 
   return ENJ.defineClass({
     /**
@@ -1038,7 +1047,7 @@ ENJ.ReagenBottle = (function() {
      * @override
      */
     ready: function() {
-      var self = this, label, shape, liquid, bottle, icon, graphics;
+      var self = this, label, shape, liquid, bottle, icon, cap, graphics;
 
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 90;
@@ -1057,18 +1066,22 @@ ENJ.ReagenBottle = (function() {
       icon = new Bitmap(RES.getRes(self.store('icon')));
       icon.set({ x: 10, y: 80 });
 
+      cap = new Bitmap(RES.getRes(self.store('cap')));
+      cap.set({ x: 13, y: -8 });
+
       var container = new CRE.Container();
       var bounds = bottle.getBounds();
       container.addChild(bottle, icon);
       container.cache(0, 0, bounds.width, bounds.height);
 
       //
-      self.addChild(liquid, container/*, label*/);
+      self.addChild(liquid, cap, container/*, label*/);
       //this.addChild(icon);
 
 
       //self.label = label;
       self.shape = shape;
+      self.cap = cap;
       //this.liquid = liquid;
 
       //this.shape =
@@ -1092,6 +1105,20 @@ ENJ.ReagenBottle = (function() {
           break;
       }
 
+    },
+
+    start: function() {
+      base.start.call(this);
+      Tween.get(this.cap).to({
+        x: 0, y: -60, rotation: -30, alpha: 0
+      }, 250);
+    },
+
+    stop: function() {
+      base.stop.call(this);
+      Tween.get(this.cap).to({
+        x: 13, y: -8, rotation: 0, alpha: 1.0
+      }, 250);
     }
   });
 })();
@@ -1280,7 +1307,7 @@ ENJ.PHInstrument = (function() {
     onCorrect: function () {
       this.btn1.removeAllEventListeners();
       this.dispatchEvent('correct');
-      console.log('correct')
+//      console.log('correct')
     },
 
     onRead: function() {
@@ -1656,9 +1683,11 @@ ENJ.Scene = (function() {
      * Set child to top.
      *
      * @param {DisplayObject} child
+     * @param {number} top
      */
-    setToTop: function(child) {
-      this.setChildIndex(child, this.numChildren - 1);
+    setToTop: function(child, top) {
+      top = top || 1;
+      this.setChildIndex(child, this.numChildren - top);
     }
   });
 })();
@@ -1689,7 +1718,7 @@ ENJ.Scene_2 = (function() {
         pipetStand, waterBottle, volumetricFlask, drainageBar, bigBeaker,
         bags = [], beakers = [], volumetricFlasks = [], rotors = [],
         cylinder, stirrer, phInstrument, powder, buret, titrationStand,
-        phElectrode, reagenBottle, cap,
+        phElectrode, reagenBottle,
         suckBall, soySauce, pipet;
 
       // @todo CSS background maybe better.
@@ -1768,9 +1797,9 @@ ENJ.Scene_2 = (function() {
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
-      cap = new Bitmap(RES.getRes("盖子甲"));
+//      cap = new Bitmap(RES.getRes("盖子甲"));
 
-      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "氢氧化钠标签" } );
+      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签" } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -1778,13 +1807,13 @@ ENJ.Scene_2 = (function() {
       titrationStand = new ENJ.TitrationStand();
       titrationStand.scaleX = -1;
 
-      buret = new ENJ.Buret({ volume: 0, color: 0x990000ff });
+      buret = new ENJ.Buret({ volume: 0, color: 0x22ffffff });
       //buret.scaleX = -1;
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd111100 });
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x990000ff });
+      soySauce = new ENJ.SoySauce({ volume: 180, color: 0x66330000 });
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x22ffffff });
 
       pipet.rotation = -90;
       drainageBar.rotation = -90;
@@ -1793,12 +1822,12 @@ ENJ.Scene_2 = (function() {
 
       phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PH仪"));
 
-      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x990000ff });
+      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x22ffffff });
 
-      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
 
       for (i = 0; i < 2; ++ i) {
-        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
         this.place(volumetricFlask, new Point(130 + 100 * i, 200 + i * 20));
         volumetricFlasks.push(volumetricFlask);
       }
@@ -1827,7 +1856,7 @@ ENJ.Scene_2 = (function() {
         bg,
         pipetStand,
 
-        cap,
+//        cap,
 
         bags[0],
         bags[1],
@@ -1916,7 +1945,7 @@ ENJ.Scene_2 = (function() {
 
       self.place(stirrer, new Point(600, 500));
 
-      self.place(cap, new Point(572,290));
+//      self.place(cap, new Point(572,290));
       self.place(reagenBottle, new Point(560, 300));
       self.place(pipet, new Point(700, 300));
 
@@ -1951,7 +1980,7 @@ ENJ.Scene_2 = (function() {
         rotors: rotors,
         volumetricFlasks: volumetricFlasks,
         reagenBottle: reagenBottle,
-        cap: cap,
+//        cap: cap,
         drop: drop,
         buret: buret,
         tip: tip,
@@ -2703,11 +2732,12 @@ ENJ.Step_SuckLiquid = (function() {
 
       this.flags = [];
 
-      [/*suckBall, */pipet, bottle, hand]
+      [/*suckBall, */pipet, bottle]
         .forEach(function(element) {
-          scene.setToTop(element);
+          scene.setToTop(element, 7);
           element.cursor = 'pointer';
         });
+//      scene.setChildIndex(pipet, scene.getChildIndex(bottle)-1);
 
       bottle.start();
       Tween.get(bottle).to({
@@ -3885,7 +3915,7 @@ ENJ.Step_WashPipe = (function() {
       hand.visible=false;
 
       Tween.get(pipe)
-        .to({x:400,y:400,regX:7,regY:150,rotation:90},500)
+        .to({x:400,y:500,regX:7,regY:150,rotation:90},500)
         .to({rotation:95},300)
         .to({rotation:85},300)
         .to({rotation:95},300)
@@ -3986,7 +4016,8 @@ ENJ.Step_EmptyPipet = (function() {
         handlers = this.handlers = [],
         pipet, hand, ball, beaker;
 
-      pipet = this.pipet = scene.pipet;
+//      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       //hand = this.hand = scene.hand;
       ball = this.ball = scene.suckBall;
       beaker = this.beaker = scene.bigBeaker;
@@ -4317,7 +4348,7 @@ ENJ.Step_DumpToBuret = (function() {
       Step.prototype.start.call(this);
       var self = this, scene = self.scene;
 
-      self.cap = scene.cap;
+      //self.cap = scene.cap;
       self.buret = scene.buret;
       self.bottle = scene.reagenBottle;
 
@@ -4329,29 +4360,33 @@ ENJ.Step_DumpToBuret = (function() {
       self.bottle.addEventListener('click', self.handlers[0]);
       self.bottle.cursor = 'pointer';
 
-      Tween.get(self.cap)
-        .to({rotation: -90}, 500)
-        .to({x: 650, y: 450, rotation: -180}, 500);
+//      Tween.get(self.cap)
+//        .to({rotation: -90}, 500)
+//        .to({x: 650, y: 450, rotation: -180}, 500);
 
       Tween.get(self.buret)
         .to({x: 400, y: 400, rotation: 30}, 500);
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 400, y: 415, rotation: -30}, 500)
-        .call(function() {
+        /*.call(function() {
           self.bottle.start();
-        });
+        })*/;
     },
     stop: function() {
       var self = this, scene = self.scene, bottle = self.bottle;
       scene.setChildIndex(bottle, bottle.index);
       bottle.removeEventListener('click', self.handlers[0]);
       bottle.cursor = 'auto';
+      bottle.refresh();
+      bottle.stop();
+
       Step.prototype.stop.call(this);
     },
     update: function(event) {
       var self = this,
-        cap = self.cap, buret = self.buret, bottle = self.bottle,
+        buret = self.buret, bottle = self.bottle,
         target = self.store.volume, volume, delta;
       buret.refresh();
       bottle.refresh();
@@ -4371,13 +4406,13 @@ ENJ.Step_DumpToBuret = (function() {
             .call(function() {
               self.stop();
             });
-          Tween.get(cap)
-            .to({
-              x: cap.location.x,
-              y: cap.location.y,
-              rotation: -90
-            }, 500)
-            .to({rotation: 0}, 500);
+//          Tween.get(cap)
+//            .to({
+//              x: cap.location.x,
+//              y: cap.location.y,
+//              rotation: -90
+//            }, 500)
+//            .to({rotation: 0}, 500);
         } else {
           volume += delta;
         }
@@ -4662,6 +4697,8 @@ ENJ.Step_DropFromBuret = (function() {
               x: stand.location.x,
               y: stand.location.y,
             }, 500)
+        } else {
+          self.stop();
         }
 
       } else {
@@ -5405,14 +5442,14 @@ ENJ.Lab = (function() {
 //##############################################################################
 // src/exit.js
 //##############################################################################
-//var stats = new Stats();
-//
-//stats.setMode(0); // 0: fps, 1: ms
-//stats.domElement.style.position = 'absolute';
-//stats.domElement.style.left = '0px';
-//stats.domElement.style.top = '0px';
-//
-//document.body.appendChild(stats.domElement);
+var stats = new Stats();
+
+stats.setMode(0); // 0: fps, 1: ms
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+
+document.body.appendChild(stats.domElement);
 
 
 var lab = new ENJ.Lab('stage');
@@ -5438,7 +5475,7 @@ function update(event) {
     lab.update(event);
   }
 
-  //stats.update();
+  stats.update();
   //requestAnimationFrame(update);
 }
 //update();
