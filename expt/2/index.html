@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>MyLab | 实验2 滴定法测定食用醋中总酸度</title>
+	<style type="text/css">
+        body{
+            margin: 0;
+            background: #aaa;
+        }
+        #area{
+            margin: auto;
+            width: 960px;
+        }
+        #stage{
+            background: #fff;
+        }
+        /*#progress-bar{
+            height: 10px;
+            background: #0f0;
+        }*/
+        #field,
+        .btn{
+            font-family: Arial;
+            color: #fff;
+            float: left;
+            background: #0af;
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+
+        #editor{
+            width: 50px;
+        }
+	</style>
+</head>
+<body>
+    <div id="area">
+        <canvas id="stage" width="960" height="640">
+            Sorry! Your browser does not support HTML5 Canvas. Please try on IE9+, Chrome, ...
+        </canvas>
+        <!--<div id="progress-bar"></div>-->
+        <!--<div id="footer">
+            <label id="field" for="editor">
+                step: <input type="text" id="editor" value="1">
+            </label>
+            <button class="btn" id="goto-btn">goto</button>
+            <button class="btn" id="prev-btn">prev</button>
+            <button class="btn" id="next-btn">next</button>
+        </div>-->
+    </div>
+    <script type="text/javascript" src="../../lib/createjs-2015.11.26.min.js"></script>
+    <!--<script type="text/javascript" src="../../lib/stats.js"></script>-->
+    <!--<script type="text/javascript" src="lib/jQuick.js"></script>-->
+	<script type="text/javascript" src="../../dist/expt2.min.js"></script>
+</body>
+</html>
