@@ -779,7 +779,7 @@ ENJ.WaterBottle = (function() {
 
       var data = {
         images: [RES.getRes("水流")],
-        frames: { width: 200, height: 242 }
+        frames: { width: 200, height: 200 }
       };
       var sheet = new CRE.SpriteSheet(data);
 
@@ -1728,7 +1728,6 @@ ENJ.Scene_3 = (function() {
       //beaker.set({ x: 200, y: 500 });
 
       stirrer = new ENJ.MagneticStirrer();
-      stirrer.visible = false;
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
@@ -1806,14 +1805,13 @@ ENJ.Scene_3 = (function() {
         reagenBottle,
         formaldehyde,
 
+        cylinder,
+        waterBottle,
+
         pipet,
         pipet2,
         bigPipet,
         suckBall,
-        cylinder,
-
-
-
 
         titrationStand,
 
@@ -1823,6 +1821,8 @@ ENJ.Scene_3 = (function() {
         rotors[0],
         rotors[1],
 
+
+
         volumetricFlasks[0],
         volumetricFlasks[1],
         volumetricFlasks[2],
@@ -1831,7 +1831,7 @@ ENJ.Scene_3 = (function() {
 
         soySauce,
 
-        waterBottle,
+
 
         phElectrode,
 
@@ -3981,7 +3981,7 @@ ENJ.Step_WashPipe = (function() {
       hand.visible=false;
 
       Tween.get(pipe)
-        .to({x:400,y:400,regX:7,regY:150,rotation:90},500)
+        .to({x:500,y:400,regX:7,regY:150,rotation:90},500)
         .to({rotation:95},300)
         .to({rotation:85},300)
         .to({rotation:95},300)
@@ -4082,7 +4082,8 @@ ENJ.Step_EmptyPipet = (function() {
         handlers = this.handlers = [],
         pipet, hand, ball, beaker;
 
-      pipet = this.pipet = scene.pipet;
+//      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       //hand = this.hand = scene.hand;
       ball = this.ball = scene.suckBall;
       beaker = this.beaker = scene.bigBeaker;
@@ -4758,6 +4759,8 @@ ENJ.Step_DropFromBuret = (function() {
               x: stand.location.x,
               y: stand.location.y,
             }, 500)
+        } else {
+          self.stop();
         }
 
       } else {
@@ -5284,6 +5287,14 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
         [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
 
+        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'soySauce', volume: 2, remain: false }, "用移液管吸取少量酱油样品"],
+        [ENJ.Step_WashPipe, { pipe: 'bigPipet' }, "润洗一下移液管"],
+        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
+        [ENJ.Step_EmptyPipet, { pipet: 'bigPipet',remain: true }, "排入废液缸"],
+        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'soySauce', volume: 2, remain: false }, "再吸取少量酱油样品"],
+        [ENJ.Step_WashPipe, { pipe: 'bigPipet' }, "二次润洗一下移液管"],
+        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
+        [ENJ.Step_EmptyPipet, { pipet: 'bigPipet', remain: true }, "排入废液缸"],
         [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 6, remain: true }, "吸取足量的酱油样品"],
         [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 5, remain: 1, rotation: 15, offsetX: 10, offsetY: 60, showLabel: true }, "留下25ml的酱油样品"],
         [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 0, volume: 0, scale: 5, remain: 0, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
