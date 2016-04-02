@@ -356,6 +356,53 @@ ENJ.Board = (function() {
 })();
 
 //##############################################################################
+// src/elements/Curve.js
+//##############################################################################
+ENJ.Curve = (function() {
+  var Shape = CRE.Shape,
+    Graphics = CRE.Graphics;
+  return ENJ.defineClass({
+    constructor: function(graphics) {
+      Shape.call(this, graphics || new Graphics());
+    },
+
+    extend: Shape,
+
+    update: function(p0, p6) {
+      var p = [], dist;
+
+      p[0] = p0;
+      p[6] = p6;
+
+      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+      dist = Math.sqrt(
+          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+      );
+
+      p[1] = new CRE.Point(2/12 * dist, -100);
+      p[2] = new CRE.Point(4/12 * dist, 0);
+      p[3] = new CRE.Point(6/12 * dist, 100);
+      p[4] = new CRE.Point(8/12 * dist, 50);
+      p[5] = new CRE.Point(10/12 * dist, 0);
+      p[6].x = p[6].x - p[0].x;
+      p[6].y = p[6].y - p[0].y;
+
+      this.graphics
+        .clear()
+        .setStrokeStyle(4,1,1)
+        .beginStroke('#000')
+        .moveTo(0,0)
+        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+        .endStroke();
+
+      this.x = p[0].x + 9;
+      this.y = p[0].y + 5;
+    }
+  });
+})();
+//##############################################################################
 // src/elements/LiquidContainer.js
 //##############################################################################
 ENJ.LiquidContainer = (function() {
@@ -1715,17 +1762,17 @@ ENJ.Scene_3 = (function() {
 
       drainageBar = new Bitmap(RES.getRes("引流棒"));
 
-      curve = new CRE.Shape(new CRE.Graphics());
+      curve = new ENJ.Curve();//new CRE.Shape(new CRE.Graphics());
 
       drop = new Bitmap(RES.getRes("水滴"));
       drop.visible = false;
 
-      data = {
-        images: [RES.getRes("剪刀")],
-        frames: { width: 133, height: 73 },
-        animations: { close: 1, open: 0 }
-      };
-      sheet = new CRE.SpriteSheet(data);
+//      data = {
+//        images: [RES.getRes("剪刀")],
+//        frames: { width: 133, height: 73 },
+//        animations: { close: 1, open: 0 }
+//      };
+//      sheet = new CRE.SpriteSheet(data);
 
       data = {
         images: [RES.getRes("手")],
@@ -1828,7 +1875,6 @@ ENJ.Scene_3 = (function() {
 
         //cap,
 
-        phInstrument,
         stirrer,
 
         reagenBottle,
@@ -1850,7 +1896,8 @@ ENJ.Scene_3 = (function() {
         rotors[0],
         rotors[1],
 
-
+        curve,
+        phInstrument,
 
         volumetricFlasks[0],
         volumetricFlasks[1],
@@ -1873,7 +1920,7 @@ ENJ.Scene_3 = (function() {
 
         bigBeaker,
 
-        curve,
+
         paper,
         hand,
         drop,
@@ -1934,7 +1981,7 @@ ENJ.Scene_3 = (function() {
 
       self.place(phElectrode, new Point(690, 330));
 
-
+      curve.update(phElectrode, new CRE.Point(800,480));
       //beakers[0].set({x:625,y:450});
       self.set({
         curve: curve,
@@ -2490,8 +2537,12 @@ ENJ.Step_DumpWater = (function() {
             .to({ rotation: -30, x: 340, y: 430 }, 250)
             .call(function() {
               self.flags[1] = true;
+              bottle.dump(true, 0);
             })
             .wait(1000)
+            .call(function() {
+              bottle.dump(false, 0);
+            })
             .to({ rotation: 0, x: bottle.location.x, y: bottle.location.y }, 250);
         }
         /*Tween.get(bottle)
@@ -3340,6 +3391,8 @@ ENJ.Step_WashElectrode = (function() {
 
       bottle.cursor = 'auto';
       electrode.cursor = 'auto';
+
+      this.curve.update(electrode, new CRE.Point(800,480));
       //Tween.get(beaker).to({ x: beaker.location.x, y: beaker.location.y }, 250);
       //Tween.get(bottle).to({ x: bottle.location.x, y: bottle.location.y, rotation: 0 }, 250);
       //Tween.get(electrode).to({ x: electrode.location.x, y: electrode.location.y, rotation: 0 }, 500);
@@ -3390,35 +3443,39 @@ ENJ.Step_WashElectrode = (function() {
     },
 
     update: function(event) {
-      /*var p = [], dist, angle;
 
-       p[0] = this.electrode;
-       p[4] = new CRE.Point(800,300);
-
-       angle = 90 - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
-       dist = Math.sqrt(
-       (p[4].x-p[0].x) * (p[4].x-p[0].x) + (p[4].y-p[0].y) * (p[4].y-p[0].y)
-       );
-
-       p[1] = new CRE.Point(0.25 * dist, -10000 / dist);
-       p[2] = new CRE.Point(0.5 * dist, 0);
-       p[3] = new CRE.Point(0.75 * dist, 10000 / dist);
-       p[4].x = p[4].x - p[0].x;
-       p[4].y = p[4].y - p[0].y;
-
-       this.curve.graphics
-       .clear()
-       .setStrokeStyle(2)
-       .beginStroke('#f00')
-       .moveTo(0,0)
-       .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
-       //.moveTo(p4.x,p4.y)
-       .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
-       .endStroke();
-
-       this.curve.set(
-       { x: p[0].x, y: p[0].y, rotation: angle}
-       );*/
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+//      var p = [], dist;
+//
+//      p[0] = this.electrode;
+//      p[6] = new CRE.Point(800,480);
+//
+//      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+//      dist = Math.sqrt(
+//          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+//      );
+//
+//      p[1] = new CRE.Point(2/12 * dist, -100);
+//      p[2] = new CRE.Point(4/12 * dist, 0);
+//      p[3] = new CRE.Point(6/12 * dist, 100);
+//      p[4] = new CRE.Point(8/12 * dist, 50);
+//      p[5] = new CRE.Point(10/12 * dist, 0);
+//      p[6].x = p[6].x - p[0].x;
+//      p[6].y = p[6].y - p[0].y;
+//
+//      this.curve.graphics
+//        .clear()
+//        .setStrokeStyle(4,1,1)
+//        .beginStroke('#000')
+//        .moveTo(0,0)
+//        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+//        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+//        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+//        .endStroke();
+//
+//      this.curve.set(
+//        { x: p[0].x+9, y: p[0].y+5}
+//      );
 
 
 
@@ -3455,6 +3512,7 @@ ENJ.Step_WipeUpElectrode = (function() {
 
       paper = this.paper = scene.paper;
       electrode = this.electrode = scene.phElectrode;
+      this.curve = scene.curve;
 
       Tween.get(electrode)
         .to({ rotation: 0 }, 500);
@@ -3471,8 +3529,7 @@ ENJ.Step_WipeUpElectrode = (function() {
     stop: function() {
       var electrode = this.electrode, paper = this.paper;
 
-      Tween.get(electrode)
-        .to({ x: electrode.location.x, y: electrode.location.y/*, rotation: 0*/ }, 500);
+      this.curve.update(electrode, new CRE.Point(800,480));
 
       paper.visible = false;
       paper.cursor = 'auto';
@@ -3486,12 +3543,46 @@ ENJ.Step_WipeUpElectrode = (function() {
       if (!this.flags[0]) {
         this.paper.set({ x: stage.mouseX - 60, y: stage.mouseY - 28 });
       }
+
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+
+//      var p = [], dist;
+//
+//      p[0] = this.electrode;
+//      p[6] = new CRE.Point(800,480);
+//
+//      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+//      dist = Math.sqrt(
+//          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+//      );
+//
+//      p[1] = new CRE.Point(2/12 * dist, -100);
+//      p[2] = new CRE.Point(4/12 * dist, 0);
+//      p[3] = new CRE.Point(6/12 * dist, 100);
+//      p[4] = new CRE.Point(8/12 * dist, 50);
+//      p[5] = new CRE.Point(10/12 * dist, 0);
+//      p[6].x = p[6].x - p[0].x;
+//      p[6].y = p[6].y - p[0].y;
+//
+//      this.curve.graphics
+//        .clear()
+//        .setStrokeStyle(4,1,1)
+//        .beginStroke('#000')
+//        .moveTo(0,0)
+//        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+//        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+//        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+//        .endStroke();
+//
+//      this.curve.set(
+//        { x: p[0].x+9, y: p[0].y+5}
+//      );
     },
 
     onClick: function() {
       if (this.flags[0]) { return; }
 
-      var paper = this.paper, electrode = this.electrode, scene = this.scene;
+      var paper = this.paper, electrode = this.electrode, self = this;
       if (paper.x > electrode.x - 50 && paper.x < electrode.x + 50 &&
         paper.y > electrode.y + 60 && paper.y < electrode.y + 200) {
         this.flags[0] = true;
@@ -3506,7 +3597,12 @@ ENJ.Step_WipeUpElectrode = (function() {
            })*/
           .to({ y: electrode.y + 200 }, 500)
           .to({ y: electrode.y + 100 }, 500)
-          .call(this.stop.bind(this));
+          .call(function(){
+            Tween.get(electrode)
+              .to({ x: electrode.location.x, y: electrode.location.y/*, rotation: 0*/ }, 500)
+              .call(self.stop.bind(self));
+          });
+
       }
     }
   });
@@ -3549,7 +3645,7 @@ ENJ.Step_DumpFromFlask = (function() {
 
       flask.start();
       Tween.get(flask).to({
-        x: 350, y: 520, rotation: -60
+        x: 350, y: 530, rotation: -60
       }, 250);
 
       beaker.start();
@@ -3678,8 +3774,8 @@ ENJ.Step_AddFormaldehyde = (function() {
 
   return ENJ.defineClass({
     /**
-     * 将移液管中液体慢慢注入容器
-     * 所用：手、移液管、容器
+     * 添加甲醛
+     * 所用：甲醛、烧杯、手、移液管
      *
      * @constructor
      */
@@ -3811,6 +3907,7 @@ ENJ.Step_StartStirrer = (function() {
       electrode = this.electrode = scene.phElectrode;
       beaker = this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
 
       this.flag = false;
 
@@ -3830,9 +3927,14 @@ ENJ.Step_StartStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
       this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {
@@ -3873,6 +3975,7 @@ ENJ.Step_StopStirrer = (function() {
       this.phElectrode = scene.phElectrode;
       this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
 
       this.stirrer.cursor = 'pointer';
 
@@ -3884,9 +3987,14 @@ ENJ.Step_StopStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
       this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {
@@ -5022,7 +5130,7 @@ ENJ.Step_Record_2 = (function() {
   return ENJ.defineClass({
     /**
      * 记录实验数据
-     * 所用：结果报告2
+     * 所用：结果报告
      *
      * @constructor
      */
