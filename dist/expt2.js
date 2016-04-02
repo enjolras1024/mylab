@@ -2635,7 +2635,7 @@ ENJ.Step_BlowLiquid = (function() {
 
 
       bottle.visible = true;
-      hand.set({visible:true, y:pipet.y - 20});
+      hand.set({visible:true, y:pipet.y - 20, x: pipet.x - 10});
 
       var self = this,
         change = function() {
@@ -4296,6 +4296,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
     stop: function() {
       var self = this;
+      self.bottle.stop();
       self.bottle.cursor = 'auto';
       self.bottle.removeEventListener('click', self.handlers[0]);
       base.stop.call(this);
@@ -4327,8 +4328,9 @@ ENJ.Step_DumpToCylinder = (function() {
 
     onClick: function() {
       var self = this;//, cylinder = self.cylinder;
-      if (!self.cylinder.active) {return;}
+      if (!self.cylinder.active || self.bottle.active) {return;}
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 340, y: 270, rotation: -30}, 500)
         .call(function() {
@@ -4427,7 +4429,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       var self = this;
       if (!self.beaker.active) { return; }
       Tween.get(self.cylinder)
-        .to({x: 240, y: 480, rotation: -85}, 500)
+        .to({x: 240, y: 500, rotation: -85}, 500)
         .call(function() {
           self.flags[0] = true;
         })
@@ -5258,7 +5260,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_EmptyPipet, { remain: true }, "排入废液缸"],
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, rotation: 15, offsetX: -20, offsetY: 20, showLabel: true}, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 120, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
@@ -5287,8 +5289,8 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_Interlude_1, {title: "第二次取样和测试"}, ''],
         //取样2
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
-        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotate: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1 }, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 

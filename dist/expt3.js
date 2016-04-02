@@ -2613,7 +2613,7 @@ ENJ.Step_BlowLiquid = (function() {
 
 
       bottle.visible = true;
-      hand.set({visible:true, y:pipet.y - 20});
+      hand.set({visible:true, y:pipet.y - 20, x: pipet.x - 10});
 
       var self = this,
         change = function() {
@@ -4389,6 +4389,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
     stop: function() {
       var self = this;
+      self.bottle.stop();
       self.bottle.cursor = 'auto';
       self.bottle.removeEventListener('click', self.handlers[0]);
       base.stop.call(this);
@@ -4420,8 +4421,9 @@ ENJ.Step_DumpToCylinder = (function() {
 
     onClick: function() {
       var self = this;//, cylinder = self.cylinder;
-      if (!self.cylinder.active) {return;}
+      if (!self.cylinder.active || self.bottle.active) {return;}
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 340, y: 270, rotation: -30}, 500)
         .call(function() {
@@ -4520,7 +4522,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       var self = this;
       if (!self.beaker.active) { return; }
       Tween.get(self.cylinder)
-        .to({x: 240, y: 480, rotation: -85}, 500)
+        .to({x: 240, y: 500, rotation: -85}, 500)
         .call(function() {
           self.flags[0] = true;
         })
@@ -5475,7 +5477,7 @@ ENJ.Script_3 = (function() {
 
         [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 6, remain: true }, "吸取足量的酱油样品"],
         [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 5, remain: 1, rotation: 15, offsetX: 10, offsetY: 60, showLabel: true }, "留下25ml的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 0, volume: 0, scale: 5, remain: 0, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
+        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 2, volume: 0, scale: 5, remain: 0, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
 
 
         //测定2
