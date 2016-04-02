@@ -23,16 +23,20 @@ ENJ.Step_BlowLiquid = (function() {
       var scene = this.scene, store = this.store, point,
         handlers = this.handlers = [], hand, pipet, bottle;
 
+
+      this.scale = store.scale || 1;
       this.flags = [];
 
       hand = this.hand = scene.hand;
-      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
 
       if ('bottle' in store) {
         bottle = this.bottle = scene[store.bottle];
       } else if ('beaker' in store){
         bottle = this.bottle = scene.beakers[store.beaker];
+        bottle.fix();
       }
+      bottle.start();
 
 
       scene.setChildIndex(pipet, scene.getChildIndex(bottle) - 1);
@@ -110,10 +114,14 @@ ENJ.Step_BlowLiquid = (function() {
           if (remain > 1) {
             this.stop();
           } else {
+
             Tween.get(bottle)
               .wait(1000)
               .to({ x: bottle.location.x, y: bottle.location.y, rotation: 0 }, 500)
               .call(function(){
+                if ('beaker' in self.store) {
+                  bottle.unfix();
+                }
                 self.scene.setChildIndex(bottle, bottle.index);
                 self.stop();
               });
@@ -121,6 +129,14 @@ ENJ.Step_BlowLiquid = (function() {
 
           if (showLabel) {
             pipet.hideLabel();
+          }
+          if (volume<=0) {
+            Tween.get(pipet)
+              .to({
+                x: pipet.location.x,
+                y: pipet.location.y,
+                rotation: -90
+              },500);
           }
 
         } else {
@@ -130,7 +146,7 @@ ENJ.Step_BlowLiquid = (function() {
           pipet.showLabel();
         }
         pipet.store('volume', volume);
-        bottle.store('volume', bottle.store('volume') + delta);
+        bottle.store('volume', bottle.store('volume') + delta * this.scale);
       }
     },
 

@@ -44,7 +44,7 @@ ENJ.Step_WashPipe = (function() {
       hand.visible=false;
 
       Tween.get(pipe)
-        .to({x:400,y:400,regX:7,regY:150,rotation:90},500)
+        .to({x:400,y:500,regX:7,regY:150,rotation:90},500)
         .to({rotation:95},300)
         .to({rotation:85},300)
         .to({rotation:95},300)

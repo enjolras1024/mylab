@@ -50,13 +50,14 @@ ENJ.Step_DumpPowder = (function() {
 
       handlers[0] = this.onClickBag.bind(this);
       bag.addEventListener('click', handlers[0]);
+      bag.cursor = 'pointer';
     },
 
     stop: function() {
       var handlers = this.handlers;
 
       this.bag.removeEventListener('click', handlers[0]);
-
+      this.bag.cursor = 'auto';
       base.stop.call(this);
     },
 

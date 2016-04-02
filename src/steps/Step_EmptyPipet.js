@@ -24,7 +24,8 @@ ENJ.Step_EmptyPipet = (function() {
         handlers = this.handlers = [],
         pipet, hand, ball, beaker;
 
-      pipet = this.pipet = scene.pipet;
+//      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       //hand = this.hand = scene.hand;
       ball = this.ball = scene.suckBall;
       beaker = this.beaker = scene.bigBeaker;
@@ -36,7 +37,7 @@ ENJ.Step_EmptyPipet = (function() {
       handlers[0] = this.onClickBall.bind(this);
       ball.addEventListener('mousedown', handlers[0]);
       ball.addEventListener('pressup', handlers[0]);
-
+      ball.cursor = 'pointer';
       /*Tween.get(hand)
        .to({x:0,y:0,rotation:90},500)
        .call(function(){hand.visible=false;});*/
@@ -77,6 +78,7 @@ ENJ.Step_EmptyPipet = (function() {
       this.scene.setChildIndex(ball, ball.index);
       ball.removeEventListener('mousedown', handlers[0]);
       ball.removeEventListener('pressup', handlers[0]);
+      ball.cursor = 'auto';
 
       base.stop.call(this);
     },

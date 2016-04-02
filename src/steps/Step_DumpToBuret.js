@@ -20,7 +20,7 @@ ENJ.Step_DumpToBuret = (function() {
       Step.prototype.start.call(this);
       var self = this, scene = self.scene;
 
-      self.cap = scene.cap;
+      //self.cap = scene.cap;
       self.buret = scene.buret;
       self.bottle = scene.reagenBottle;
 
@@ -30,29 +30,35 @@ ENJ.Step_DumpToBuret = (function() {
       self.handlers = [];
       self.handlers[0] = self.onClick.bind(self);
       self.bottle.addEventListener('click', self.handlers[0]);
+      self.bottle.cursor = 'pointer';
 
-      Tween.get(self.cap)
-        .to({rotation: -90}, 500)
-        .to({x: 650, y: 450, rotation: -180}, 500);
+//      Tween.get(self.cap)
+//        .to({rotation: -90}, 500)
+//        .to({x: 650, y: 450, rotation: -180}, 500);
 
       Tween.get(self.buret)
         .to({x: 400, y: 400, rotation: 30}, 500);
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 400, y: 415, rotation: -30}, 500)
-        .call(function() {
+        /*.call(function() {
           self.bottle.start();
-        });
+        })*/;
     },
     stop: function() {
       var self = this, scene = self.scene, bottle = self.bottle;
       scene.setChildIndex(bottle, bottle.index);
       bottle.removeEventListener('click', self.handlers[0]);
+      bottle.cursor = 'auto';
+      bottle.refresh();
+      bottle.stop();
+
       Step.prototype.stop.call(this);
     },
     update: function(event) {
       var self = this,
-        cap = self.cap, buret = self.buret, bottle = self.bottle,
+        buret = self.buret, bottle = self.bottle,
         target = self.store.volume, volume, delta;
       buret.refresh();
       bottle.refresh();
@@ -72,13 +78,13 @@ ENJ.Step_DumpToBuret = (function() {
             .call(function() {
               self.stop();
             });
-          Tween.get(cap)
-            .to({
-              x: cap.location.x,
-              y: cap.location.y,
-              rotation: -90
-            }, 500)
-            .to({rotation: 0}, 500);
+//          Tween.get(cap)
+//            .to({
+//              x: cap.location.x,
+//              y: cap.location.y,
+//              rotation: -90
+//            }, 500)
+//            .to({rotation: 0}, 500);
         } else {
           volume += delta;
         }

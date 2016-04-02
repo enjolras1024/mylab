@@ -28,6 +28,7 @@ ENJ.Step_StirLiquid = (function() {
 
       this.beaker = scene.beakers[store.beaker];
       bar = this.bar = scene.drainageBar;
+      bar.cursor = 'pointer';
 
       if(this.store.remain) {
         Tween.get(bar).to({
@@ -41,7 +42,7 @@ ENJ.Step_StirLiquid = (function() {
 
     stop: function() {
       //var handles = this.handles;
-
+      this.bar.cursor = 'auto';
       this.bar.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);

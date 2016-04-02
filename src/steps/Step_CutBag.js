@@ -27,9 +27,9 @@ ENJ.Step_CutBag = (function() {
       bag = this.bag = scene.bags[store['bag']];
       scissors = this.scissors = scene.scissors;
 
-      this.bag.cursor = 'pointer';
-      this.scissors.cursor = 'pointer';
-      this.scissors.visible = false;
+      bag.cursor = 'pointer';
+      scissors.cursor = 'pointer';
+      scissors.visible = false;
       /*scene.setToTop(this.suckBall);
        scene.setToTop(this.pipet);
        scene.setToTop(this.bottle);

@@ -10,7 +10,7 @@ ENJ.Step_Record_2 = (function() {
   return ENJ.defineClass({
     /**
      * 记录实验数据
-     * 所用：结果报告2
+     * 所用：结果报告
      *
      * @constructor
      */

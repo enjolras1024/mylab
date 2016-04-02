@@ -52,6 +52,7 @@ ENJ.Beaker = (function() {
       self.addChild(liquid, level, bottle);
 
       self.set({
+        liquid: liquid,
         label: label,
         level: level,
         shape: shape
@@ -88,6 +89,11 @@ ENJ.Beaker = (function() {
 
           label.store('num', value);
           label.y = shape.y - 10;
+          break;
+        case 'color':
+          self.liquid = LiquidContainer.createLiquid("烧杯液体", value, shape);
+          self.removeChildAt(0);
+          self.addChildAt(self.liquid, 0);
           break;
       }
     },

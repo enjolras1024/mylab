@@ -44,7 +44,8 @@ ENJ.Pipet = (function() {
       self.set({
         label: label,
         shape: shape,
-        rotation: -90
+        rotation: -90,
+        ratio: this.store('ratio') || 1
       });
 
       //this.store('volume', 5);
@@ -64,7 +65,7 @@ ENJ.Pipet = (function() {
             scaleY: value / 8
           });
 
-          label.store('num', value);
+          label.store('num', value * this.ratio);
           label.y = shape.y - 10;
           break;
       }

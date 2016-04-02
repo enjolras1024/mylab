@@ -24,7 +24,7 @@ ENJ.Scene_2 = (function() {
         pipetStand, waterBottle, volumetricFlask, drainageBar, bigBeaker,
         bags = [], beakers = [], volumetricFlasks = [], rotors = [],
         cylinder, stirrer, phInstrument, powder, buret, titrationStand,
-        phElectrode, reagenBottle, cap,
+        phElectrode, reagenBottle,
         suckBall, soySauce, pipet;
 
       // @todo CSS background maybe better.
@@ -36,7 +36,8 @@ ENJ.Scene_2 = (function() {
 
       drainageBar = new Bitmap(RES.getRes("引流棒"));
 
-      curve = new CRE.Shape(new CRE.Graphics());
+      curve = new ENJ.Curve();//new CRE.Shape(new CRE.Graphics());
+
 
       drop = new Bitmap(RES.getRes("水滴"));
       drop.visible = false;
@@ -103,9 +104,9 @@ ENJ.Scene_2 = (function() {
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
-      cap = new Bitmap(RES.getRes("盖子甲"));
+//      cap = new Bitmap(RES.getRes("盖子甲"));
 
-      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "氢氧化钠标签" } );
+      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签", cap: "盖子甲" } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -113,13 +114,13 @@ ENJ.Scene_2 = (function() {
       titrationStand = new ENJ.TitrationStand();
       titrationStand.scaleX = -1;
 
-      buret = new ENJ.Buret({ volume: 0, color: 0x990000ff });
+      buret = new ENJ.Buret({ volume: 0, color: 0x22ffffff });
       //buret.scaleX = -1;
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd111100 });
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x990000ff });
+      soySauce = new ENJ.SoySauce({ volume: 180, color: 0x66330000 });
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x22ffffff });
 
       pipet.rotation = -90;
       drainageBar.rotation = -90;
@@ -128,18 +129,18 @@ ENJ.Scene_2 = (function() {
 
       phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PH仪"));
 
-      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x990000ff });
+      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x22ffffff });
 
-      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
 
       for (i = 0; i < 2; ++ i) {
-        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
         this.place(volumetricFlask, new Point(130 + 100 * i, 200 + i * 20));
         volumetricFlasks.push(volumetricFlask);
       }
 
       for (i = 0; i < 4; ++ i) {
-        beaker = new ENJ.Beaker({ volume: 0, color: 0x660000ff });
+        beaker = new ENJ.Beaker({ volume: 0, color: 0x22ffffff });
         this.place(beaker, new Point(100 - 30 * i,450 + 20 * i));
         beakers.push(beaker);
       }
@@ -162,12 +163,11 @@ ENJ.Scene_2 = (function() {
         bg,
         pipetStand,
 
-        cap,
+//        cap,
 
         bags[0],
         bags[1],
 
-        phInstrument,
         stirrer,
         reagenBottle,
         pipet,
@@ -186,6 +186,9 @@ ENJ.Scene_2 = (function() {
         rotors[0],
         rotors[1],
 
+        curve,
+        phInstrument,
+
         powder,
 
         soySauce,
@@ -203,7 +206,7 @@ ENJ.Scene_2 = (function() {
         buret,
 
         scissors,
-        curve,
+
         paper,
         hand,
         drop,
@@ -251,7 +254,7 @@ ENJ.Scene_2 = (function() {
 
       self.place(stirrer, new Point(600, 500));
 
-      self.place(cap, new Point(572,290));
+//      self.place(cap, new Point(572,290));
       self.place(reagenBottle, new Point(560, 300));
       self.place(pipet, new Point(700, 300));
 
@@ -261,7 +264,7 @@ ENJ.Scene_2 = (function() {
 
       self.place(phElectrode, new Point(690, 330));
 
-
+      curve.update(phElectrode, new CRE.Point(800,480));
       //beakers[0].set({x:625,y:450});
       self.set({
         curve: curve,
@@ -286,7 +289,7 @@ ENJ.Scene_2 = (function() {
         rotors: rotors,
         volumetricFlasks: volumetricFlasks,
         reagenBottle: reagenBottle,
-        cap: cap,
+//        cap: cap,
         drop: drop,
         buret: buret,
         tip: tip,

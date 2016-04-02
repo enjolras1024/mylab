@@ -30,6 +30,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
       handlers[0] = self.onClick.bind(self);
       self.bottle.addEventListener('click', handlers[0]);
+      self.bottle.cursor = 'pointer';
 
       scene.setChildIndex(self.cylinder, scene.getChildIndex(self.bottle) + 1);
 
@@ -44,6 +45,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
     stop: function() {
       var self = this;
+      self.bottle.cursor = 'auto';
       self.bottle.removeEventListener('click', self.handlers[0]);
       base.stop.call(this);
     },

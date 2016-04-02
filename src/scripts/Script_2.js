@@ -171,7 +171,7 @@ ENJ.Script_2 = (function() {
         config = configs[i];
         steps.push(config[0]);
         stores.push(config[1]);
-        tips.push( config[2] );
+        tips.push(config[2]);
       }
 
       this.steps = steps;

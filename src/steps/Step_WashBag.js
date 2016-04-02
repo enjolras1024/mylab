@@ -64,6 +64,7 @@ ENJ.Step_WashBag = (function() {
        this.bottle.active = false;
        }*/
 
+      this.bottle.cursor = 'auto';
       this.bottle.removeEventListener('click', handlers[0]);
 
       base.stop.call(this);

@@ -39,6 +39,8 @@ ENJ.Step_DumpFromCylinder = (function() {
       this.flags = [];
       handlers[0] = self.onClick.bind(self);
       cylinder.addEventListener('click', handlers[0]);
+
+      cylinder.cursor = 'pointer';
     },
 
     stop: function() {
@@ -47,6 +49,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       //self.beaker.stop();
       cylinder.stop();
       cylinder.removeEventListener('click', self.handlers[0]);
+      cylinder.cursor = 'auto';
       self.scene.setChildIndex(cylinder, cylinder.index);
 
       base.stop.call(this);

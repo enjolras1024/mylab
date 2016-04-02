@@ -14,7 +14,7 @@ ENJ.WaterBottle = (function() {
 
       var data = {
         images: [RES.getRes("水流")],
-        frames: { width: 200, height: 242 }
+        frames: { width: 200, height: 200 }
       };
       var sheet = new CRE.SpriteSheet(data);
 

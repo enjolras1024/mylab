@@ -65,6 +65,9 @@ ENJ.PHInstrument = (function() {
       this.btn1 = btn1;
       this.btn2 = btn2;
 
+
+      btn1.cursor = 'pointer';
+      btn2.cursor = 'pointer';
       //this.addEventListener('click',this.start.bind(this));
 
       //this.store('number',100000000);
@@ -121,7 +124,7 @@ ENJ.PHInstrument = (function() {
     onCorrect: function () {
       this.btn1.removeAllEventListeners();
       this.dispatchEvent('correct');
-      console.log('correct')
+//      console.log('correct')
     },
 
     onRead: function() {

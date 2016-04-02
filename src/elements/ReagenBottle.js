@@ -3,9 +3,12 @@
 //##############################################################################
 ENJ.ReagenBottle = (function() {
   var LiquidContainer = ENJ.LiquidContainer,
+    Tween = CRE.Tween,
     Shape = CRE.Shape,
     Bitmap = CRE.Bitmap,
     Graphics = CRE.Graphics;
+
+  var base = LiquidContainer.prototype;
 
   return ENJ.defineClass({
     /**
@@ -23,7 +26,7 @@ ENJ.ReagenBottle = (function() {
      * @override
      */
     ready: function() {
-      var self = this, label, shape, liquid, bottle, icon, graphics;
+      var self = this, label, shape, liquid, bottle, icon, cap, graphics;
 
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 90;
@@ -42,18 +45,22 @@ ENJ.ReagenBottle = (function() {
       icon = new Bitmap(RES.getRes(self.store('icon')));
       icon.set({ x: 10, y: 80 });
 
+      cap = new Bitmap(RES.getRes(self.store('cap')));
+      cap.set({ x: 13, y: -8 });
+
       var container = new CRE.Container();
       var bounds = bottle.getBounds();
       container.addChild(bottle, icon);
       container.cache(0, 0, bounds.width, bounds.height);
 
       //
-      self.addChild(liquid, container/*, label*/);
+      self.addChild(liquid, cap, container/*, label*/);
       //this.addChild(icon);
 
 
       //self.label = label;
       self.shape = shape;
+      self.cap = cap;
       //this.liquid = liquid;
 
       //this.shape =
@@ -77,6 +84,20 @@ ENJ.ReagenBottle = (function() {
           break;
       }
 
+    },
+
+    start: function() {
+      base.start.call(this);
+      Tween.get(this.cap).to({
+        x: 0, y: -60, rotation: -30, alpha: 0
+      }, 250);
+    },
+
+    stop: function() {
+      base.stop.call(this);
+      Tween.get(this.cap).to({
+        x: 13, y: -8, rotation: 0, alpha: 1.0
+      }, 250);
     }
   });
 })();

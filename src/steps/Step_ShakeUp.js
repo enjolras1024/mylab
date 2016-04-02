@@ -23,6 +23,7 @@ ENJ.Step_ShakeUp = (function() {
       var flask, flags = this.flags = [], handlers = this.handlers = [];
 
       flask = this.flask = this.scene.volumetricFlasks[this.store.flask];
+      flask.cursor = 'pointer';
 
       handlers[0] = this.onClickFlask.bind(this);
 
@@ -37,6 +38,8 @@ ENJ.Step_ShakeUp = (function() {
 
     stop: function() {
       var flask = this.flask;
+
+      flask.cursor = 'auto';
 
       Tween.get(flask).to({
         x: flask.location.x, y: flask.location.y, regX: 0, regY: 0

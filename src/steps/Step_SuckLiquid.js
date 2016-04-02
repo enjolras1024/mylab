@@ -26,9 +26,12 @@ ENJ.Step_SuckLiquid = (function() {
         hand, pipet, bottle, suckBall;//, pipet, bottle, suckBall;
       // @todo 精简
       hand = this.hand = scene.hand;
-      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       bottle = this.bottle = scene[store.bottle];
       suckBall = this.suckBall = scene.suckBall;
+
+      pipet.cursor = 'pointer';
+      suckBall.cursor = 'pointer';
 
       handlers[0] = this.onClickPipet.bind(this);
       handlers[1] = this.onClickHand.bind(this);
@@ -36,11 +39,12 @@ ENJ.Step_SuckLiquid = (function() {
 
       this.flags = [];
 
-      [suckBall, pipet, bottle, hand]
+      [/*suckBall, */pipet, bottle]
         .forEach(function(element) {
-          scene.setToTop(element);
+          scene.setToTop(element, 7);
           element.cursor = 'pointer';
         });
+//      scene.setChildIndex(pipet, scene.getChildIndex(bottle)-1);
 
       bottle.start();
       Tween.get(bottle).to({
@@ -66,8 +70,11 @@ ENJ.Step_SuckLiquid = (function() {
       var /*i, n, element, */elements = [], handlers = this.handlers, scene = this.scene,
         hand = this.hand, pipet = this.pipet, bottle = this.bottle, suckBall = this.suckBall;
 
-      elements.push(suckBall);
+      pipet.cursor = 'auto';
+      suckBall.cursor = 'auto';
+
       if (!this.store.remain) {
+        elements.push(pipet);
         elements.push(bottle);
         bottle.stop();
       }
@@ -194,6 +201,7 @@ ENJ.Step_SuckLiquid = (function() {
             }
 
             ball.stop();
+            this.scene.setChildIndex(ball, ball.index);
             Tween.get(ball).to({
               x: ball.location.x, y: ball.location.y, rotation: 0
             }, 500, Ease.sineInOut)
@@ -229,6 +237,8 @@ ENJ.Step_SuckLiquid = (function() {
             }
           } else if (pipet.active) {
             suckBall.start();
+            var scene = this.scene;
+            scene.setChildIndex(suckBall, scene.getChildIndex(this.pipet)-1);
             Tween.get(suckBall).to({
               x: pipet.x + 8, y: pipet.y, rotation: 180
             }, 500, Ease.sineInOut);

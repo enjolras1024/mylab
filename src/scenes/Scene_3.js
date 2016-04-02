@@ -19,37 +19,33 @@ ENJ.Scene_3 = (function() {
      * @override
      */
     ready: function() {
-      var self = this, bg, paper, curve, data, sheet, bag, drop,
-        rotor, hand, scissors, beaker, i,
+      var self = this, bg, paper, curve, data, sheet, drop, tip, board, table,
+        rotor, hand, beaker, i,
         pipetStand, waterBottle, volumetricFlask, drainageBar, bigBeaker,
-        bags = [], beakers = [], volumetricFlasks = [], rotors = [],
-        cylinder, stirrer, phInstrument, powder, buret, titrationStand,
-        phElectrode, reagenBottle, cap, reagenBottle2, pipet2,
-        suckBall, soySauce, pipet;
+        beakers = [], volumetricFlasks = [], rotors = [],
+        cylinder, stirrer, phInstrument, buret, titrationStand,
+        phElectrode, reagenBottle, formaldehyde,
+        suckBall, soySauce, pipet, pipet2, bigPipet;
 
       // @todo CSS background maybe better.
       bg = new Bitmap(RES.getRes("背景"));
 
       paper = new Bitmap(RES.getRes("纸巾"));
-
+      paper.visible = false;
 
       drainageBar = new Bitmap(RES.getRes("引流棒"));
 
-      curve = new CRE.Shape(new CRE.Graphics());
+      curve = new ENJ.Curve();//new CRE.Shape(new CRE.Graphics());
 
-      drop = new Bitmap(RES.getRes("磁力搅拌器旋钮"));
+      drop = new Bitmap(RES.getRes("水滴"));
       drop.visible = false;
 
-      data = {
-        images: [RES.getRes("剪刀")],
-        frames: { width: 133, height: 73 },
-        animations: { close: 1, open: 0 }
-      };
-      sheet = new CRE.SpriteSheet(data);
-
-      scissors = new CRE.Sprite(sheet);
-      scissors.gotoAndStop('open');
-      scissors.set({ /*rotation: 45, */regX: 73, regY: 36 });
+//      data = {
+//        images: [RES.getRes("剪刀")],
+//        frames: { width: 133, height: 73 },
+//        animations: { close: 1, open: 0 }
+//      };
+//      sheet = new CRE.SpriteSheet(data);
 
       data = {
         images: [RES.getRes("手")],
@@ -60,6 +56,7 @@ ENJ.Scene_3 = (function() {
 
       hand = new CRE.Sprite(sheet);
       hand.gotoAndStop('up');
+      hand.visible = false;
 
 
       data = {
@@ -72,27 +69,9 @@ ENJ.Scene_3 = (function() {
         rotor = new CRE.Sprite(sheet);
         rotor.gotoAndStop(0);
         //rotor.set({ x: 600 + 20 * i, y: 470 + 10 * i });
-        this.place(rotor,{ x: 600 + 20 * i, y: 470 + 10 * i });
+        //this.place(rotor,{ x: 600 + 20 * i, y: 470 + 10 * i });
         rotors.push(rotor);
       }
-
-      data = {
-        images: [RES.getRes("袋子")],
-        frames: { width: 100, height: 96 },
-        animations: { normal: 0, open: 1 }
-      };
-      sheet = new CRE.SpriteSheet(data);
-
-      for(i = 0; i < 2; ++ i) {
-        bag = new CRE.Sprite(sheet);
-        bag.gotoAndStop('normal');
-        bag.set({ x: 510 - i * 60, y: 480 + i * 10, scaleY: 0.4, skewX: 50, regX: 50, regY: 48 });
-
-        bags.push(bag);
-      }
-
-      powder = new Bitmap(RES.getRes("粉末"));
-      powder.visible = false;
 
       //beaker = new Bitmap(RES.getRes("烧杯"));
       //beaker.set({ x: 200, y: 500 });
@@ -101,9 +80,10 @@ ENJ.Scene_3 = (function() {
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
-      cap = new Bitmap(RES.getRes("盖子甲"));
+      //cap = new Bitmap(RES.getRes("盖子甲"));
 
-      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "费林试剂甲液" } );
+      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签", cap: "盖子甲" } );
+      formaldehyde = new ENJ.ReagenBottle({ volume: 500, color: 0x66330000, icon: "甲醛标签", cap: "盖子甲" } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -111,60 +91,75 @@ ENJ.Scene_3 = (function() {
       titrationStand = new ENJ.TitrationStand();
       titrationStand.scaleX = -1;
 
-      buret = new ENJ.Buret({ volume: 0, color: 0x990000ff });
+      buret = new ENJ.Buret({ volume: 0, color: 0x22ffffff });
       //buret.scaleX = -1;
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd111100 });
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x990000ff });
+      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd330000 });
+
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
+      pipet2 = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
+      bigPipet = new ENJ.Pipet({ volume: 0, color: 0x66330000, ratio: 5 });
 
       pipet.rotation = -90;
+      pipet2.rotation = -90;
+      bigPipet.set({ rotation: -90, scaleY: 1.20});
       drainageBar.rotation = -90;
 
       phElectrode = new ENJ.PHElectrode();
 
-      phInstrument = new Bitmap(RES.getRes ("PH仪"));
+      phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PH仪"));
 
-      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x990000ff });
+      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x22ffffff });
 
       //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
 
-      for (i = 0; i < 2; ++ i) {
-        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
-        this.place(volumetricFlask, new Point(130 + 100 * i, 200 + i * 20));
+      var colors = [0x22ffffff,0x66330000,0x22ffffff];
+      for (i = 0; i < 3; ++ i) {
+        volumetricFlask = new ENJ.VolumetricFlask({ volume: 100, color: colors[i] });
+        //this.place(volumetricFlask, new Point(130 + 50 * i, 200 + i * 10));
         volumetricFlasks.push(volumetricFlask);
       }
 
       for (i = 0; i < 4; ++ i) {
-        beaker = new ENJ.Beaker({ volume: 0, color: 0x660000ff });
+        beaker = new ENJ.Beaker({ volume: 0, color: 0x22ffffff });
         this.place(beaker, new Point(100 - 30 * i,450 + 20 * i));
         beakers.push(beaker);
       }
 
-      bigBeaker = new ENJ.Beaker({ volume: 10, color: 0x660000ff });
+      bigBeaker = new ENJ.Beaker({ volume: 10, color: 0x66330000 });
       bigBeaker.set({ scaleX: 1.25, scaleY: 1.25 });
+
+      table = new ENJ.ResultTable_3();
+      table.set({regX: 360, regY: 200});
+      table.set({x: 480, y: 320, visible: false});
+
+      tip = new CRE.Text();
+      tip.set({x: 50, y: 50, color: "#fff", font: "bold 18px Arial"});
+
+      board = new ENJ.Board(/*{title:"校准PH计"}*/);
+      board.visible = false;
 
 
       self.addChild(
         bg,
         pipetStand,
 
-        cap,
+        //cap,
 
-        bags[0],
-        bags[1],
-
-        phInstrument,
         stirrer,
+
         reagenBottle,
-        pipet,
-        suckBall,
+        formaldehyde,
+
         cylinder,
         waterBottle,
 
-        volumetricFlasks[0],
-        volumetricFlasks[1],
+        pipet,
+        pipet2,
+        bigPipet,
+        suckBall,
 
         titrationStand,
 
@@ -174,9 +169,19 @@ ENJ.Scene_3 = (function() {
         rotors[0],
         rotors[1],
 
-        powder,
+        curve,
+        phInstrument,
+
+        volumetricFlasks[0],
+        volumetricFlasks[1],
+        volumetricFlasks[2],
+
+        //powder,
 
         soySauce,
+
+
+
         phElectrode,
 
         buret,
@@ -189,20 +194,30 @@ ENJ.Scene_3 = (function() {
         bigBeaker,
 
 
-
-        scissors,
-        curve,
         paper,
         hand,
-        drop
+        drop,
+
+        table,
+
+        tip,
+        board
       );
 
-      for (i = 0; i < 2; ++ i) {
-        self.place(volumetricFlasks[i], new Point(130 + 100 * i, 200 + i * 20));
+      for (i = 0; i < 3; ++ i) {
+        self.place(volumetricFlasks[i], new Point(130 + 50 * i, 200 + i * 10));
       }
+      volumetricFlasks[1].visible = false;
 
       for (i = 0; i < 4; ++ i) {
         self.place(beakers[i], new Point(100 - 30 * i,450 + 20 * i));
+      }
+      //TODO
+      beakers[1].visible = false;
+      beakers[3].visible = false;
+
+      for (i = 0; i < 2; ++ i) {
+        self.place(rotors[i],{ x: 600 + 20 * i, y: 470 + 10 * i });
       }
 
       self.place(bigBeaker, new Point(100, 1000));
@@ -210,7 +225,7 @@ ENJ.Scene_3 = (function() {
 
 
       self.place(bg, new Point(0, 0));
-      self.place(waterBottle, new Point(425, 230));
+      self.place(waterBottle, new Point(370, 270));
       self.place(pipetStand, new Point(700, 270));
 
 //    this.place(titrationStand, new Point(520,160));
@@ -219,30 +234,32 @@ ENJ.Scene_3 = (function() {
       self.place(buret, new Point(650,1000));
 
       self.place(phInstrument, new Point(680, 380));
-      self.place(drainageBar, new Point(680, 320));
+      self.place(drainageBar, new Point(680, 375));
 
 
 
 
       self.place(stirrer, new Point(600, 500));
 
-      self.place(cap, new Point(572,290));
-      self.place(reagenBottle, new Point(560, 300));
+      //self.place(cap, new Point(592,290));
+      self.place(reagenBottle, new Point(580, 300));
+      self.place(formaldehyde, new Point(490, 300));
       self.place(pipet, new Point(700, 300));
+      self.place(pipet2, new Point(700, 325));
+      self.place(bigPipet, new Point(650, 350));
 
       self.place(suckBall, new Point(670, 440));
-      self.place(cylinder, new Point(340, 180));
-      self.place(soySauce, new Point(60, 240));
+      self.place(cylinder, new Point(310, 180));
+      self.place(soySauce, new Point(40, 210));
 
       self.place(phElectrode, new Point(690, 330));
 
-
+      curve.update(phElectrode, new CRE.Point(800,480));
       //beakers[0].set({x:625,y:450});
       self.set({
         curve: curve,
         hand: hand,
         stirrer: stirrer,
-        scissors: scissors,
         drainageBar: drainageBar,
         titrationStand: titrationStand,
         phElectrode: phElectrode,
@@ -250,20 +267,26 @@ ENJ.Scene_3 = (function() {
         bigBeaker: bigBeaker,
         beaker: beakers[3],
         pipet: pipet,
+        pipet2: pipet2,
+        bigPipet: bigPipet,
         waterBottle: waterBottle,
         soySauce: soySauce,
         suckBall: suckBall,
-        powder: powder,
+        //powder: powder,
         paper: paper,
         cylinder: cylinder,
-        bags: bags,
         beakers: beakers,
         rotors: rotors,
         volumetricFlasks: volumetricFlasks,
+        volumetricFlask: volumetricFlasks[1],
         reagenBottle: reagenBottle,
-        cap: cap,
+        formaldehyde: formaldehyde,
+        //cap: cap,
         drop: drop,
-        buret: buret
+        buret: buret,
+        tip: tip,
+        board: board,
+        table: table
       });
 
       /*stirrer.addEventListener('click', function() {

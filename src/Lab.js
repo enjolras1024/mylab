@@ -85,40 +85,40 @@ ENJ.Lab = (function() {
     //scene.app = this;
     this.addChild(scene);
 
-    var container = new CRE.Container();
-
-    var text = new CRE.Text();
-    text.set({ x:820,  y:20 });
-    text.color='#fff';
-    text.text = 'x: \n\ny: ';
-    this.text = text;
-    container.addChild(text);
-
-    var self = this;
-    //this.addEventListener('tick',  this.refresh.bind(this));
-    this.addEventListener('stagemousemove',  function(evt){
-      self.text.text='x: '+ evt.stageX + '\n\ny: ' +evt.stageY;
-    });
-
-    var i,  g,  line;
-
-    g = new Graphics();
-    g.beginStroke('#ffffff').moveTo(0, 0).lineTo(0, 640);
-    for(i = 0; i < 10; ++ i) {
-      line = new Shape(g);
-      line.x = i * 100;
-      container.addChild(line);
-    }
-
-    g = new Graphics();
-    g.beginStroke('#ffffff', 1).moveTo(0, 0).lineTo(960, 0);
-    for(i = 0; i < 7; ++ i) {
-      line = new Shape(g);
-      line.y = i * 100;
-      container.addChild(line);
-    }
-
-    this.addChild(container);
+//    var container = new CRE.Container();
+//
+//    var text = new CRE.Text();
+//    text.set({ x:820,  y:20 });
+//    text.color='#fff';
+//    text.text = 'x: \n\ny: ';
+//    this.text = text;
+//    container.addChild(text);
+//
+//    var self = this;
+//    //this.addEventListener('tick',  this.refresh.bind(this));
+//    this.addEventListener('stagemousemove',  function(evt){
+//      self.text.text='x: '+ evt.stageX + '\n\ny: ' +evt.stageY;
+//    });
+//
+//    var i,  g,  line;
+//
+//    g = new Graphics();
+//    g.beginStroke('#ffffff').moveTo(0, 0).lineTo(0, 640);
+//    for(i = 0; i < 10; ++ i) {
+//      line = new Shape(g);
+//      line.x = i * 100;
+//      container.addChild(line);
+//    }
+//
+//    g = new Graphics();
+//    g.beginStroke('#ffffff', 1).moveTo(0, 0).lineTo(960, 0);
+//    for(i = 0; i < 7; ++ i) {
+//      line = new Shape(g);
+//      line.y = i * 100;
+//      container.addChild(line);
+//    }
+//
+//    this.addChild(container);
 
     /*g = new Graphics();
      g.beginFill('#0f0').drawRect(0, 0, 100, 100);

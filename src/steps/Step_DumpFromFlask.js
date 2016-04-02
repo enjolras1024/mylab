@@ -31,10 +31,11 @@ ENJ.Step_DumpFromFlask = (function() {
 
       handlers[0] = this.onClickFlask.bind(this);
       flask.addEventListener('click', handlers[0]);
+      flask.cursor = 'pointer';
 
       flask.start();
       Tween.get(flask).to({
-        x: 350, y: 520, rotation: -60
+        x: 350, y: 530, rotation: -60
       }, 250);
 
       beaker.start();
@@ -45,7 +46,7 @@ ENJ.Step_DumpFromFlask = (function() {
 
     stop: function() {
       var flask =this.flask;
-
+      flask.cursor = 'auto';
       flask.refresh();
       flask.stop();
       this.scene.setChildIndex(flask, 1);

@@ -27,11 +27,14 @@ ENJ.Step_StartStirrer = (function() {
       electrode = this.electrode = scene.phElectrode;
       beaker = this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
 
       this.flag = false;
 
       handlers[0] = this.onClickStirrer.bind(this);
       stirrer.addEventListener('click', handlers[0]);
+
+      stirrer.cursor = 'pointer';
 
       Tween.get(beaker)
         .to({x:630,y:450},500)
@@ -44,8 +47,14 @@ ENJ.Step_StartStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+      this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {

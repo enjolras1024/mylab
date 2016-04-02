@@ -37,12 +37,13 @@ ENJ.Step_DumpWater = (function() {
 
       handlers[0] = this.onClickBottle.bind(this);
       bottle.addEventListener('click', handlers[0]);
+      bottle.cursor = 'pointer';
     },
 
     stop: function() {
 
       this.bottle.removeEventListener('click', this.handlers[0]);
-
+      this.bottle.cursor = 'auto';
       //this.bottle.active = false;
       this.bottle.stop();
 
@@ -90,8 +91,12 @@ ENJ.Step_DumpWater = (function() {
             .to({ rotation: -30, x: 340, y: 430 }, 250)
             .call(function() {
               self.flags[1] = true;
+              bottle.dump(true, 0);
             })
             .wait(1000)
+            .call(function() {
+              bottle.dump(false, 0);
+            })
             .to({ rotation: 0, x: bottle.location.x, y: bottle.location.y }, 250);
         }
         /*Tween.get(bottle)

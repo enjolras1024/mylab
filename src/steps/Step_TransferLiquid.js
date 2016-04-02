@@ -30,6 +30,8 @@ ENJ.Step_TransferLiquid = (function() {
       beaker = this.beaker = scene.beakers[store.beaker];
       flask = this.flask = scene.volumetricFlasks[store.flask];
 
+      beaker.cursor = 'pointer';
+
       flask.start();
       Tween.get(flask).to({
         x: 250, y: 300
@@ -63,6 +65,7 @@ ENJ.Step_TransferLiquid = (function() {
        x: 410, y: 300*//*, rotation: 10*//*
        }, 500);*/
 
+      beaker.cursor = 'auto';
       beaker.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);

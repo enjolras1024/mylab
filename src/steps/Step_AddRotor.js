@@ -33,6 +33,7 @@ ENJ.Step_AddRotor = (function() {
 
       handlers[0] = this.onClickRotor.bind(this);
       rotor.addEventListener('click', handlers[0]);
+      rotor.cursor = 'pointer';
     },
 
     stop: function() {
@@ -44,6 +45,7 @@ ENJ.Step_AddRotor = (function() {
       var rotor = this.rotor, beaker = this.beaker,
         stop = this.stop.bind(this);
 
+      rotor.cursor = 'auto';
       Tween.get(rotor)
         .to({x: beaker.x + 10, y: beaker.y - 50}, 250)
         .call(function(){

@@ -22,48 +22,61 @@ ENJ.Step_ConstantVolume = (function() {
       base.start.call(this);
 
       var scene = this.scene, store = this.store,
-        handlers = this.handlers = [], bottle;
+        handlers = this.handlers = [], bottle, flask;
 
-      this.flask = scene.volumetricFlasks[store.flask];
-      bottle =this.bottle = scene.waterBottle;
+      flask = this.flask = scene.volumetricFlasks[store.flask];
+      bottle = this.bottle = scene.waterBottle;
 
       this.flags = [];
 
-      if(!bottle.active/*this.store.keeping*/) {
+      if (!flask.active) {
+        flask.start();
+      }
+
+      if (!bottle.active/*this.store.keeping*/) {
         //bottle.active = true;
         bottle.start();
         Tween.get(bottle).to({
-          x: 400, y: 400
+          x: flask.x + 100, y: flask.y - 100
         }, 250);
       }
 
       handlers[0] = this.onClickBottle.bind(this);
       bottle.addEventListener('click', handlers[0]);
+
+      bottle.cursor = 'pointer';
     },
 
     stop: function() {
       var bottle = this.bottle, flask = this.flask;
 
-      flask.stop();
-
-      bottle.stop();
-      //bottle.active = false;
-      Tween.get(bottle).to(
-        {x:bottle.location.x,y:bottle.location.y,rotation:0}
-        , 250);
-
+//      flask.stop();
+//
+//      bottle.stop();
+//      //bottle.active = false;
+//      Tween.get(bottle).to(
+//        {x:bottle.location.x,y:bottle.location.y,rotation:0}
+//        , 250);
+      bottle.cursor = 'auto';
       bottle.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
     },
 
     update: function(event) {
-      var volume, flask = this.flask;
-      if (/*this.active && */this.flags[0]) {
+      var volume, flask = this.flask, bottle = this.bottle;
+      if (/*this.active && */this.flags[0] && !this.flags[1]) {
         volume = flask.store('volume') + event.delta/100;
         if (volume >= this.store.volume) {
           volume = this.store.volume;
-          this.stop();
+          this.flags[1] = true;
+          flask.stop();
+
+          bottle.stop();
+          //bottle.active = false;
+          Tween.get(bottle).to(
+            {x:bottle.location.x,y:bottle.location.y,rotation:0}
+            , 250).call(this.stop.bind(this));
         }
         flask.store('volume', volume);
       }
@@ -72,7 +85,7 @@ ENJ.Step_ConstantVolume = (function() {
     onClickBottle: function() {
       if (!this.flags[0]) {
         this.flags[0] = true;
-        Tween.get(this.bottle).to({x:300,y:280,rotation:-30},250);
+        Tween.get(this.bottle).to({x:this.flask.x + 50,y: this.flask.y - 20,rotation:-30},250);
       }
     }
   });

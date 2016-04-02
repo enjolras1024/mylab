@@ -67,9 +67,11 @@ ENJ.Scene = (function() {
      * Set child to top.
      *
      * @param {DisplayObject} child
+     * @param {number} top
      */
-    setToTop: function(child) {
-      this.setChildIndex(child, this.numChildren - 1);
+    setToTop: function(child, top) {
+      top = top || 1;
+      this.setChildIndex(child, this.numChildren - top);
     }
   });
 })();

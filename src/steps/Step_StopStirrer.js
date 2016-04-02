@@ -27,6 +27,9 @@ ENJ.Step_StopStirrer = (function() {
       this.phElectrode = scene.phElectrode;
       this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
+
+      this.stirrer.cursor = 'pointer';
 
       this.flag = false;
 
@@ -36,8 +39,14 @@ ENJ.Step_StopStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
+      this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {

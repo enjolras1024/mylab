@@ -52,7 +52,13 @@ ENJ.Step_DropFromBuret = (function() {
   };
 
   pt.stop = function() {
-    this.phInstrument.stop();
+    var hand = this.hand, handlers = this.handlers;
+    hand.removeEventListener('mousedown', handlers[0]);
+    hand.removeEventListener('pressup', handlers[0]);
+    //this.phInstrument.stop();
+    this.drop.visible = false;
+    this.tween.setPaused(true);
+
     base.stop.call(this);
   };
 
@@ -76,20 +82,26 @@ ENJ.Step_DropFromBuret = (function() {
           visible: false,
           scaleX: 1
         });
-        Tween.get(buret)
-          .to({
-            x: buret.location.x,
-            y: buret.location.y,
-            rotation: 0
-          }, 500)
-          .call(function() {
-            self.stop();
-          });
-        Tween.get(stand)
-          .to({
-            x: stand.location.x,
-            y: stand.location.y,
-          }, 500)
+
+        if (!self.store.remain) {
+          Tween.get(buret)
+            .to({
+              x: buret.location.x,
+              y: buret.location.y,
+              rotation: 0
+            }, 500)
+            .call(function() {
+              self.phInstrument.stop();
+              self.stop();
+            });
+          Tween.get(stand)
+            .to({
+              x: stand.location.x,
+              y: stand.location.y,
+            }, 500)
+        } else {
+          self.stop();
+        }
 
       } else {
         volume -= delta;
