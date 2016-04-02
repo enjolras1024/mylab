@@ -356,6 +356,53 @@ ENJ.Board = (function() {
 })();
 
 //##############################################################################
+// src/elements/Curve.js
+//##############################################################################
+ENJ.Curve = (function() {
+  var Shape = CRE.Shape,
+    Graphics = CRE.Graphics;
+  return ENJ.defineClass({
+    constructor: function(graphics) {
+      Shape.call(this, graphics || new Graphics());
+    },
+
+    extend: Shape,
+
+    update: function(p0, p6) {
+      var p = [], dist;
+
+      p[0] = p0;
+      p[6] = p6;
+
+      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+      dist = Math.sqrt(
+          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+      );
+
+      p[1] = new CRE.Point(2/12 * dist, -100);
+      p[2] = new CRE.Point(4/12 * dist, 0);
+      p[3] = new CRE.Point(6/12 * dist, 100);
+      p[4] = new CRE.Point(8/12 * dist, 50);
+      p[5] = new CRE.Point(10/12 * dist, 0);
+      p[6].x = p[6].x - p[0].x;
+      p[6].y = p[6].y - p[0].y;
+
+      this.graphics
+        .clear()
+        .setStrokeStyle(4,1,1)
+        .beginStroke('#000')
+        .moveTo(0,0)
+        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+        .endStroke();
+
+      this.x = p[0].x + 9;
+      this.y = p[0].y + 5;
+    }
+  });
+})();
+//##############################################################################
 // src/elements/LiquidContainer.js
 //##############################################################################
 ENJ.LiquidContainer = (function() {
@@ -638,6 +685,7 @@ ENJ.Beaker = (function() {
       self.addChild(liquid, level, bottle);
 
       self.set({
+        liquid: liquid,
         label: label,
         level: level,
         shape: shape
@@ -674,6 +722,11 @@ ENJ.Beaker = (function() {
 
           label.store('num', value);
           label.y = shape.y - 10;
+          break;
+        case 'color':
+          self.liquid = LiquidContainer.createLiquid("烧杯液体", value, shape);
+          self.removeChildAt(0);
+          self.addChildAt(self.liquid, 0);
           break;
       }
     },
@@ -779,7 +832,7 @@ ENJ.WaterBottle = (function() {
 
       var data = {
         images: [RES.getRes("水流")],
-        frames: { width: 200, height: 242 }
+        frames: { width: 200, height: 200 }
       };
       var sheet = new CRE.SpriteSheet(data);
 
@@ -1018,9 +1071,12 @@ ENJ.SoySauce = (function() {
 //##############################################################################
 ENJ.ReagenBottle = (function() {
   var LiquidContainer = ENJ.LiquidContainer,
+    Tween = CRE.Tween,
     Shape = CRE.Shape,
     Bitmap = CRE.Bitmap,
     Graphics = CRE.Graphics;
+
+  var base = LiquidContainer.prototype;
 
   return ENJ.defineClass({
     /**
@@ -1038,7 +1094,7 @@ ENJ.ReagenBottle = (function() {
      * @override
      */
     ready: function() {
-      var self = this, label, shape, liquid, bottle, icon, graphics;
+      var self = this, label, shape, liquid, bottle, icon, cap, graphics;
 
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 90;
@@ -1057,18 +1113,22 @@ ENJ.ReagenBottle = (function() {
       icon = new Bitmap(RES.getRes(self.store('icon')));
       icon.set({ x: 10, y: 80 });
 
+      cap = new Bitmap(RES.getRes(self.store('cap')));
+      cap.set({ x: 13, y: -8 });
+
       var container = new CRE.Container();
       var bounds = bottle.getBounds();
       container.addChild(bottle, icon);
       container.cache(0, 0, bounds.width, bounds.height);
 
       //
-      self.addChild(liquid, container/*, label*/);
+      self.addChild(liquid, cap, container/*, label*/);
       //this.addChild(icon);
 
 
       //self.label = label;
       self.shape = shape;
+      self.cap = cap;
       //this.liquid = liquid;
 
       //this.shape =
@@ -1092,6 +1152,20 @@ ENJ.ReagenBottle = (function() {
           break;
       }
 
+    },
+
+    start: function() {
+      base.start.call(this);
+      Tween.get(this.cap).to({
+        x: 0, y: -60, rotation: -30, alpha: 0
+      }, 250);
+    },
+
+    stop: function() {
+      base.stop.call(this);
+      Tween.get(this.cap).to({
+        x: 13, y: -8, rotation: 0, alpha: 1.0
+      }, 250);
     }
   });
 })();
@@ -1221,6 +1295,9 @@ ENJ.PHInstrument = (function() {
       this.btn1 = btn1;
       this.btn2 = btn2;
 
+
+      btn1.cursor = 'pointer';
+      btn2.cursor = 'pointer';
       //this.addEventListener('click',this.start.bind(this));
 
       //this.store('number',100000000);
@@ -1277,7 +1354,7 @@ ENJ.PHInstrument = (function() {
     onCorrect: function () {
       this.btn1.removeAllEventListeners();
       this.dispatchEvent('correct');
-      console.log('correct')
+//      console.log('correct')
     },
 
     onRead: function() {
@@ -1461,7 +1538,8 @@ ENJ.Pipet = (function() {
       self.set({
         label: label,
         shape: shape,
-        rotation: -90
+        rotation: -90,
+        ratio: this.store('ratio') || 1
       });
 
       //this.store('volume', 5);
@@ -1481,7 +1559,7 @@ ENJ.Pipet = (function() {
             scaleY: value / 8
           });
 
-          label.store('num', value);
+          label.store('num', value * this.ratio);
           label.y = shape.y - 10;
           break;
       }
@@ -1652,9 +1730,11 @@ ENJ.Scene = (function() {
      * Set child to top.
      *
      * @param {DisplayObject} child
+     * @param {number} top
      */
-    setToTop: function(child) {
-      this.setChildIndex(child, this.numChildren - 1);
+    setToTop: function(child, top) {
+      top = top || 1;
+      this.setChildIndex(child, this.numChildren - top);
     }
   });
 })();
@@ -1685,7 +1765,7 @@ ENJ.Scene_2 = (function() {
         pipetStand, waterBottle, volumetricFlask, drainageBar, bigBeaker,
         bags = [], beakers = [], volumetricFlasks = [], rotors = [],
         cylinder, stirrer, phInstrument, powder, buret, titrationStand,
-        phElectrode, reagenBottle, cap,
+        phElectrode, reagenBottle,
         suckBall, soySauce, pipet;
 
       // @todo CSS background maybe better.
@@ -1697,7 +1777,8 @@ ENJ.Scene_2 = (function() {
 
       drainageBar = new Bitmap(RES.getRes("引流棒"));
 
-      curve = new CRE.Shape(new CRE.Graphics());
+      curve = new ENJ.Curve();//new CRE.Shape(new CRE.Graphics());
+
 
       drop = new Bitmap(RES.getRes("水滴"));
       drop.visible = false;
@@ -1764,9 +1845,9 @@ ENJ.Scene_2 = (function() {
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
-      cap = new Bitmap(RES.getRes("盖子甲"));
+//      cap = new Bitmap(RES.getRes("盖子甲"));
 
-      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x990000ff, icon: "氢氧化钠标签" } );
+      reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签", cap: "盖子甲" } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -1774,13 +1855,13 @@ ENJ.Scene_2 = (function() {
       titrationStand = new ENJ.TitrationStand();
       titrationStand.scaleX = -1;
 
-      buret = new ENJ.Buret({ volume: 0, color: 0x990000ff });
+      buret = new ENJ.Buret({ volume: 0, color: 0x22ffffff });
       //buret.scaleX = -1;
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd111100 });
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x990000ff });
+      soySauce = new ENJ.SoySauce({ volume: 180, color: 0x66330000 });
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x22ffffff });
 
       pipet.rotation = -90;
       drainageBar.rotation = -90;
@@ -1789,18 +1870,18 @@ ENJ.Scene_2 = (function() {
 
       phInstrument = new ENJ.PHInstrument();//new Bitmap(RES.getRes ("PH仪"));
 
-      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x990000ff });
+      cylinder = new ENJ.Cylinder({ volume: 0, color: 0x22ffffff });
 
-      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
 
       for (i = 0; i < 2; ++ i) {
-        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
         this.place(volumetricFlask, new Point(130 + 100 * i, 200 + i * 20));
         volumetricFlasks.push(volumetricFlask);
       }
 
       for (i = 0; i < 4; ++ i) {
-        beaker = new ENJ.Beaker({ volume: 0, color: 0x660000ff });
+        beaker = new ENJ.Beaker({ volume: 0, color: 0x22ffffff });
         this.place(beaker, new Point(100 - 30 * i,450 + 20 * i));
         beakers.push(beaker);
       }
@@ -1823,12 +1904,11 @@ ENJ.Scene_2 = (function() {
         bg,
         pipetStand,
 
-        cap,
+//        cap,
 
         bags[0],
         bags[1],
 
-        phInstrument,
         stirrer,
         reagenBottle,
         pipet,
@@ -1847,6 +1927,9 @@ ENJ.Scene_2 = (function() {
         rotors[0],
         rotors[1],
 
+        curve,
+        phInstrument,
+
         powder,
 
         soySauce,
@@ -1864,7 +1947,7 @@ ENJ.Scene_2 = (function() {
         buret,
 
         scissors,
-        curve,
+
         paper,
         hand,
         drop,
@@ -1912,7 +1995,7 @@ ENJ.Scene_2 = (function() {
 
       self.place(stirrer, new Point(600, 500));
 
-      self.place(cap, new Point(572,290));
+//      self.place(cap, new Point(572,290));
       self.place(reagenBottle, new Point(560, 300));
       self.place(pipet, new Point(700, 300));
 
@@ -1922,7 +2005,7 @@ ENJ.Scene_2 = (function() {
 
       self.place(phElectrode, new Point(690, 330));
 
-
+      curve.update(phElectrode, new CRE.Point(800,480));
       //beakers[0].set({x:625,y:450});
       self.set({
         curve: curve,
@@ -1947,7 +2030,7 @@ ENJ.Scene_2 = (function() {
         rotors: rotors,
         volumetricFlasks: volumetricFlasks,
         reagenBottle: reagenBottle,
-        cap: cap,
+//        cap: cap,
         drop: drop,
         buret: buret,
         tip: tip,
@@ -2068,9 +2151,9 @@ ENJ.Step_CutBag = (function() {
       bag = this.bag = scene.bags[store['bag']];
       scissors = this.scissors = scene.scissors;
 
-      this.bag.cursor = 'pointer';
-      this.scissors.cursor = 'pointer';
-      this.scissors.visible = false;
+      bag.cursor = 'pointer';
+      scissors.cursor = 'pointer';
+      scissors.visible = false;
       /*scene.setToTop(this.suckBall);
        scene.setToTop(this.pipet);
        scene.setToTop(this.bottle);
@@ -2232,6 +2315,7 @@ ENJ.Step_WashBag = (function() {
        this.bottle.active = false;
        }*/
 
+      this.bottle.cursor = 'auto';
       this.bottle.removeEventListener('click', handlers[0]);
 
       base.stop.call(this);
@@ -2336,13 +2420,14 @@ ENJ.Step_DumpPowder = (function() {
 
       handlers[0] = this.onClickBag.bind(this);
       bag.addEventListener('click', handlers[0]);
+      bag.cursor = 'pointer';
     },
 
     stop: function() {
       var handlers = this.handlers;
 
       this.bag.removeEventListener('click', handlers[0]);
-
+      this.bag.cursor = 'auto';
       base.stop.call(this);
     },
 
@@ -2420,12 +2505,13 @@ ENJ.Step_DumpWater = (function() {
 
       handlers[0] = this.onClickBottle.bind(this);
       bottle.addEventListener('click', handlers[0]);
+      bottle.cursor = 'pointer';
     },
 
     stop: function() {
 
       this.bottle.removeEventListener('click', this.handlers[0]);
-
+      this.bottle.cursor = 'auto';
       //this.bottle.active = false;
       this.bottle.stop();
 
@@ -2473,8 +2559,12 @@ ENJ.Step_DumpWater = (function() {
             .to({ rotation: -30, x: 340, y: 430 }, 250)
             .call(function() {
               self.flags[1] = true;
+              bottle.dump(true, 0);
             })
             .wait(1000)
+            .call(function() {
+              bottle.dump(false, 0);
+            })
             .to({ rotation: 0, x: bottle.location.x, y: bottle.location.y }, 250);
         }
         /*Tween.get(bottle)
@@ -2520,16 +2610,20 @@ ENJ.Step_BlowLiquid = (function() {
       var scene = this.scene, store = this.store, point,
         handlers = this.handlers = [], hand, pipet, bottle;
 
+
+      this.scale = store.scale || 1;
       this.flags = [];
 
       hand = this.hand = scene.hand;
-      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
 
       if ('bottle' in store) {
         bottle = this.bottle = scene[store.bottle];
       } else if ('beaker' in store){
         bottle = this.bottle = scene.beakers[store.beaker];
+        bottle.fix();
       }
+      bottle.start();
 
 
       scene.setChildIndex(pipet, scene.getChildIndex(bottle) - 1);
@@ -2607,10 +2701,14 @@ ENJ.Step_BlowLiquid = (function() {
           if (remain > 1) {
             this.stop();
           } else {
+
             Tween.get(bottle)
               .wait(1000)
               .to({ x: bottle.location.x, y: bottle.location.y, rotation: 0 }, 500)
               .call(function(){
+                if ('beaker' in self.store) {
+                  bottle.unfix();
+                }
                 self.scene.setChildIndex(bottle, bottle.index);
                 self.stop();
               });
@@ -2618,6 +2716,14 @@ ENJ.Step_BlowLiquid = (function() {
 
           if (showLabel) {
             pipet.hideLabel();
+          }
+          if (volume<=0) {
+            Tween.get(pipet)
+              .to({
+                x: pipet.location.x,
+                y: pipet.location.y,
+                rotation: -90
+              },500);
           }
 
         } else {
@@ -2627,7 +2733,7 @@ ENJ.Step_BlowLiquid = (function() {
           pipet.showLabel();
         }
         pipet.store('volume', volume);
-        bottle.store('volume', bottle.store('volume') + delta);
+        bottle.store('volume', bottle.store('volume') + delta * this.scale);
       }
     },
 
@@ -2667,9 +2773,12 @@ ENJ.Step_SuckLiquid = (function() {
         hand, pipet, bottle, suckBall;//, pipet, bottle, suckBall;
       // @todo 精简
       hand = this.hand = scene.hand;
-      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       bottle = this.bottle = scene[store.bottle];
       suckBall = this.suckBall = scene.suckBall;
+
+      pipet.cursor = 'pointer';
+      suckBall.cursor = 'pointer';
 
       handlers[0] = this.onClickPipet.bind(this);
       handlers[1] = this.onClickHand.bind(this);
@@ -2677,11 +2786,12 @@ ENJ.Step_SuckLiquid = (function() {
 
       this.flags = [];
 
-      [suckBall, pipet, bottle, hand]
+      [/*suckBall, */pipet, bottle]
         .forEach(function(element) {
-          scene.setToTop(element);
+          scene.setToTop(element, 7);
           element.cursor = 'pointer';
         });
+//      scene.setChildIndex(pipet, scene.getChildIndex(bottle)-1);
 
       bottle.start();
       Tween.get(bottle).to({
@@ -2707,8 +2817,11 @@ ENJ.Step_SuckLiquid = (function() {
       var /*i, n, element, */elements = [], handlers = this.handlers, scene = this.scene,
         hand = this.hand, pipet = this.pipet, bottle = this.bottle, suckBall = this.suckBall;
 
-      elements.push(suckBall);
+      pipet.cursor = 'auto';
+      suckBall.cursor = 'auto';
+
       if (!this.store.remain) {
+        elements.push(pipet);
         elements.push(bottle);
         bottle.stop();
       }
@@ -2835,6 +2948,7 @@ ENJ.Step_SuckLiquid = (function() {
             }
 
             ball.stop();
+            this.scene.setChildIndex(ball, ball.index);
             Tween.get(ball).to({
               x: ball.location.x, y: ball.location.y, rotation: 0
             }, 500, Ease.sineInOut)
@@ -2870,6 +2984,8 @@ ENJ.Step_SuckLiquid = (function() {
             }
           } else if (pipet.active) {
             suckBall.start();
+            var scene = this.scene;
+            scene.setChildIndex(suckBall, scene.getChildIndex(this.pipet)-1);
             Tween.get(suckBall).to({
               x: pipet.x + 8, y: pipet.y, rotation: 180
             }, 500, Ease.sineInOut);
@@ -2911,6 +3027,7 @@ ENJ.Step_StirLiquid = (function() {
 
       this.beaker = scene.beakers[store.beaker];
       bar = this.bar = scene.drainageBar;
+      bar.cursor = 'pointer';
 
       if(this.store.remain) {
         Tween.get(bar).to({
@@ -2924,7 +3041,7 @@ ENJ.Step_StirLiquid = (function() {
 
     stop: function() {
       //var handles = this.handles;
-
+      this.bar.cursor = 'auto';
       this.bar.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
@@ -2985,6 +3102,8 @@ ENJ.Step_TransferLiquid = (function() {
       beaker = this.beaker = scene.beakers[store.beaker];
       flask = this.flask = scene.volumetricFlasks[store.flask];
 
+      beaker.cursor = 'pointer';
+
       flask.start();
       Tween.get(flask).to({
         x: 250, y: 300
@@ -3018,6 +3137,7 @@ ENJ.Step_TransferLiquid = (function() {
        x: 410, y: 300*//*, rotation: 10*//*
        }, 500);*/
 
+      beaker.cursor = 'auto';
       beaker.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
@@ -3101,48 +3221,61 @@ ENJ.Step_ConstantVolume = (function() {
       base.start.call(this);
 
       var scene = this.scene, store = this.store,
-        handlers = this.handlers = [], bottle;
+        handlers = this.handlers = [], bottle, flask;
 
-      this.flask = scene.volumetricFlasks[store.flask];
-      bottle =this.bottle = scene.waterBottle;
+      flask = this.flask = scene.volumetricFlasks[store.flask];
+      bottle = this.bottle = scene.waterBottle;
 
       this.flags = [];
 
-      if(!bottle.active/*this.store.keeping*/) {
+      if (!flask.active) {
+        flask.start();
+      }
+
+      if (!bottle.active/*this.store.keeping*/) {
         //bottle.active = true;
         bottle.start();
         Tween.get(bottle).to({
-          x: 400, y: 400
+          x: flask.x + 100, y: flask.y - 100
         }, 250);
       }
 
       handlers[0] = this.onClickBottle.bind(this);
       bottle.addEventListener('click', handlers[0]);
+
+      bottle.cursor = 'pointer';
     },
 
     stop: function() {
       var bottle = this.bottle, flask = this.flask;
 
-      flask.stop();
-
-      bottle.stop();
-      //bottle.active = false;
-      Tween.get(bottle).to(
-        {x:bottle.location.x,y:bottle.location.y,rotation:0}
-        , 250);
-
+//      flask.stop();
+//
+//      bottle.stop();
+//      //bottle.active = false;
+//      Tween.get(bottle).to(
+//        {x:bottle.location.x,y:bottle.location.y,rotation:0}
+//        , 250);
+      bottle.cursor = 'auto';
       bottle.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
     },
 
     update: function(event) {
-      var volume, flask = this.flask;
-      if (/*this.active && */this.flags[0]) {
+      var volume, flask = this.flask, bottle = this.bottle;
+      if (/*this.active && */this.flags[0] && !this.flags[1]) {
         volume = flask.store('volume') + event.delta/100;
         if (volume >= this.store.volume) {
           volume = this.store.volume;
-          this.stop();
+          this.flags[1] = true;
+          flask.stop();
+
+          bottle.stop();
+          //bottle.active = false;
+          Tween.get(bottle).to(
+            {x:bottle.location.x,y:bottle.location.y,rotation:0}
+            , 250).call(this.stop.bind(this));
         }
         flask.store('volume', volume);
       }
@@ -3151,7 +3284,7 @@ ENJ.Step_ConstantVolume = (function() {
     onClickBottle: function() {
       if (!this.flags[0]) {
         this.flags[0] = true;
-        Tween.get(this.bottle).to({x:300,y:280,rotation:-30},250);
+        Tween.get(this.bottle).to({x:this.flask.x + 50,y: this.flask.y - 20,rotation:-30},250);
       }
     }
   });
@@ -3182,6 +3315,7 @@ ENJ.Step_ShakeUp = (function() {
       var flask, flags = this.flags = [], handlers = this.handlers = [];
 
       flask = this.flask = this.scene.volumetricFlasks[this.store.flask];
+      flask.cursor = 'pointer';
 
       handlers[0] = this.onClickFlask.bind(this);
 
@@ -3196,6 +3330,8 @@ ENJ.Step_ShakeUp = (function() {
 
     stop: function() {
       var flask = this.flask;
+
+      flask.cursor = 'auto';
 
       Tween.get(flask).to({
         x: flask.location.x, y: flask.location.y, regX: 0, regY: 0
@@ -3258,6 +3394,9 @@ ENJ.Step_WashElectrode = (function() {
       beaker = this.beaker = scene.bigBeaker;
       electrode = this.electrode = scene.phElectrode;
 
+      bottle.cursor = 'pointer';
+      electrode.cursor = 'pointer';
+
       Tween.get(beaker).to({ x: 420, y: 500 }, 250);
       Tween.get(electrode).to({ x: 520,y: 300, rotation: 30 }, 250);
 
@@ -3272,7 +3411,10 @@ ENJ.Step_WashElectrode = (function() {
     stop: function() {
       var electrode = this.electrode, beaker = this.beaker, bottle = this.bottle;
 
+      bottle.cursor = 'auto';
+      electrode.cursor = 'auto';
 
+      this.curve.update(electrode, new CRE.Point(800,480));
       //Tween.get(beaker).to({ x: beaker.location.x, y: beaker.location.y }, 250);
       //Tween.get(bottle).to({ x: bottle.location.x, y: bottle.location.y, rotation: 0 }, 250);
       //Tween.get(electrode).to({ x: electrode.location.x, y: electrode.location.y, rotation: 0 }, 500);
@@ -3323,35 +3465,39 @@ ENJ.Step_WashElectrode = (function() {
     },
 
     update: function(event) {
-      /*var p = [], dist, angle;
 
-       p[0] = this.electrode;
-       p[4] = new CRE.Point(800,300);
-
-       angle = 90 - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
-       dist = Math.sqrt(
-       (p[4].x-p[0].x) * (p[4].x-p[0].x) + (p[4].y-p[0].y) * (p[4].y-p[0].y)
-       );
-
-       p[1] = new CRE.Point(0.25 * dist, -10000 / dist);
-       p[2] = new CRE.Point(0.5 * dist, 0);
-       p[3] = new CRE.Point(0.75 * dist, 10000 / dist);
-       p[4].x = p[4].x - p[0].x;
-       p[4].y = p[4].y - p[0].y;
-
-       this.curve.graphics
-       .clear()
-       .setStrokeStyle(2)
-       .beginStroke('#f00')
-       .moveTo(0,0)
-       .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
-       //.moveTo(p4.x,p4.y)
-       .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
-       .endStroke();
-
-       this.curve.set(
-       { x: p[0].x, y: p[0].y, rotation: angle}
-       );*/
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+//      var p = [], dist;
+//
+//      p[0] = this.electrode;
+//      p[6] = new CRE.Point(800,480);
+//
+//      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+//      dist = Math.sqrt(
+//          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+//      );
+//
+//      p[1] = new CRE.Point(2/12 * dist, -100);
+//      p[2] = new CRE.Point(4/12 * dist, 0);
+//      p[3] = new CRE.Point(6/12 * dist, 100);
+//      p[4] = new CRE.Point(8/12 * dist, 50);
+//      p[5] = new CRE.Point(10/12 * dist, 0);
+//      p[6].x = p[6].x - p[0].x;
+//      p[6].y = p[6].y - p[0].y;
+//
+//      this.curve.graphics
+//        .clear()
+//        .setStrokeStyle(4,1,1)
+//        .beginStroke('#000')
+//        .moveTo(0,0)
+//        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+//        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+//        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+//        .endStroke();
+//
+//      this.curve.set(
+//        { x: p[0].x+9, y: p[0].y+5}
+//      );
 
 
 
@@ -3388,6 +3534,7 @@ ENJ.Step_WipeUpElectrode = (function() {
 
       paper = this.paper = scene.paper;
       electrode = this.electrode = scene.phElectrode;
+      this.curve = scene.curve;
 
       Tween.get(electrode)
         .to({ rotation: 0 }, 500);
@@ -3397,17 +3544,18 @@ ENJ.Step_WipeUpElectrode = (function() {
       handlers[0] = this.onClick.bind(this);
 
       paper.visible = true;
+      paper.cursor = 'pointer';
       paper.addEventListener('click', handlers[0]);
     },
 
     stop: function() {
-      var electrode = this.electrode;
+      var electrode = this.electrode, paper = this.paper;
 
-      Tween.get(electrode)
-        .to({ x: electrode.location.x, y: electrode.location.y/*, rotation: 0*/ }, 500);
+      this.curve.update(electrode, new CRE.Point(800,480));
 
-      this.paper.visible = false;
-      this.paper.removeEventListener('click', this.handlers[0]);
+      paper.visible = false;
+      paper.cursor = 'auto';
+      paper.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
     },
 
@@ -3417,12 +3565,46 @@ ENJ.Step_WipeUpElectrode = (function() {
       if (!this.flags[0]) {
         this.paper.set({ x: stage.mouseX - 60, y: stage.mouseY - 28 });
       }
+
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+
+//      var p = [], dist;
+//
+//      p[0] = this.electrode;
+//      p[6] = new CRE.Point(800,480);
+//
+//      //angle = 90;// - Math.atan2((p[4].x-p[0].x), (p[4].y-p[0].y)) * 180 / Math.PI;
+//      dist = Math.sqrt(
+//          (p[6].x-p[0].x) * (p[6].x-p[0].x) + (p[6].y-p[0].y) * (p[6].y-p[0].y)
+//      );
+//
+//      p[1] = new CRE.Point(2/12 * dist, -100);
+//      p[2] = new CRE.Point(4/12 * dist, 0);
+//      p[3] = new CRE.Point(6/12 * dist, 100);
+//      p[4] = new CRE.Point(8/12 * dist, 50);
+//      p[5] = new CRE.Point(10/12 * dist, 0);
+//      p[6].x = p[6].x - p[0].x;
+//      p[6].y = p[6].y - p[0].y;
+//
+//      this.curve.graphics
+//        .clear()
+//        .setStrokeStyle(4,1,1)
+//        .beginStroke('#000')
+//        .moveTo(0,0)
+//        .quadraticCurveTo(p[1].x,p[1].y,p[2].x,p[2].y)
+//        .quadraticCurveTo(p[3].x,p[3].y,p[4].x,p[4].y)
+//        .quadraticCurveTo(p[5].x,p[5].y,p[6].x,p[6].y)
+//        .endStroke();
+//
+//      this.curve.set(
+//        { x: p[0].x+9, y: p[0].y+5}
+//      );
     },
 
     onClick: function() {
       if (this.flags[0]) { return; }
 
-      var paper = this.paper, electrode = this.electrode, scene = this.scene;
+      var paper = this.paper, electrode = this.electrode, self = this;
       if (paper.x > electrode.x - 50 && paper.x < electrode.x + 50 &&
         paper.y > electrode.y + 60 && paper.y < electrode.y + 200) {
         this.flags[0] = true;
@@ -3437,7 +3619,12 @@ ENJ.Step_WipeUpElectrode = (function() {
            })*/
           .to({ y: electrode.y + 200 }, 500)
           .to({ y: electrode.y + 100 }, 500)
-          .call(this.stop.bind(this));
+          .call(function(){
+            Tween.get(electrode)
+              .to({ x: electrode.location.x, y: electrode.location.y/*, rotation: 0*/ }, 500)
+              .call(self.stop.bind(self));
+          });
+
       }
     }
   });
@@ -3476,10 +3663,11 @@ ENJ.Step_DumpFromFlask = (function() {
 
       handlers[0] = this.onClickFlask.bind(this);
       flask.addEventListener('click', handlers[0]);
+      flask.cursor = 'pointer';
 
       flask.start();
       Tween.get(flask).to({
-        x: 350, y: 520, rotation: -60
+        x: 350, y: 530, rotation: -60
       }, 250);
 
       beaker.start();
@@ -3490,7 +3678,7 @@ ENJ.Step_DumpFromFlask = (function() {
 
     stop: function() {
       var flask =this.flask;
-
+      flask.cursor = 'auto';
       flask.refresh();
       flask.stop();
       this.scene.setChildIndex(flask, 1);
@@ -3569,6 +3757,7 @@ ENJ.Step_AddRotor = (function() {
 
       handlers[0] = this.onClickRotor.bind(this);
       rotor.addEventListener('click', handlers[0]);
+      rotor.cursor = 'pointer';
     },
 
     stop: function() {
@@ -3580,6 +3769,7 @@ ENJ.Step_AddRotor = (function() {
       var rotor = this.rotor, beaker = this.beaker,
         stop = this.stop.bind(this);
 
+      rotor.cursor = 'auto';
       Tween.get(rotor)
         .to({x: beaker.x + 10, y: beaker.y - 50}, 250)
         .call(function(){
@@ -3624,11 +3814,14 @@ ENJ.Step_StartStirrer = (function() {
       electrode = this.electrode = scene.phElectrode;
       beaker = this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
 
       this.flag = false;
 
       handlers[0] = this.onClickStirrer.bind(this);
       stirrer.addEventListener('click', handlers[0]);
+
+      stirrer.cursor = 'pointer';
 
       Tween.get(beaker)
         .to({x:630,y:450},500)
@@ -3641,8 +3834,14 @@ ENJ.Step_StartStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
+      this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.electrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {
@@ -3683,6 +3882,9 @@ ENJ.Step_StopStirrer = (function() {
       this.phElectrode = scene.phElectrode;
       this.beaker = scene.beakers[store.beaker];
       this.rotor = scene.rotors[store.rotor];
+      this.curve = scene.curve;
+
+      this.stirrer.cursor = 'pointer';
 
       this.flag = false;
 
@@ -3692,8 +3894,14 @@ ENJ.Step_StopStirrer = (function() {
     },
 
     stop: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
+      this.stirrer.cursor = 'auto';
       this.stirrer.removeEventListener('click', this.handlers[0]);
       base.stop.call(this);
+    },
+
+    update: function() {
+      this.curve.update(this.phElectrode, new CRE.Point(800,480));
     },
 
     onClickStirrer: function() {
@@ -3818,7 +4026,7 @@ ENJ.Step_WashPipe = (function() {
       hand.visible=false;
 
       Tween.get(pipe)
-        .to({x:400,y:400,regX:7,regY:150,rotation:90},500)
+        .to({x:400,y:500,regX:7,regY:150,rotation:90},500)
         .to({rotation:95},300)
         .to({rotation:85},300)
         .to({rotation:95},300)
@@ -3919,7 +4127,8 @@ ENJ.Step_EmptyPipet = (function() {
         handlers = this.handlers = [],
         pipet, hand, ball, beaker;
 
-      pipet = this.pipet = scene.pipet;
+//      pipet = this.pipet = scene.pipet;
+      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
       //hand = this.hand = scene.hand;
       ball = this.ball = scene.suckBall;
       beaker = this.beaker = scene.bigBeaker;
@@ -3931,7 +4140,7 @@ ENJ.Step_EmptyPipet = (function() {
       handlers[0] = this.onClickBall.bind(this);
       ball.addEventListener('mousedown', handlers[0]);
       ball.addEventListener('pressup', handlers[0]);
-
+      ball.cursor = 'pointer';
       /*Tween.get(hand)
        .to({x:0,y:0,rotation:90},500)
        .call(function(){hand.visible=false;});*/
@@ -3972,6 +4181,7 @@ ENJ.Step_EmptyPipet = (function() {
       this.scene.setChildIndex(ball, ball.index);
       ball.removeEventListener('mousedown', handlers[0]);
       ball.removeEventListener('pressup', handlers[0]);
+      ball.cursor = 'auto';
 
       base.stop.call(this);
     },
@@ -4071,6 +4281,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
       handlers[0] = self.onClick.bind(self);
       self.bottle.addEventListener('click', handlers[0]);
+      self.bottle.cursor = 'pointer';
 
       scene.setChildIndex(self.cylinder, scene.getChildIndex(self.bottle) + 1);
 
@@ -4085,6 +4296,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
     stop: function() {
       var self = this;
+      self.bottle.cursor = 'auto';
       self.bottle.removeEventListener('click', self.handlers[0]);
       base.stop.call(this);
     },
@@ -4168,6 +4380,8 @@ ENJ.Step_DumpFromCylinder = (function() {
       this.flags = [];
       handlers[0] = self.onClick.bind(self);
       cylinder.addEventListener('click', handlers[0]);
+
+      cylinder.cursor = 'pointer';
     },
 
     stop: function() {
@@ -4176,6 +4390,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       //self.beaker.stop();
       cylinder.stop();
       cylinder.removeEventListener('click', self.handlers[0]);
+      cylinder.cursor = 'auto';
       self.scene.setChildIndex(cylinder, cylinder.index);
 
       base.stop.call(this);
@@ -4244,7 +4459,7 @@ ENJ.Step_DumpToBuret = (function() {
       Step.prototype.start.call(this);
       var self = this, scene = self.scene;
 
-      self.cap = scene.cap;
+      //self.cap = scene.cap;
       self.buret = scene.buret;
       self.bottle = scene.reagenBottle;
 
@@ -4254,29 +4469,35 @@ ENJ.Step_DumpToBuret = (function() {
       self.handlers = [];
       self.handlers[0] = self.onClick.bind(self);
       self.bottle.addEventListener('click', self.handlers[0]);
+      self.bottle.cursor = 'pointer';
 
-      Tween.get(self.cap)
-        .to({rotation: -90}, 500)
-        .to({x: 650, y: 450, rotation: -180}, 500);
+//      Tween.get(self.cap)
+//        .to({rotation: -90}, 500)
+//        .to({x: 650, y: 450, rotation: -180}, 500);
 
       Tween.get(self.buret)
         .to({x: 400, y: 400, rotation: 30}, 500);
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 400, y: 415, rotation: -30}, 500)
-        .call(function() {
+        /*.call(function() {
           self.bottle.start();
-        });
+        })*/;
     },
     stop: function() {
       var self = this, scene = self.scene, bottle = self.bottle;
       scene.setChildIndex(bottle, bottle.index);
       bottle.removeEventListener('click', self.handlers[0]);
+      bottle.cursor = 'auto';
+      bottle.refresh();
+      bottle.stop();
+
       Step.prototype.stop.call(this);
     },
     update: function(event) {
       var self = this,
-        cap = self.cap, buret = self.buret, bottle = self.bottle,
+        buret = self.buret, bottle = self.bottle,
         target = self.store.volume, volume, delta;
       buret.refresh();
       bottle.refresh();
@@ -4296,13 +4517,13 @@ ENJ.Step_DumpToBuret = (function() {
             .call(function() {
               self.stop();
             });
-          Tween.get(cap)
-            .to({
-              x: cap.location.x,
-              y: cap.location.y,
-              rotation: -90
-            }, 500)
-            .to({rotation: 0}, 500);
+//          Tween.get(cap)
+//            .to({
+//              x: cap.location.x,
+//              y: cap.location.y,
+//              rotation: -90
+//            }, 500)
+//            .to({rotation: 0}, 500);
         } else {
           volume += delta;
         }
@@ -4540,7 +4761,13 @@ ENJ.Step_DropFromBuret = (function() {
   };
 
   pt.stop = function() {
-    this.phInstrument.stop();
+    var hand = this.hand, handlers = this.handlers;
+    hand.removeEventListener('mousedown', handlers[0]);
+    hand.removeEventListener('pressup', handlers[0]);
+    //this.phInstrument.stop();
+    this.drop.visible = false;
+    this.tween.setPaused(true);
+
     base.stop.call(this);
   };
 
@@ -4564,20 +4791,26 @@ ENJ.Step_DropFromBuret = (function() {
           visible: false,
           scaleX: 1
         });
-        Tween.get(buret)
-          .to({
-            x: buret.location.x,
-            y: buret.location.y,
-            rotation: 0
-          }, 500)
-          .call(function() {
-            self.stop();
-          });
-        Tween.get(stand)
-          .to({
-            x: stand.location.x,
-            y: stand.location.y,
-          }, 500)
+
+        if (!self.store.remain) {
+          Tween.get(buret)
+            .to({
+              x: buret.location.x,
+              y: buret.location.y,
+              rotation: 0
+            }, 500)
+            .call(function() {
+              self.phInstrument.stop();
+              self.stop();
+            });
+          Tween.get(stand)
+            .to({
+              x: stand.location.x,
+              y: stand.location.y,
+            }, 500)
+        } else {
+          self.stop();
+        }
 
       } else {
         volume -= delta;
@@ -4737,7 +4970,7 @@ ENJ.Step_Record_2 = (function() {
   return ENJ.defineClass({
     /**
      * 记录实验数据
-     * 所用：结果报告2
+     * 所用：结果报告
      *
      * @constructor
      */
@@ -5114,7 +5347,7 @@ ENJ.Script_2 = (function() {
         config = configs[i];
         steps.push(config[0]);
         stores.push(config[1]);
-        tips.push( config[2] );
+        tips.push(config[2]);
       }
 
       this.steps = steps;
@@ -5263,40 +5496,40 @@ ENJ.Lab = (function() {
     //scene.app = this;
     this.addChild(scene);
 
-    var container = new CRE.Container();
-
-    var text = new CRE.Text();
-    text.set({ x:820,  y:20 });
-    text.color='#fff';
-    text.text = 'x: \n\ny: ';
-    this.text = text;
-    container.addChild(text);
-
-    var self = this;
-    //this.addEventListener('tick',  this.refresh.bind(this));
-    this.addEventListener('stagemousemove',  function(evt){
-      self.text.text='x: '+ evt.stageX + '\n\ny: ' +evt.stageY;
-    });
-
-    var i,  g,  line;
-
-    g = new Graphics();
-    g.beginStroke('#ffffff').moveTo(0, 0).lineTo(0, 640);
-    for(i = 0; i < 10; ++ i) {
-      line = new Shape(g);
-      line.x = i * 100;
-      container.addChild(line);
-    }
-
-    g = new Graphics();
-    g.beginStroke('#ffffff', 1).moveTo(0, 0).lineTo(960, 0);
-    for(i = 0; i < 7; ++ i) {
-      line = new Shape(g);
-      line.y = i * 100;
-      container.addChild(line);
-    }
-
-    this.addChild(container);
+//    var container = new CRE.Container();
+//
+//    var text = new CRE.Text();
+//    text.set({ x:820,  y:20 });
+//    text.color='#fff';
+//    text.text = 'x: \n\ny: ';
+//    this.text = text;
+//    container.addChild(text);
+//
+//    var self = this;
+//    //this.addEventListener('tick',  this.refresh.bind(this));
+//    this.addEventListener('stagemousemove',  function(evt){
+//      self.text.text='x: '+ evt.stageX + '\n\ny: ' +evt.stageY;
+//    });
+//
+//    var i,  g,  line;
+//
+//    g = new Graphics();
+//    g.beginStroke('#ffffff').moveTo(0, 0).lineTo(0, 640);
+//    for(i = 0; i < 10; ++ i) {
+//      line = new Shape(g);
+//      line.x = i * 100;
+//      container.addChild(line);
+//    }
+//
+//    g = new Graphics();
+//    g.beginStroke('#ffffff', 1).moveTo(0, 0).lineTo(960, 0);
+//    for(i = 0; i < 7; ++ i) {
+//      line = new Shape(g);
+//      line.y = i * 100;
+//      container.addChild(line);
+//    }
+//
+//    this.addChild(container);
 
     /*g = new Graphics();
      g.beginFill('#0f0').drawRect(0, 0, 100, 100);
@@ -5320,14 +5553,14 @@ ENJ.Lab = (function() {
 //##############################################################################
 // src/exit.js
 //##############################################################################
-var stats = new Stats();
-
-stats.setMode(0); // 0: fps, 1: ms
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.left = '0px';
-stats.domElement.style.top = '0px';
-
-document.body.appendChild(stats.domElement);
+//var stats = new Stats();
+//
+//stats.setMode(0); // 0: fps, 1: ms
+//stats.domElement.style.position = 'absolute';
+//stats.domElement.style.left = '0px';
+//stats.domElement.style.top = '0px';
+//
+//document.body.appendChild(stats.domElement);
 
 
 var lab = new ENJ.Lab('stage');
@@ -5353,7 +5586,7 @@ function update(event) {
     lab.update(event);
   }
 
-  stats.update();
+  //stats.update();
   //requestAnimationFrame(update);
 }
 //update();
@@ -5368,7 +5601,7 @@ RES.addEventListener('complete', function() {
 //  var script = new ENJ.Script_3();
   //ENJ.invalid = true;
   //update();
-  var prevBtn =  new jQuick('#prev-btn');
+  /*var prevBtn =  new jQuick('#prev-btn');
   var nextBtn =  new jQuick('#next-btn');
   var gotoBtn =  new jQuick('#goto-btn');
   var editor = new jQuick('#editor');
@@ -5392,7 +5625,7 @@ RES.addEventListener('complete', function() {
 
   script.addEventListener('stepComplete',function(){
     editor.val(script.currentIndex + 1);
-  });
+  });*/
 
   new ENJ.Experiment(lab, scene, script);
 
@@ -5405,51 +5638,51 @@ RES.addEventListener('progress', function(evt) {
 });
 
 RES.loadManifest({
-  path: './assets/',
+  path: '../../assets/',
   manifest: [
-    { id: "手", src: "手.PNG" },
-    { id: "水滴", src: "水滴.PNG" },
-    { id: "水流", src: "水流.PNG" },
-    { id: "纸巾", src: "纸巾.PNG" },
-    { id: "转子", src: "转子.PNG" },
-    { id: "袋子", src: "袋子.PNG" },
-    { id: "粉末", src: "粉末.PNG" },
-    { id: "剪刀", src: "剪刀.PNG" },
-    { id: "引流棒", src: "引流棒.PNG" },
-    { id: "标签", src: "标签.PNG" },
-    { id: "吸球", src: "吸球.PNG" },
-    { id: "吸嘴", src: "吸嘴.PNG" },
-    { id: "蝴蝶夹", src: "蝴蝶夹.PNG" },
-    { id: "滴定架", src: "滴定架.PNG" },
-    { id: "滴定管", src: "滴定管.PNG" },
-    { id: "滴定管液体", src: "滴定管液体.PNG" },
-    { id: "磁力搅拌器", src: "磁力搅拌器.PNG" },
-    { id: "磁力搅拌器旋钮", src: "磁力搅拌器旋钮.PNG" },
-    { id: "PH仪", src: "PH仪.PNG" },
-    { id: "PH仪面板", src: "PH仪面板.PNG" },
-    { id: "PH电极", src: "PH电极.PNG" },
-    { id: "PH电极套", src: "PH电极套.PNG" },
-    { id: "酱油瓶", src: "酱油瓶.PNG" },
-    { id: "酱油瓶盖", src: "酱油瓶盖.PNG" },
-    { id: "酱油", src: "酱油.PNG" },
-    { id: "容量瓶", src: "容量瓶.PNG" },
-    { id: "容量瓶盖", src: "容量瓶盖.PNG" },
-    { id: "容量瓶液体", src: "容量瓶液体.PNG" },
-    { id: "量筒", src: "量筒.PNG" },
-    { id: "量筒液体", src: "量筒液体.PNG" },
-    { id: "盖子甲", src: "盖子甲.PNG" },
-    { id: "试剂瓶", src: "试剂瓶.PNG" },
-    { id: "试剂瓶液体", src: "试剂瓶液体.PNG" },
-    { id: "氢氧化钠标签", src: "氢氧化钠标签.PNG" },
-    { id: "移液管", src: "移液管.PNG" },
-    { id: "移液管液体", src: "移液管液体.PNG" },
-    { id: "移液管架", src: "移液管架.PNG" },
-    { id: "蒸馏水瓶", src: "蒸馏水瓶.PNG" },
-    { id: "烧杯", src: "烧杯.PNG" },
-    { id: "烧杯液体", src: "烧杯液体.PNG" },
-    { id: "关闭按钮", src: "关闭按钮.PNG" },
-    { id: "结果报告2", src: "结果报告2.PNG" },
-    { id: "背景", src: "背景.PNG" }
+    { id: "手", src: "手.png" },
+    { id: "水滴", src: "水滴.png" },
+    { id: "水流", src: "水流.png" },
+    { id: "纸巾", src: "纸巾.png" },
+    { id: "转子", src: "转子.png" },
+    { id: "袋子", src: "袋子.png" },
+    { id: "粉末", src: "粉末.png" },
+    { id: "剪刀", src: "剪刀.png" },
+    { id: "引流棒", src: "引流棒.png" },
+    { id: "标签", src: "标签.png" },
+    { id: "吸球", src: "吸球.png" },
+    { id: "吸嘴", src: "吸嘴.png" },
+    { id: "蝴蝶夹", src: "蝴蝶夹.png" },
+    { id: "滴定架", src: "滴定架.png" },
+    { id: "滴定管", src: "滴定管.png" },
+    { id: "滴定管液体", src: "滴定管液体.png" },
+    { id: "磁力搅拌器", src: "磁力搅拌器.png" },
+    { id: "磁力搅拌器旋钮", src: "磁力搅拌器旋钮.png" },
+    { id: "PH仪", src: "PH仪.png" },
+    { id: "PH仪面板", src: "PH仪面板.png" },
+    { id: "PH电极", src: "PH电极.png" },
+    { id: "PH电极套", src: "PH电极套.png" },
+    { id: "酱油瓶", src: "酱油瓶.png" },
+    { id: "酱油瓶盖", src: "酱油瓶盖.png" },
+    { id: "酱油", src: "酱油.png" },
+    { id: "容量瓶", src: "容量瓶.png" },
+    { id: "容量瓶盖", src: "容量瓶盖.png" },
+    { id: "容量瓶液体", src: "容量瓶液体.png" },
+    { id: "量筒", src: "量筒.png" },
+    { id: "量筒液体", src: "量筒液体.png" },
+    { id: "盖子甲", src: "盖子甲.png" },
+    { id: "试剂瓶", src: "试剂瓶.png" },
+    { id: "试剂瓶液体", src: "试剂瓶液体.png" },
+    { id: "氢氧化钠标签", src: "氢氧化钠标签.png" },
+    { id: "移液管", src: "移液管.png" },
+    { id: "移液管液体", src: "移液管液体.png" },
+    { id: "移液管架", src: "移液管架.png" },
+    { id: "蒸馏水瓶", src: "蒸馏水瓶.png" },
+    { id: "烧杯", src: "烧杯.png" },
+    { id: "烧杯液体", src: "烧杯液体.png" },
+    { id: "关闭按钮", src: "关闭按钮.png" },
+    { id: "结果报告2", src: "结果报告2.png" },
+    { id: "背景", src: "背景.png" }
   ]
 });
 
