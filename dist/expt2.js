@@ -8,7 +8,9 @@
  * @copyright Copyright 2016 Enjolras. All rights reserved.
  * @namespace
  */
-var ENJ = {};
+var ENJ = {
+  scaleX: 951/960, scaleY: 506/640
+};
 
 var CRE = createjs;
 
@@ -314,13 +316,13 @@ ENJ.Board = (function() {
 
       graphics = new Graphics();
       graphics.beginFill('#000')
-        .drawRect(0, 0, 960, 640);
+        .drawRect(-80, 0, 1250, 640);
 
       rect = new Shape(graphics);
 
       label = new Text();
       label.set({
-        x: 480 , y: 320, color: "#fff", font: "bold 36px Arial", textAlign: 'center'
+        x: 510 , y: 300, color: "#fff", font: "bold 36px Arial", textAlign: 'center'
       });
       //label.setBounds(0, 0, 200, 40);
       //label.set({x: 480 - 100, y: 320 -20 });
@@ -1735,6 +1737,10 @@ ENJ.Scene = (function() {
     setToTop: function(child, top) {
       top = top || 1;
       this.setChildIndex(child, this.numChildren - top);
+    },
+
+    getLocalMouse: function() {
+      return this.globalToLocal(this.stage.mouseX, this.stage.mouseY);
     }
   });
 })();
@@ -1911,10 +1917,12 @@ ENJ.Scene_2 = (function() {
 
         stirrer,
         reagenBottle,
-        pipet,
-        suckBall,
+
         cylinder,
         waterBottle,
+
+        suckBall,
+        pipet,
 
         volumetricFlasks[0],
         volumetricFlasks[1],
@@ -1978,7 +1986,9 @@ ENJ.Scene_2 = (function() {
 
 
 
-      self.place(bg, new Point(0, 0));
+      bg.set({regX: 600, regY: 320, scaleX: 1.2});
+      self.place(bg, new Point(480, 320));
+
       self.place(waterBottle, new Point(425, 230));
       self.place(pipetStand, new Point(700, 270));
 
@@ -1989,9 +1999,6 @@ ENJ.Scene_2 = (function() {
 
       self.place(phInstrument, new Point(680, 380));
       self.place(drainageBar, new Point(680, 320));
-
-
-
 
       self.place(stirrer, new Point(600, 500));
 
@@ -2242,9 +2249,7 @@ ENJ.Step_CutBag = (function() {
      };*/
 
     update: function() {
-      var stage = this.scene.stage;
-
-      this.scissors.set({ x: stage.mouseX, y: stage.mouseY });
+      this.scissors.set(this.scene.getLocalMouse());
     }
   });
 })();
@@ -2788,7 +2793,7 @@ ENJ.Step_SuckLiquid = (function() {
 
       [/*suckBall, */pipet, bottle]
         .forEach(function(element) {
-          scene.setToTop(element, 7);
+          //scene.setToTop(element, 7);
           element.cursor = 'pointer';
         });
 //      scene.setChildIndex(pipet, scene.getChildIndex(bottle)-1);
@@ -2827,14 +2832,14 @@ ENJ.Step_SuckLiquid = (function() {
       }
 
 
-      elements.sort(function(a, b) {
-        return a.index - b.index;
-      });
+//      elements.sort(function(a, b) {
+//        return a.index - b.index;
+//      });
 
 
       elements.forEach(function(element) {
         element.cursor = 'auto';
-        scene.setChildIndex(element, element.index);
+        //scene.setChildIndex(element, element.index);
       });
 
       pipet.removeEventListener('click', handlers[0]);
@@ -2846,14 +2851,12 @@ ENJ.Step_SuckLiquid = (function() {
     },
 
     update: function(event) {
-      //console.log(event);
-      //var body = event.params[0];
-      var volume, delta, stage = this.scene.stage, store = this.store,
+      var volume, delta, store = this.store, localMouse = this.scene.getLocalMouse(),
         hand = this.hand, pipet = this.pipet, bottle = this.bottle;
 
       bottle.refresh();
       if (!this.flags[2]){
-        hand.set({x: stage.mouseX -50, y: stage.mouseY - 50 });
+        hand.set({x: localMouse.x -50, y: localMouse.y - 50 });
       }
       if (this.flags[0] && !this.flags[1]) {
         volume = pipet.store('volume');
@@ -3269,8 +3272,8 @@ ENJ.Step_ConstantVolume = (function() {
         if (volume >= this.store.volume) {
           volume = this.store.volume;
           this.flags[1] = true;
-          flask.stop();
 
+          flask.stop();
           bottle.stop();
           //bottle.active = false;
           Tween.get(bottle).to(
@@ -3560,10 +3563,10 @@ ENJ.Step_WipeUpElectrode = (function() {
     },
 
     update: function() {
-      var stage = this.scene.stage;
+      var localMouse = this.scene.getLocalMouse();
 
       if (!this.flags[0]) {
-        this.paper.set({ x: stage.mouseX - 60, y: stage.mouseY - 28 });
+        this.paper.set({ x: localMouse.x - 60, y: localMouse.y - 28 });
       }
 
       this.curve.update(this.electrode, new CRE.Point(800,480));
@@ -5248,7 +5251,6 @@ ENJ.Script_2 = (function() {
         //
         [ENJ.Step_Interlude_2, {title: "第一次取样和测试"}, ''],
 
-
         //取样1
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "用移液管吸取少量食用醋样品"],
         [ENJ.Step_WashPipe, { pipe: 'pipet' }, "润洗一下移液管"],
@@ -5260,7 +5262,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_EmptyPipet, { remain: true }, "排入废液缸"],
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 120, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 100, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
@@ -5290,7 +5292,7 @@ ENJ.Script_2 = (function() {
         //取样2
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 100, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
@@ -5464,9 +5466,9 @@ ENJ.Lab = (function() {
     var line = new Shape(graphics);
 
     this.addChild(line);
-    line.set({ x:180,  y: 305 });
+    line.set({ x:180,  y: 255 });
     this.addChild(progressBar);
-    progressBar.set({ x:180,  y: 300 });
+    progressBar.set({ x:180,  y: 250 });
 
     this.progressBar = progressBar;
   };
@@ -5599,6 +5601,10 @@ RES.addEventListener('complete', function() {
 
   var scene = new ENJ.Scene_2();
   var script = new ENJ.Script_2();
+
+  scene.set({
+    x: 60, scaleX: ENJ.scaleY, scaleY: ENJ.scaleY
+  });
 //  var scene = new ENJ.Scene_3();
 //  var script = new ENJ.Script_3();
   //ENJ.invalid = true;
