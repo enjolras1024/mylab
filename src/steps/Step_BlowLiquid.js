@@ -48,7 +48,7 @@ ENJ.Step_BlowLiquid = (function() {
 
 
       bottle.visible = true;
-      hand.set({visible:true, y:pipet.y - 20});
+      hand.set({visible:true, y:pipet.y - 20, x: pipet.x - 10});
 
       var self = this,
         change = function() {

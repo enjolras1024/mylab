@@ -8,7 +8,9 @@
  * @copyright Copyright 2016 Enjolras. All rights reserved.
  * @namespace
  */
-var ENJ = {};
+var ENJ = {
+  scaleX: 951/960, scaleY: 506/640
+};
 
 var CRE = createjs;
 

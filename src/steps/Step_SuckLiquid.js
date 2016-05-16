@@ -41,7 +41,7 @@ ENJ.Step_SuckLiquid = (function() {
 
       [/*suckBall, */pipet, bottle]
         .forEach(function(element) {
-          scene.setToTop(element, 7);
+          //scene.setToTop(element, 7);
           element.cursor = 'pointer';
         });
 //      scene.setChildIndex(pipet, scene.getChildIndex(bottle)-1);
@@ -80,14 +80,14 @@ ENJ.Step_SuckLiquid = (function() {
       }
 
 
-      elements.sort(function(a, b) {
-        return a.index - b.index;
-      });
+//      elements.sort(function(a, b) {
+//        return a.index - b.index;
+//      });
 
 
       elements.forEach(function(element) {
         element.cursor = 'auto';
-        scene.setChildIndex(element, element.index);
+        //scene.setChildIndex(element, element.index);
       });
 
       pipet.removeEventListener('click', handlers[0]);
@@ -99,14 +99,12 @@ ENJ.Step_SuckLiquid = (function() {
     },
 
     update: function(event) {
-      //console.log(event);
-      //var body = event.params[0];
-      var volume, delta, stage = this.scene.stage, store = this.store,
+      var volume, delta, store = this.store, localMouse = this.scene.getLocalMouse(),
         hand = this.hand, pipet = this.pipet, bottle = this.bottle;
 
       bottle.refresh();
       if (!this.flags[2]){
-        hand.set({x: stage.mouseX -50, y: stage.mouseY - 50 });
+        hand.set({x: localMouse.x -50, y: localMouse.y - 50 });
       }
       if (this.flags[0] && !this.flags[1]) {
         volume = pipet.store('volume');

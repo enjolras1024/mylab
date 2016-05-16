@@ -72,6 +72,10 @@ ENJ.Scene = (function() {
     setToTop: function(child, top) {
       top = top || 1;
       this.setChildIndex(child, this.numChildren - top);
+    },
+
+    getLocalMouse: function() {
+      return this.globalToLocal(this.stage.mouseX, this.stage.mouseY);
     }
   });
 })();

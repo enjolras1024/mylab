@@ -86,7 +86,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       var self = this;
       if (!self.beaker.active) { return; }
       Tween.get(self.cylinder)
-        .to({x: 240, y: 480, rotation: -85}, 500)
+        .to({x: 240, y: 500, rotation: -85}, 500)
         .call(function() {
           self.flags[0] = true;
         })

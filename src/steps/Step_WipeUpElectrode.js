@@ -52,10 +52,10 @@ ENJ.Step_WipeUpElectrode = (function() {
     },
 
     update: function() {
-      var stage = this.scene.stage;
+      var localMouse = this.scene.getLocalMouse();
 
       if (!this.flags[0]) {
-        this.paper.set({ x: stage.mouseX - 60, y: stage.mouseY - 28 });
+        this.paper.set({ x: localMouse.x - 60, y: localMouse.y - 28 });
       }
 
       this.curve.update(this.electrode, new CRE.Point(800,480));

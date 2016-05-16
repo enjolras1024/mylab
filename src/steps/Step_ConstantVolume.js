@@ -70,8 +70,8 @@ ENJ.Step_ConstantVolume = (function() {
         if (volume >= this.store.volume) {
           volume = this.store.volume;
           this.flags[1] = true;
-          flask.stop();
 
+          flask.stop();
           bottle.stop();
           //bottle.active = false;
           Tween.get(bottle).to(

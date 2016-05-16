@@ -45,6 +45,7 @@ ENJ.Step_DumpToCylinder = (function() {
 
     stop: function() {
       var self = this;
+      self.bottle.stop();
       self.bottle.cursor = 'auto';
       self.bottle.removeEventListener('click', self.handlers[0]);
       base.stop.call(this);
@@ -76,8 +77,9 @@ ENJ.Step_DumpToCylinder = (function() {
 
     onClick: function() {
       var self = this;//, cylinder = self.cylinder;
-      if (!self.cylinder.active) {return;}
+      if (!self.cylinder.active || self.bottle.active) {return;}
 
+      self.bottle.start();
       Tween.get(self.bottle)
         .to({x: 340, y: 270, rotation: -30}, 500)
         .call(function() {

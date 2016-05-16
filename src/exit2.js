@@ -45,6 +45,10 @@ RES.addEventListener('complete', function() {
 
   var scene = new ENJ.Scene_2();
   var script = new ENJ.Script_2();
+
+  scene.set({
+    x: 60, scaleX: ENJ.scaleY, scaleY: ENJ.scaleY
+  });
 //  var scene = new ENJ.Scene_3();
 //  var script = new ENJ.Script_3();
   //ENJ.invalid = true;

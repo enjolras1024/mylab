@@ -51,9 +51,9 @@ ENJ.Lab = (function() {
     var line = new Shape(graphics);
 
     this.addChild(line);
-    line.set({ x:180,  y: 305 });
+    line.set({ x:180,  y: 255 });
     this.addChild(progressBar);
-    progressBar.set({ x:180,  y: 300 });
+    progressBar.set({ x:180,  y: 250 });
 
     this.progressBar = progressBar;
   };

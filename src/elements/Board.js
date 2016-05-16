@@ -26,13 +26,13 @@ ENJ.Board = (function() {
 
       graphics = new Graphics();
       graphics.beginFill('#000')
-        .drawRect(0, 0, 960, 640);
+        .drawRect(-80, 0, 1250, 640);
 
       rect = new Shape(graphics);
 
       label = new Text();
       label.set({
-        x: 480 , y: 320, color: "#fff", font: "bold 36px Arial", textAlign: 'center'
+        x: 510 , y: 300, color: "#fff", font: "bold 36px Arial", textAlign: 'center'
       });
       //label.setBounds(0, 0, 200, 40);
       //label.set({x: 480 - 100, y: 320 -20 });

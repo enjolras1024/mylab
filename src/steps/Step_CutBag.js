@@ -118,9 +118,7 @@ ENJ.Step_CutBag = (function() {
      };*/
 
     update: function() {
-      var stage = this.scene.stage;
-
-      this.scissors.set({ x: stage.mouseX, y: stage.mouseY });
+      this.scissors.set(this.scene.getLocalMouse());
     }
   });
 })();

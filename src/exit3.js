@@ -47,6 +47,10 @@ RES.addEventListener('complete', function() {
 //  var script = new ENJ.Script_2();
   var scene = new ENJ.Scene_3();
   var script = new ENJ.Script_3();
+
+  scene.set({
+    x: 60, scaleX: ENJ.scaleY, scaleY: ENJ.scaleY
+  });
   //ENJ.invalid = true;
   //update();
   /*var prevBtn =  new jQuick('#prev-btn');

@@ -222,9 +222,9 @@ ENJ.Scene_3 = (function() {
 
       self.place(bigBeaker, new Point(100, 1000));
 
+      bg.set({regX: 600, regY: 320, scaleX: 1.2});
+      self.place(bg, new Point(480, 320));
 
-
-      self.place(bg, new Point(0, 0));
       self.place(waterBottle, new Point(370, 270));
       self.place(pipetStand, new Point(700, 270));
 
@@ -235,9 +235,6 @@ ENJ.Scene_3 = (function() {
 
       self.place(phInstrument, new Point(680, 380));
       self.place(drainageBar, new Point(680, 375));
-
-
-
 
       self.place(stirrer, new Point(600, 500));
 

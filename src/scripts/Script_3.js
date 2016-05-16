@@ -139,7 +139,7 @@ ENJ.Script_3 = (function() {
 
         [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 6, remain: true }, "吸取足量的酱油样品"],
         [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 5, remain: 1, rotation: 15, offsetX: 10, offsetY: 60, showLabel: true }, "留下25ml的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 0, volume: 0, scale: 5, remain: 0, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
+        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 2, volume: 0, scale: 5, remain: 0, offsetX: 90, offsetY: 120, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
 
 
         //测定2
