@@ -64,15 +64,16 @@ ENJ.Step_DropFromBuret = (function() {
 
   pt.update = function(event) {
     var self = this, buret = self.buret, stand = self.stand,
-      target = self.store.volume, volume, delta;
+      target = self.store.volume, pHs = self.store.pHs, volume, delta;
     buret.refresh();
     if (self.drop.visible && !self.flags[1]) {
       delta = event.delta / 1000;
       volume = buret.store('volume');
 
-      var num = 100 * (this.originVolume - volume) / (this.originVolume - target);
+      var num =  (this.originVolume - volume) / (this.originVolume - target);// * 100;
 
-      self.phInstrument.store('number', '' + num.toFixed(2) + '%');
+//      self.phInstrument.store('number', '' + num.toFixed(2) + '%');
+      self.phInstrument.store('number', (pHs[0] + num * (pHs[1] - pHs[0])).toFixed(1));
 
       if (volume <= target){
         volume = target;
@@ -100,6 +101,7 @@ ENJ.Step_DropFromBuret = (function() {
               y: stand.location.y,
             }, 500)
         } else {
+          self.phInstrument.store('number', pHs[1].toFixed(1));
           self.stop();
         }
 

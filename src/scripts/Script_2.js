@@ -101,7 +101,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [6.2, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v1_1: 16.41 }, '记录第一次滴定体积'],
@@ -125,7 +125,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [6.2, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v1_2: 16.42, v1: 16.42 }, '记录第二次滴定体积，求出平均值'],
@@ -143,7 +143,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
-        [ENJ.Step_DropFromBuret, {volume: 70}, ""],
+        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [7, 8.2]}, ""],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_1: 0.01 }, '记录第一次空白滴定体积'],
@@ -160,7 +160,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [7, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_2: 0.02, xx: 5.84, canClose: false }, '记录第二次空白滴定体积，计算食用醋总酸度']

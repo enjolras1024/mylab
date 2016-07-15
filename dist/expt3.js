@@ -4867,15 +4867,16 @@ ENJ.Step_DropFromBuret = (function() {
 
   pt.update = function(event) {
     var self = this, buret = self.buret, stand = self.stand,
-      target = self.store.volume, volume, delta;
+      target = self.store.volume, pHs = self.store.pHs, volume, delta;
     buret.refresh();
     if (self.drop.visible && !self.flags[1]) {
       delta = event.delta / 1000;
       volume = buret.store('volume');
 
-      var num = 100 * (this.originVolume - volume) / (this.originVolume - target);
+      var num =  (this.originVolume - volume) / (this.originVolume - target);// * 100;
 
-      self.phInstrument.store('number', '' + num.toFixed(2) + '%');
+//      self.phInstrument.store('number', '' + num.toFixed(2) + '%');
+      self.phInstrument.store('number', (pHs[0] + num * (pHs[1] - pHs[0])).toFixed(1));
 
       if (volume <= target){
         volume = target;
@@ -4903,6 +4904,7 @@ ENJ.Step_DropFromBuret = (function() {
               y: stand.location.y,
             }, 500)
         } else {
+          self.phInstrument.store('number', pHs[1].toFixed(1));
           self.stop();
         }
 
@@ -5455,7 +5457,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70, remain: true}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 70, remain: true, pHs: [6.2, 8.2]}, "滴定..."],
 
         [ENJ.Step_Record_2, { v1_1: 16.41 }, '记录第一次滴定体积'],
 
@@ -5463,7 +5465,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 6, remain: false, showLabel: true }, "吸取足量的酱油样品"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向干净烧杯中加入25ml的酱油样品"],
 
-        [ENJ.Step_DropFromBuret, {volume: 60}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v1_2: 16.41, v1_m: 0 }, '记录第一次滴定体积'],
@@ -5485,7 +5487,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70, remain: true}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 70, remain: true, pHs: [6.2, 8.2]}, "滴定..."],
 
         [ENJ.Step_Record_2, { v2_1: 16.42 }, '记录第二次滴定体积，求出平均值'],
 
@@ -5493,7 +5495,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 6, remain: false, showLabel: true }, "吸取足量的酱油样品"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 2, volume: 0}, "向干净烧杯中加入25ml的酱油样品"],
 
-        [ENJ.Step_DropFromBuret, {volume: 60}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_2: 16.42, v2_m: 16.42 }, '记录第二次滴定体积，求出平均值'],
@@ -5511,7 +5513,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
-        [ENJ.Step_DropFromBuret, {volume: 70, remain: true}, ""],
+        [ENJ.Step_DropFromBuret, {volume: 70, remain: true, pHs: [7, 8.2]}, ""],
 
         [ENJ.Step_Record_2, { v0_1: 0.02 }, '记录空白滴定体积，计算酱油的氨基态氮含量'],
 
@@ -5519,7 +5521,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 6, remain: false, showLabel: true }, "吸取足量的酱油样品"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向干净烧杯中加入25ml的酱油样品"],
 
-        [ENJ.Step_DropFromBuret, {volume: 60}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v0_2: 0.02, xx: 5.84, canClose: false }, '记录空白滴定体积，计算酱油的氨基态氮含量']
