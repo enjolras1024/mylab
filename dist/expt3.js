@@ -442,6 +442,9 @@ ENJ.LiquidContainer = (function() {
       //base.refresh.call(this);
       //this.rotation += 0.1;
       this.shape.rotation = -this.rotation;
+      if (this.level) {
+        this.level.rotation = -this.rotation;
+      }
     },
 
     /**
@@ -581,7 +584,7 @@ ENJ.Buret = (function() {
      * @override
      */
     ready: function() {
-      var self = this, graphics, shape, liquid, pipe;
+      var self = this, graphics, shape, liquid, label, pipe;
 
       graphics = new Graphics();
       graphics.beginFill('#0f0').drawRect(-200, 0, 400, 640);
@@ -593,11 +596,15 @@ ENJ.Buret = (function() {
 
       pipe = new Bitmap(RES.getRes("滴定管"));
 
-      self.addChild(liquid/*, shape*/, pipe);
+      label = new ENJ.NumLabel({ unit: 'ml' });
+      label.visible = false;
+      label.x = 10;
+
+      self.addChild(liquid/*, shape*/, pipe, label);
 
 
       self.total = 100;
-      //this.label = label;
+      self.label = label;
       self.shape = shape;
 
       //this.store('volume', 5);
@@ -625,8 +632,9 @@ ENJ.Buret = (function() {
             y: 450 - value * 450 / 80 + 50
             //y: 300 - (value + 50) * 300 / 100 + 60
           });
-          //label.num = 50 - value;
-          //label.y = shape.y - 10;
+          this.label.num = /*100 - */value;
+          this.label.store('num', value);
+          this.label.y = this.shape.y - 10;
           break;
       }
     }
@@ -888,7 +896,7 @@ ENJ.VolumetricFlask = (function() {
      * @override
      */
     ready: function() {
-      var self = this, graphics, shape, label, liquid, bottle, cap;
+      var self = this, graphics, shape, label, liquid, level, bottle, cap;
 
       graphics = new Graphics();
       graphics.beginFill('#0f0').drawRect(-200, 0, 400, 400);
@@ -908,11 +916,12 @@ ENJ.VolumetricFlask = (function() {
       cap = new Bitmap(RES.getRes("容量瓶盖"));
       cap.set({ x: 45, y: -40 });
 
-      self.addChild(liquid, bottle, cap, label);
+      self.addChild(liquid, level, bottle, cap, label);
 
       self.set({
         cap: cap,
         label: label,
+        //level: level,
         shape: shape
       });
       //this.store('volume', 5);
@@ -923,7 +932,7 @@ ENJ.VolumetricFlask = (function() {
      * @override
      */
     storeChanged: function(key) {
-      var value = this.store(key), label = this.label, shape = this.shape;
+      var value = this.store(key), label = this.label, shape = this.shape;//, level = this.level;
       switch (key) {
         case 'volume':
           if (value < 80) {
@@ -1096,7 +1105,7 @@ ENJ.ReagenBottle = (function() {
      * @override
      */
     ready: function() {
-      var self = this, label, shape, liquid, bottle, icon, cap, graphics;
+      var self = this, label, shape, liquid, bottle, icon, cap, graphics, bounds;
 
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 90;
@@ -1116,12 +1125,22 @@ ENJ.ReagenBottle = (function() {
       icon.set({ x: 10, y: 80 });
 
       cap = new Bitmap(RES.getRes(self.store('cap')));
-      cap.set({ x: 13, y: -8 });
+      if (self.store('dark')) {
+        bounds = cap.getBounds();
+        cap.filters = [new CRE.ColorFilter(0.4,0.2,0,1.8,0,0,0)];
+        cap.cache(0, 0, bounds.width, bounds.height);
+      }
+
+      cap.set({ x: 26, y: -8 });
 
       var container = new CRE.Container();
-      var bounds = bottle.getBounds();
+      if (self.store('dark')) {
+        bounds = bottle.getBounds();
+        bottle.filters = [new CRE.ColorFilter(0.4,0.2,0,1.8,0,0,0)];
+        bottle.cache(0, 0, bounds.width, bounds.height);
+      }
       container.addChild(bottle, icon);
-      container.cache(0, 0, bounds.width, bounds.height);
+      //container.cache(0, 0, bounds.width, bounds.height);
 
       //
       self.addChild(liquid, cap, container/*, label*/);
@@ -1166,7 +1185,7 @@ ENJ.ReagenBottle = (function() {
     stop: function() {
       base.stop.call(this);
       Tween.get(this.cap).to({
-        x: 13, y: -8, rotation: 0, alpha: 1.0
+        x: 26, y: -8, rotation: 0, alpha: 1.0
       }, 250);
     }
   });
@@ -1571,6 +1590,82 @@ ENJ.Pipet = (function() {
 
 
 //##############################################################################
+// src/elements/VolumetricPipet.js
+//##############################################################################
+ENJ.VolumetricPipet = (function() {
+  var LiquidContainer = ENJ.LiquidContainer,
+    Shape = CRE.Shape,
+    Bitmap = CRE.Bitmap,
+    Graphics = CRE.Graphics;
+
+  return ENJ.defineClass({
+    /**
+     *
+     * @class VolumetricPipet
+     * @extends LiquidContainer
+     *
+     * @constructor
+     * @param {Object} store
+     */
+    constructor: function VolumetricPipet(store) {
+      LiquidContainer.apply(this, arguments);
+    }, extend: LiquidContainer,
+    /**
+     * @override
+     */
+    ready: function() {
+      var self = this, graphics, shape, label, liquid, pipe;
+
+      graphics = new Graphics();
+      graphics.beginFill('#0f0').drawRect(-200, 0, 400, 320);
+
+      shape = new Shape(graphics);
+      shape.x = 8;
+
+      label = new ENJ.NumLabel({ unit: 'ml' });
+      label.visible = false;
+      label.x = 10;
+
+      liquid = LiquidContainer.createLiquid("胖肚移液管液体", self.store('color'), shape);
+
+      pipe = new Bitmap(RES.getRes("胖肚移液管"));
+
+      self.addChild(liquid, pipe, label);
+
+      self.set({
+        label: label,
+        shape: shape,
+        rotation: -90,
+        ratio: this.store('ratio') || 1
+      });
+
+      //this.store('volume', 5);
+      self.storeChanged('volume');
+    },
+
+    /**
+     * @override
+     */
+    storeChanged: function(key) {
+      var value = this.store(key), label = this.label, shape = this.shape;
+      switch (key) {
+        case 'volume':
+          //this.shape.y = 240 - value * 240 / 8 + 16;
+          shape.set({
+            y: 320 - value * 320 / 8 + 40,
+            scaleY: value / 8
+          });
+
+          label.store('num', value * this.ratio);
+          label.y = shape.y - 10;
+          break;
+      }
+    }
+  });
+})();
+
+
+//##############################################################################
 // src/elements/ResultTable_3.js
 //##############################################################################
 ENJ.ResultTable_3 = (function() {
@@ -1816,7 +1911,7 @@ ENJ.Scene_3 = (function() {
       //cap = new Bitmap(RES.getRes("盖子甲"));
 
       reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签", cap: "盖子甲" } );
-      formaldehyde = new ENJ.ReagenBottle({ volume: 500, color: 0x66330000, icon: "甲醛标签", cap: "盖子甲" } );
+      formaldehyde = new ENJ.ReagenBottle({ volume: 500, color: 0x66330000, icon: "甲醛标签", cap: "盖子甲", dark: true } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -1833,11 +1928,12 @@ ENJ.Scene_3 = (function() {
 
       pipet = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
       pipet2 = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
-      bigPipet = new ENJ.Pipet({ volume: 0, color: 0x66330000, ratio: 5 });
+      //bigPipet = new ENJ.Pipet({ volume: 0, color: 0x66330000, ratio: 5 });
+      bigPipet = new ENJ.VolumetricPipet({ volume: 0, color: 0x66330000, ratio: 5 });
 
       pipet.rotation = -90;
       pipet2.rotation = -90;
-      bigPipet.set({ rotation: -90, scaleY: 1.20});
+      bigPipet.set({ rotation: -90/*, scaleY: 1.20*/});
       drainageBar.rotation = -90;
 
       phElectrode = new ENJ.PHElectrode();
@@ -1889,10 +1985,12 @@ ENJ.Scene_3 = (function() {
         cylinder,
         waterBottle,
 
+        suckBall,
+
         pipet,
         pipet2,
         bigPipet,
-        suckBall,
+
 
         titrationStand,
 
@@ -1917,7 +2015,7 @@ ENJ.Scene_3 = (function() {
 
         phElectrode,
 
-        buret,
+        drop,
 
         beakers[0],
         beakers[1],
@@ -1926,10 +2024,12 @@ ENJ.Scene_3 = (function() {
 
         bigBeaker,
 
+        buret,
+
 
         paper,
         hand,
-        drop,
+
 
         table,
 
@@ -1973,7 +2073,7 @@ ENJ.Scene_3 = (function() {
 
       //self.place(cap, new Point(592,290));
       self.place(reagenBottle, new Point(580, 300));
-      self.place(formaldehyde, new Point(490, 300));
+      self.place(formaldehyde, new Point(480, 300));
       self.place(pipet, new Point(700, 300));
       self.place(pipet2, new Point(700, 325));
       self.place(bigPipet, new Point(650, 350));
@@ -2099,348 +2199,6 @@ ENJ.Step = (function() {
     stop: function() {
       this._active = false;
       this.dispatchEvent('complete');
-    }
-  });
-})();
-
-//##############################################################################
-// src/steps/Step_CutBag.js
-//##############################################################################
-ENJ.Step_CutBag = (function() {
-  var Step = ENJ.Step,
-    Tween = CRE.Tween;
-
-  var base = Step.prototype;
-  
-  return ENJ.defineClass({
-    /**
-     * 剪开袋子
-     * 所用：剪刀、袋子
-     *
-     * @constructor
-     */
-    constructor: function Step_CutBag() {
-      Step.apply(this, arguments);
-    }, extend: Step,
-
-    start: function() {
-      base.start.call(this);
-
-      var store = this.store, scene = this.scene, bag, scissors,
-        handlers = this.handlers = [];//, pipet, bottle, suckBall;
-      // @todo 精简
-      bag = this.bag = scene.bags[store['bag']];
-      scissors = this.scissors = scene.scissors;
-
-      bag.cursor = 'pointer';
-      scissors.cursor = 'pointer';
-      scissors.visible = false;
-      /*scene.setToTop(this.suckBall);
-       scene.setToTop(this.pipet);
-       scene.setToTop(this.bottle);
-
-       this.suckBall.cursor = 'pointer';
-       this.pipet.cursor = 'pointer';
-       this.bottle.cursor = 'pointer';*/
-
-      this.flags = [];
-
-      handlers[0] = this.onClickBag.bind(this);
-      handlers[1] = this.onMouseScissors.bind(this);
-
-      scene.setChildIndex(bag, scene.getChildIndex(scissors) - 1);
-
-      //this.bag.addEventListener('click', handlers[0]);
-      Tween.get(bag).wait(1000).to({
-        x: 320, y: 450, scaleY: 1.0, skewX: 0, rotation: -45
-      }, 500).call(function() {
-        scissors.visible = true;
-        scissors.gotoAndStop('open');
-        scissors.addEventListener('mousedown', handlers[1]);
-        scissors.addEventListener('pressup', handlers[1]);
-        //stage.addEventListener('stagemousemove', handlers[2]);
-      });
-    },
-
-    stop: function() {
-      base.stop.call(this);
-
-      var handlers = this.handlers, bag = this.bag, scissors = this.scissors;
-
-      bag.cursor = 'auto';
-      scissors.cursor = 'auto';
-
-      //this.scene.setChildIndex(bag, bag.index);
-      //handlers[0] = this.onClickBag.bind(this);
-
-      //this.bag.removeEventListener('click', handlers[0]);
-      scissors.removeEventListener('pressup', handlers[1]);
-      scissors.removeEventListener('mousedown', handlers[1]);
-      //this.scene.stage.removeEventListener('stagemousemove', handlers[2]);
-      handlers.splice(0);
-
-    },
-
-    onClickBag: function() {
-      var bag = this.bag, scissors = this.scissors, handlers = this.handlers;// stage = this.scene.stage;
-      if (this.flags[0]) { return; }
-      //bag.start();
-      this.flags[0] = true;
-      Tween.get(bag).to({
-        x: 320, y: 450, scaleY: 1.0, skewX: 0, rotation: -45
-      }, 500).call(function() {
-        scissors.visible = true;
-        scissors.gotoAndStop('open');
-        scissors.addEventListener('mousedown', handlers[1]);
-        scissors.addEventListener('pressup', handlers[1]);
-        //stage.addEventListener('stagemousemove', handlers[2]);
-      });
-    },
-
-    onMouseScissors: function(event) {
-      var bag = this.bag, scissors = this.scissors;
-      switch (event.type) {
-        case 'mousedown':
-          this.flags[1] = true;
-          scissors.gotoAndStop('close');
-          break;
-        case 'pressup':
-          scissors.gotoAndStop('open');
-          if (this.flags[1]
-            && scissors.x > bag.x + 20 && scissors.x < bag.x + 80
-            && scissors.y > bag.y - 50 && scissors.y < bag.y) {
-            scissors.visible = false;
-            bag.gotoAndStop('open');
-            this.stop();
-          }
-          this.flags[1] = false;
-          break;
-      }
-    },
-
-    /*onStageMouseMove = function(event) {
-     this.scissors.set({ x: event.stageX, y: event.stageY });
-     };*/
-
-    update: function() {
-      this.scissors.set(this.scene.getLocalMouse());
-    }
-  });
-})();
-
-//##############################################################################
-// src/steps/Step_WashBag.js
-//##############################################################################
-ENJ.Step_WashBag = (function() {
-  var Step = ENJ.Step,
-    Tween = CRE.Tween;
-
-  var base = Step.prototype;
-  
-  return ENJ.defineClass({
-    /**
-     * 清洗袋子内部残留粉末
-     * 所用：蒸馏水、袋子、烧杯、粉末
-     *
-     * @constructor
-     */
-    constructor: function Step_WashBag() {
-      Step.apply(this, arguments);
-    }, extend: Step,
-
-    start: function() {
-      base.start.call(this);
-
-      var store = this.store, scene = this.scene,
-        handlers = this.handlers = [], bottle;
-
-      this.time = 0;
-      this.flags = [];
-
-      this.bag = scene.bags[store.bag];
-      this.beaker = scene.beakers[store.beaker];
-      this.powder = scene.powder;
-      bottle = this.bottle = scene.waterBottle;
-
-      bottle.cursor = 'pointer';
-
-      if(!bottle.active/*this.store.remain*/) {
-        bottle.start();
-        //bottle.active = true;
-        Tween.get(bottle).to({
-          x: 400, y: 400
-        }, 250);
-      }
-
-      handlers[0] = this.onClickBottle.bind(this);
-      bottle.addEventListener('click', handlers[0]);
-    },
-
-    stop: function() {
-      var handlers = this.handlers;
-
-      if(!this.store.remain) {
-        Tween.get(this.bag).to({
-          alpha: 0.0
-        }, 250);
-      } else {
-        Tween.get(this.bag).to({
-          rotation: 30
-        }, 250);
-      }
-
-      /*if(!this.store.remain) {
-       //this.bottle.stop();
-       this.bottle.active = false;
-       }*/
-
-      this.bottle.cursor = 'auto';
-      this.bottle.removeEventListener('click', handlers[0]);
-
-      base.stop.call(this);
-    },
-
-    onClickBottle: function() {
-      var self = this, bag = this.bag, beaker = this.beaker, bottle =  this.bottle;
-      if (this.flags[0]) { return; }
-      this.flags[0] = true;
-      Tween.get(bottle).to({
-        rotation: -30, x: 320, y: 430
-      }, 250).call(function() {
-        self.flags[1] = true;
-
-        //var onComplete;
-
-
-        Tween.get(bottle).wait(1000).to({
-          rotation: 0, x: 400, y: 400
-        }, 250);
-        Tween.get(bag).wait(1000).to({
-          rotation: 120
-        }, 1000);//.call(onComplete);
-      });
-    },
-
-    update: function(event) {
-      var powder = this.powder, beaker = this.beaker, time, volume;
-      if (this.flags[1]) {
-        time = this.time += event.delta;
-        volume = beaker.store('volume');
-        if (volume >= this.store.volume) {
-          //volume = this.store.volume;
-          beaker.store('volume', this.store.volume);
-          //this.flags[1] = false;
-          this.stop();
-        }
-
-        if (time > 1000) {
-          //volume += event.delta / 1000;
-          beaker.store('volume', volume + event.delta / 200);
-          if (powder.alpha > 0) {
-            powder.alpha -= event.delta / 2000;
-          } else {
-            powder.visible = false;
-          }
-        }
-      }
-    }
-  });
-})();
-
-//##############################################################################
-// src/steps/Step_DumpPowder.js
-//##############################################################################
-ENJ.Step_DumpPowder = (function() {
-  var Step = ENJ.Step,
-    Tween = CRE.Tween;
-
-  var base = Step.prototype;
-  
-  return ENJ.defineClass({
-    /**
-     * 将袋中粉末倒入烧杯中
-     * 所用：袋子、粉末（动画）、烧杯
-     *
-     * @constructor
-     */
-    constructor: function Step_DumpPowder() {
-      Step.apply(this, arguments);
-    }, extend: Step,
-
-    start: function() {
-      base.start.call(this);
-
-      var store = this.store, scene = this.scene,
-        handlers = this.handlers = [], flags = this.flags = [],
-        bag, beaker;//, pipet, bottle, suckBall;
-      // @todo 精简
-      bag = this.bag = scene.bags[store.bag];
-      beaker = this.beaker = scene.beakers[store.beaker];
-      this.powder = scene.powder;
-
-      bag.cursor = 'pointer';
-      //this.beaker.cursor = 'pointer';
-
-      var g = new CRE.Graphics();
-      g.beginFill('#0f0').drawEllipse(0, 0, 80, 40);
-
-      this.rect = new CRE.Shape(g);
-
-
-      Tween.get(beaker).to({
-        x: 300, y: 500
-      }, 500);
-
-      Tween.get(bag).to({
-        rotation: 30
-      }, 500).call(function() {
-        flags[0] = true;
-      });
-
-      handlers[0] = this.onClickBag.bind(this);
-      bag.addEventListener('click', handlers[0]);
-      bag.cursor = 'pointer';
-    },
-
-    stop: function() {
-      var handlers = this.handlers;
-
-      this.bag.removeEventListener('click', handlers[0]);
-      this.bag.cursor = 'auto';
-      base.stop.call(this);
-    },
-
-    onClickBag: function() {
-      if (!this.flags[0] || this.flags[1]) { return; }
-      //bag.start();
-      this.flags[1] = true;
-
-      var powder = this.powder, beaker = this.beaker, bag = this.bag, rect = this.rect, self = this;
-      //powder.visible = true;
-      powder.set({ alpha: 1.0, visible: true, x: beaker.x + 15, y: beaker.y + 75 });
-
-      rect.x = powder.x - 10;
-      rect.y = powder.y - 12;
-      powder.mask = rect;
-
-      powder.y += 20;
-
-      //bag.rotation = 30;
-      Tween.get(bag)
-        .to({ rotation: 120 }, 250)
-        .wait(1500)
-        .to({ rotation: 30 }, 250)
-        .call(function() {
-          //bag.rotation = 30;
-          /*Tween.get(bag).wait(1500).to({
-           rotation: 30
-           }, 250);*/
-          self.stop();
-        });
-
-      Tween.get(powder).to({
-        y: beaker.y + 75
-      }, 2000);
     }
   });
 })();
@@ -2605,7 +2363,7 @@ ENJ.Step_BlowLiquid = (function() {
       bottle.start();
 
 
-      scene.setChildIndex(pipet, scene.getChildIndex(bottle) - 1);
+      scene.setChildIndex(bottle, scene.getChildIndex(pipet) + 1);
 
       handlers[0] = this.onClick.bind(this);
       hand.addEventListener('click', handlers[0]);
@@ -2790,6 +2548,8 @@ ENJ.Step_SuckLiquid = (function() {
       hand.addEventListener('pressup', handlers[1]);
       suckBall.addEventListener('mousedown', handlers[2]);
       suckBall.addEventListener('pressup', handlers[2]);
+
+      scene.setChildIndex(bottle, scene.getChildIndex(pipet) + 1);
     },
 
     stop: function() {
@@ -2804,6 +2564,8 @@ ENJ.Step_SuckLiquid = (function() {
         elements.push(bottle);
         bottle.stop();
       }
+
+      scene.setChildIndex(bottle, bottle.index);
 
 
 //      elements.sort(function(a, b) {
@@ -2892,7 +2654,7 @@ ENJ.Step_SuckLiquid = (function() {
           rotation: 0
         }, 500, Ease.sineInOut)
         .to({
-          y: bottle.y - 150
+          y: bottle.y - 200
         }, 500, Ease.sineInOut)
         .call(function() {
           self.flags[3] = true;
@@ -2925,7 +2687,7 @@ ENJ.Step_SuckLiquid = (function() {
             }
 
             ball.stop();
-            this.scene.setChildIndex(ball, ball.index);
+            //this.scene.setChildIndex(ball, ball.index);
             Tween.get(ball).to({
               x: ball.location.x, y: ball.location.y, rotation: 0
             }, 500, Ease.sineInOut)
@@ -2962,7 +2724,7 @@ ENJ.Step_SuckLiquid = (function() {
           } else if (pipet.active) {
             suckBall.start();
             var scene = this.scene;
-            scene.setChildIndex(suckBall, scene.getChildIndex(this.pipet)-1);
+            //scene.setChildIndex(suckBall, scene.getChildIndex(this.pipet)-1);
             Tween.get(suckBall).to({
               x: pipet.x + 8, y: pipet.y, rotation: 180
             }, 500, Ease.sineInOut);
@@ -3658,7 +3420,7 @@ ENJ.Step_DumpFromFlask = (function() {
       flask.cursor = 'auto';
       flask.refresh();
       flask.stop();
-      this.scene.setChildIndex(flask, 1);
+      //this.scene.setChildIndex(flask, 1);
       flask.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
@@ -3691,7 +3453,7 @@ ENJ.Step_DumpFromFlask = (function() {
       Tween.get(flask)
         .to({ rotation: -85 }, 3000)
         .to({
-          x: flask.location.x, y: flask.location.y - 30, rotation: 0
+          x: flask.location.x, y: flask.location.y/* - 30*/, rotation: 0
         }, 250).call(
         this.stop.bind(this)
       );
@@ -4063,7 +3825,7 @@ ENJ.Step_CorrectPHInstrument = (function() {
 
     onCorrect: function() {
       var phInstrument = this.phInstrument;
-      phInstrument.store('number','CAXXXX');
+      phInstrument.store('number',this.store.number);
       Tween.get(phInstrument)
         .wait(2000)
         .call(this.stop.bind(this));
@@ -4118,7 +3880,7 @@ ENJ.Step_WashPipe = (function() {
       hand.visible=false;
 
       Tween.get(pipe)
-        .to({x:400,y:500,regX:7,regY:150,rotation:90},500)
+        .to({x:400,y:500,regX:7,regY:100,rotation:90},500)
         .to({rotation:95},300)
         .to({rotation:85},300)
         .to({rotation:95},300)
@@ -4225,7 +3987,7 @@ ENJ.Step_EmptyPipet = (function() {
       ball = this.ball = scene.suckBall;
       beaker = this.beaker = scene.bigBeaker;
 
-      scene.setChildIndex(ball, scene.getChildIndex(pipet) - 1);
+      //scene.setChildIndex(ball, scene.getChildIndex(pipet) - 1);
 
       this.flags = [];
 
@@ -4270,7 +4032,7 @@ ENJ.Step_EmptyPipet = (function() {
     stop: function() {
       var ball = this.ball, handlers = this.handlers;
 
-      this.scene.setChildIndex(ball, ball.index);
+      //this.scene.setChildIndex(ball, ball.index);
       ball.removeEventListener('mousedown', handlers[0]);
       ball.removeEventListener('pressup', handlers[0]);
       ball.cursor = 'auto';
@@ -4375,7 +4137,7 @@ ENJ.Step_DumpToCylinder = (function() {
       self.bottle.addEventListener('click', handlers[0]);
       self.bottle.cursor = 'pointer';
 
-      scene.setChildIndex(self.cylinder, scene.getChildIndex(self.bottle) + 1);
+      //scene.setChildIndex(self.cylinder, scene.getChildIndex(self.bottle) + 1);
 
       Tween.get(self.bottle)
         .to({x: 400, y: 360}, 500);
@@ -4485,7 +4247,7 @@ ENJ.Step_DumpFromCylinder = (function() {
       cylinder.stop();
       cylinder.removeEventListener('click', self.handlers[0]);
       cylinder.cursor = 'auto';
-      self.scene.setChildIndex(cylinder, cylinder.index);
+      //self.scene.setChildIndex(cylinder, cylinder.index);
 
       base.stop.call(this);
     },
@@ -4866,11 +4628,12 @@ ENJ.Step_DropFromBuret = (function() {
   };
 
   pt.update = function(event) {
-    var self = this, buret = self.buret, stand = self.stand,
+    var self = this, buret = self.buret, stand = self.stand, speed = self.store.speed || 1,
       target = self.store.volume, pHs = self.store.pHs, volume, delta;
+    buret.showLabel();
     buret.refresh();
     if (self.drop.visible && !self.flags[1]) {
-      delta = event.delta / 1000;
+      delta = event.delta / 1000 * speed;
       volume = buret.store('volume');
 
       var num =  (this.originVolume - volume) / (this.originVolume - target);// * 100;
@@ -4888,20 +4651,21 @@ ENJ.Step_DropFromBuret = (function() {
         });
 
         if (!self.store.remain) {
-          Tween.get(buret)
+          Tween.get(buret).wait(500)
             .to({
               x: buret.location.x,
               y: buret.location.y,
               rotation: 0
             }, 500)
             .call(function() {
+              buret.hideLabel();
               self.phInstrument.stop();
               self.stop();
             });
-          Tween.get(stand)
+          Tween.get(stand).wait(500)
             .to({
               x: stand.location.x,
-              y: stand.location.y,
+              y: stand.location.y
             }, 500)
         } else {
           self.phInstrument.store('number', pHs[1].toFixed(1));
@@ -5036,6 +4800,7 @@ ENJ.Step_Interlude_2 = (function() {
             beaker = beakers[i];
             beaker.visible = true;
             beaker.set(beaker.location);
+            beaker.store('color', 0x22ffffff);
             beaker.store('volume',0);
           }
         })
@@ -5382,7 +5147,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpFromFlask, { beaker: 2, flask: 2, volume: 30 }, "倒一些PH标准缓冲液（6.86）至干净的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "打开电子搅拌器，开始自动搅拌"],
-        [ENJ.Step_CorrectPHInstrument, {}, "校准PH计"],
+        [ENJ.Step_CorrectPHInstrument, {number: 6.86}, "校准PH计"],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "关闭电子搅拌器"],
 
         // 校准2
@@ -5406,7 +5171,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpFromFlask, { beaker: 0, flask: 0, volume: 30 }, "倒一些PH标准缓冲液（9.18）至干净的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 0, rotor: 0 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 0, rotor: 0 }, "打开电子搅拌器，开始自动搅拌"],
-        [ENJ.Step_CorrectPHInstrument, {}, "校准PH计"],
+        [ENJ.Step_CorrectPHInstrument, {number: 9.18}, "校准PH计"],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 0 }, "关闭电子搅拌器"],
 
         //
@@ -5468,7 +5233,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
-        [ENJ.Step_Record_2, { v1_2: 16.41, v1_m: 0 }, '记录第一次滴定体积'],
+        [ENJ.Step_Record_2, { v1_2: 16.41, v1_m: 16.41 }, '记录第一次滴定体积'],
 
 
         [ENJ.Step_Interlude_1, {title: "第二次取样和测试"}, ''],
@@ -5513,7 +5278,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
-        [ENJ.Step_DropFromBuret, {volume: 70, remain: true, pHs: [7, 8.2]}, ""],
+        [ENJ.Step_DropFromBuret, {volume: 70, remain: true, pHs: [7, 8.2], speed: 20}, ""],
 
         [ENJ.Step_Record_2, { v0_1: 0.02 }, '记录空白滴定体积，计算酱油的氨基态氮含量'],
 
@@ -5521,7 +5286,7 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 6, remain: false, showLabel: true }, "吸取足量的酱油样品"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向干净烧杯中加入25ml的酱油样品"],
 
-        [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2]}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 60, pHs: [8.2, 9.2], speed: 20}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v0_2: 0.02, xx: 5.84, canClose: false }, '记录空白滴定体积，计算酱油的氨基态氮含量']
@@ -5865,6 +5630,8 @@ RES.loadManifest({
     { id: "甲醛标签", src: "甲醛标签.png" },
     { id: "移液管", src: "移液管.png" },
     { id: "移液管液体", src: "移液管液体.png" },
+    { id: "胖肚移液管", src: "胖肚移液管.png" },
+    { id: "胖肚移液管液体", src: "胖肚移液管液体.png" },
     { id: "移液管架", src: "移液管架.png" },
     { id: "蒸馏水瓶", src: "蒸馏水瓶.png" },
     { id: "烧杯", src: "烧杯.png" },
