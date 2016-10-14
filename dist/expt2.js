@@ -278,9 +278,10 @@ ENJ.NumLabel = (function() {
         var self = this, value = self.store(key), a, b;
         switch (key) {
           case 'num':
-            a = Math.floor(value);
-            b = Math.floor((value - a) * 10);
-            self.field.text = '' + a + '.' + b + self.store('unit');
+            //a = Math.floor(value);
+            //b = Math.floor((value - a) * 10);
+            //self.field.text = '' + a + '.' + b + self.store('unit');
+            self.field.text = value.toFixed(2) + self.store('unit');
             break;
         }
       }
@@ -632,8 +633,8 @@ ENJ.Buret = (function() {
             y: 450 - value * 450 / 80 + 50
             //y: 300 - (value + 50) * 300 / 100 + 60
           });
-          this.label.num = /*100 - */value;
-          this.label.store('num', value);
+          this.label.num = 80 - value;
+          this.label.store('num', 80 - value);
           this.label.y = this.shape.y - 10;
           break;
       }
@@ -1576,7 +1577,7 @@ ENJ.Pipet = (function() {
         case 'volume':
           //this.shape.y = 240 - value * 240 / 8 + 16;
           shape.set({
-            y: 240 - value * 240 / 8 + 60,
+            y: 240 - value * 240 / 10 + 60,
             scaleY: value / 8
           });
 
@@ -2013,7 +2014,7 @@ ENJ.Scene_2 = (function() {
 
 //    this.place(titrationStand, new Point(520,160));
 //    this.place(buret, new Point(650,100));
-      self.place(titrationStand, new Point(520,1000));
+      self.place(titrationStand, new Point(1100,50));
       self.place(buret, new Point(650,1000));
 
       self.place(phInstrument, new Point(680, 380));
@@ -2686,14 +2687,14 @@ ENJ.Step_BlowLiquid = (function() {
         Tween.get(hand).to({y:point.y-210},500);
         Tween.get(pipet).to({y:point.y-190},500);
       } else {
-        point = {x: 300, y: 500};
+        point = {x: 300, y: pipet.y + (pipet.getBounds().height-50)};
         Tween.get(bottle).to({
           x: point.x,
           y: point.y
         }, 500).call(change);
 
-        Tween.get(hand).to({y:point.y-270},500);
-        Tween.get(pipet).to({y:point.y-250},500);
+        //Tween.get(hand).to({y:500 -270},500);
+        //Tween.get(pipet).to({y:point.y-250},500);
       }
     },
 
@@ -2933,15 +2934,15 @@ ENJ.Step_SuckLiquid = (function() {
 
     insertPipet: function() {
       var self = this, pipet = this.pipet, bottle = this.bottle,
-        rect = bottle.getBounds();
+        rect = bottle.getBounds(), h = pipet.getBounds().height;
       Tween.get(pipet)
         .to({
-          x: bottle.x + rect.width * 0.5 - 5,
-          y: bottle.y - 300,
+          x: bottle.x + rect.width * bottle.scaleX * 0.5 - 5,
+          y: bottle.y - h,
           rotation: 0
         }, 500, Ease.sineInOut)
         .to({
-          y: bottle.y - 200
+          y: bottle.y - (h-150)
         }, 500, Ease.sineInOut)
         .call(function() {
           self.flags[3] = true;
@@ -2981,9 +2982,11 @@ ENJ.Step_SuckLiquid = (function() {
               .wait(500)
               .call(this.stop.bind(this));
 
-            Tween.get(hand).to({y:bottle.y-320},500);
+            var h = pipet.getBounds().height;
 
-            Tween.get(pipet).to({y:bottle.y-300},500);
+            Tween.get(hand).to({y:bottle.y-(h + 20)},500);
+
+            Tween.get(pipet).to({y:bottle.y-h},500);
           }
           break;
         case 'pressup':
@@ -3013,7 +3016,7 @@ ENJ.Step_SuckLiquid = (function() {
             var scene = this.scene;
             //scene.setChildIndex(suckBall, scene.getChildIndex(this.pipet)-1);
             Tween.get(suckBall).to({
-              x: pipet.x + 8, y: pipet.y, rotation: 180
+              x: pipet.x + pipet.getBounds().width*0.5, y: pipet.y, rotation: 180
             }, 500, Ease.sineInOut);
           }
 
@@ -3707,7 +3710,8 @@ ENJ.Step_DumpFromFlask = (function() {
       flask.cursor = 'auto';
       flask.refresh();
       flask.stop();
-      //this.scene.setChildIndex(flask, 1);
+      flask.y -= 20;
+      this.scene.setChildIndex(flask, 1);
       flask.removeEventListener('click', this.handlers[0]);
 
       base.stop.call(this);
@@ -4188,16 +4192,43 @@ ENJ.Step_EmptyPipet = (function() {
        });*/
 
 
+      //Tween.get(ball)
+      //  .wait(200)
+      //  .to({x:pipet.x+7,y:pipet.y,rotation:180},500)
+      //  .call(function() {
+      //    ball.start();
+      //  });
+      //
+      //Tween.get(beaker)
+      //  .to({x: 300, y: 500}, 500);
+
+      var bounds = pipet.getBounds();
+      var point = {x: pipet.x, y: pipet.y};
+
+
+      Tween.get(beaker)
+        .to({x:300, y: point.y + (bounds.height - 50)}, 500);
+
+      //Tween.get(pipet)
+      //  .to({x: 360, y: 500 - (bounds.height - 50)}, 500);
+
       Tween.get(ball)
-        .wait(200)
-        .to({x:pipet.x+7,y:pipet.y,rotation:180},500)
+        .to({x:point.x + bounds.width * 0.5, y: point.y, rotation:180}, 500)
         .call(function() {
           ball.start();
         });
 
-      Tween.get(beaker)
-        .to({x:300,y:500}, 500);
-
+      //Tween.get(beaker)
+      //  .to({x:300, y: 500}, 500);
+      //
+      //Tween.get(pipet)
+      //  .to({x: 360, y: 500 - (bounds.height - 50)}, 500);
+      //
+      //Tween.get(ball)
+      //  .to({x:360 + bounds.width * 0.5, y: 500 - (bounds.height - 50), rotation:180}, 500)
+      //  .call(function() {
+      //    ball.start();
+      //  });
 
     },
 
@@ -4536,7 +4567,7 @@ ENJ.Step_DumpToBuret = (function() {
         if (volume >= target) {
           volume = target;
           self.flags[1] = true;
-          Tween.get(bottle)
+          Tween.get(bottle, {override: true})
             .to({
               x: bottle.location.x,
               y: bottle.location.y,
@@ -4652,6 +4683,7 @@ ENJ.Step_BlowBuret = (function() {
         if (volume <= target) {
           volume = target;
           this.flags[1] = true;
+
           if (!self.store.remain){
             Tween.get(bottle)
               .to({
@@ -4663,6 +4695,11 @@ ENJ.Step_BlowBuret = (function() {
               });
           } else {
             self.stop();
+          }
+
+          if (target === 80) {
+            buret.showLabel();
+            buret.hideLabel();
           }
 
         } else {
@@ -5290,7 +5327,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_EmptyPipet, { remain: true }, "排入废液缸"],
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 100, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 80, offsetY: 100, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
@@ -5310,7 +5347,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [4.0, 8.2]}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 16.41, pHs: [4.0, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v1_1: 16.41 }, '记录第一次滴定体积'],
@@ -5320,7 +5357,7 @@ ENJ.Script_2 = (function() {
         //取样2
         [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
-        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 90, offsetY: 100, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 80, offsetY: 100, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
@@ -5334,7 +5371,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 70, pHs: [4.0, 8.2]}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 16.42, pHs: [4.0, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v1_2: 16.42, v1: 16.42 }, '记录第二次滴定体积，求出平均值'],
@@ -5352,7 +5389,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
-        [ENJ.Step_DropFromBuret, {volume: 79, pHs: [6.8, 8.2], speed: 20}, ""],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 0.01, pHs: [6.8, 8.2], speed: 20}, ""],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_1: 0.01 }, '记录第一次空白滴定体积'],
@@ -5369,7 +5406,7 @@ ENJ.Script_2 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 79, pHs: [6.8, 8.2], speed: 20}, "滴定..."],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 0.02, pHs: [6.8, 8.2], speed: 20}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_2: 0.02, xx: 5.84, canClose: false }, '记录第二次空白滴定体积，计算食用醋总酸度']
