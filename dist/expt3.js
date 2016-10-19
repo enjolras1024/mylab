@@ -5263,15 +5263,17 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.31, remain: true, pHs: [6.2, 8.2]}, "滴定..."], //TODO
+        [ENJ.Step_DropFromBuret, {volume: 80 - 2.31, remain: true, pHs: [5.8, 8.2]}, "滴定..."], //TODO
 
         [ENJ.Step_Record_2, { v1_1: 2.31 }, '记录第一次滴定体积'],
 
         //加甲醛
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向烧杯中加入10ml的甲醛"],
-
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.31 - 12.81, pHs: [8.2, 9.2]}, "滴定..."], //TODO
+        [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
+        [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 12.81, pHs: [6.2, 9.2]}, "滴定..."], //TODO
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_1: 12.81 }, '记录第一次滴定体积'],
@@ -5293,15 +5295,17 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.36, remain: true, pHs: [6.2, 8.2]}, "滴定..."], //TODO
+        [ENJ.Step_DropFromBuret, {volume: 80 - 2.36, remain: true, pHs: [5.8, 8.2]}, "滴定..."], //TODO
 
         [ENJ.Step_Record_2, { v1_2: 2.36, v1_m: 2.34 }, '记录第二次滴定体积，求出平均值'],
 
         //加甲醛
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 2, volume: 0}, "向烧杯中加入10ml的甲醛"],
-
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.36 - 12.84, pHs: [6.2, 9.2]}, "滴定..."], //TODO
+        [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
+        [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 12.84, pHs: [6.2, 9.2]}, "滴定..."], //TODO
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v2_2: 12.84, v2_m: 12.83 }, '记录第二次滴定体积，求出平均值'],
@@ -5326,8 +5330,10 @@ ENJ.Script_3 = (function() {
         //加甲醛
         [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
         [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向烧杯中加入10ml的甲醛"],
-
-        [ENJ.Step_DropFromBuret, {volume: 80 - 0.02 - 0.59, pHs: [8.2, 9.2], speed: 20}, "滴定..."], //TODO
+        [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
+        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
+        [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 0.59, pHs: [6.2, 9.2], speed: 20}, "滴定..."], //TODO
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
         [ENJ.Step_Record_2, { v0_2: 0.59, xx: 2036.84, canClose: false }, '记录空白滴定体积，计算酱油的氨基态氮含量']
