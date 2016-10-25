@@ -1023,7 +1023,7 @@ ENJ.SoySauce = (function() {
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 75;
 
-      liquid = LiquidContainer.createLiquid("酱油", self.store('color'), shape);
+      //liquid = LiquidContainer.createLiquid("酱油", self.store('color'), shape);
 
       bottle = new Bitmap(RES.getRes("酱油瓶"));
 
@@ -1031,7 +1031,7 @@ ENJ.SoySauce = (function() {
       cap.set({ x: 26, y: -15 });
 
 
-      self.addChild(liquid, bottle, cap);
+      self.addChild(/*liquid,*/ bottle, cap);
       //this.addChild(label);
 
       self.cap = cap;
@@ -1927,8 +1927,8 @@ ENJ.Scene_3 = (function() {
       suckBall = new ENJ.SuckBall();
       soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd330000 });
 
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
-      pipet2 = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x99402000 });
+      pipet2 = new ENJ.Pipet({ volume: 0, color: 0x66402000 });
       //bigPipet = new ENJ.Pipet({ volume: 0, color: 0x66330000, ratio: 5 });
       bigPipet = new ENJ.VolumetricPipet({ volume: 0, color: 0x66330000, ratio: 5 });
 

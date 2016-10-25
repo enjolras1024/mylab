@@ -987,9 +987,9 @@ ENJ.VolumetricFlask = (function() {
 })();
 
 ///##############################################################################
-// src/elements/SoySauce.js
+// src/elements/Vinegar.js
 //###############################################################################
-ENJ.SoySauce = (function() {
+ENJ.Vinegar = (function() {
   var LiquidContainer = ENJ.LiquidContainer,
     Tween = CRE.Tween,
     Shape = CRE.Shape,
@@ -999,12 +999,12 @@ ENJ.SoySauce = (function() {
   return ENJ.defineClass({
     /**
      *
-     * @class SoySauce
+     * @class Vinegar
      * @extends LiquidContainer
      *
      * @constructor
      */
-    constructor: function SoySauce(store) {
+    constructor: function Vinegar(store) {
       LiquidContainer.call(this, store);
     }, extend: LiquidContainer,
     /**
@@ -1023,15 +1023,15 @@ ENJ.SoySauce = (function() {
       //label = new ENJ.NumLabel({ unit: 'ml' });
       //label.x = 75;
 
-      liquid = LiquidContainer.createLiquid("酱油", self.store('color'), shape);
+      //liquid = LiquidContainer.createLiquid("酱油", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("酱油瓶"));
+      bottle = new Bitmap(RES.getRes("醋瓶"));
 
       cap = new Bitmap(RES.getRes("酱油瓶盖"));
       cap.set({ x: 26, y: -15 });
 
 
-      self.addChild(liquid, bottle, cap);
+      self.addChild(/*liquid,*/ bottle, cap);
       //this.addChild(label);
 
       self.cap = cap;
@@ -1886,7 +1886,7 @@ ENJ.Scene_2 = (function() {
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0x66330000 });
+      soySauce = new ENJ.Vinegar({ volume: 180, color: 0x66330000 });
       pipet = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
 
       pipet.rotation = -90;
@@ -5735,7 +5735,8 @@ RES.loadManifest({
     { id: "PH仪面板", src: "PH仪面板.png" },
     { id: "PH电极", src: "PH电极.png" },
     { id: "PH电极套", src: "PH电极套.png" },
-    { id: "酱油瓶", src: "酱油瓶.png" },
+    { id: "醋瓶", src: "醋瓶.png" },
+    //{ id: "酱油瓶", src: "酱油瓶.png" },
     { id: "酱油瓶盖", src: "酱油瓶盖.png" },
     { id: "酱油", src: "酱油.png" },
     { id: "容量瓶", src: "容量瓶.png" },
