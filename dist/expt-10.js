@@ -1784,8 +1784,8 @@
       this.addChild(liquid, cap, body);
 
       if ('no' in props) {
-        var text = new Text(props.no, 'normal 18px Arial', '#000000');
-        text.set({x: 2, y: 50});
+        var text = new Text(props.no, 'normal 12px 黑体', '#000000');
+        text.set({x: 8, y: 50, textAlign: 'center'});
         this.addChild(text);
       }
 
@@ -3338,6 +3338,82 @@
 })();
 
 //######################################################################################################################
+// src/skins/Reporter_10.js
+//######################################################################################################################
+(function() {
+  var Text = CreateJS.Text;
+  var Bitmap = CreateJS.Bitmap;
+  //var Graphics = CreateJS.Graphics;
+
+  var Skin = ENJ.Skin;
+
+  function Reporter_10(props) {
+    Skin.call(this, props);
+  }
+
+  ENJ.defineClass({
+    constructor: Reporter_10,
+    extend: Skin,
+
+    ready: function() {
+      var bg = new Bitmap(RES.getRes('结果报告'));
+      var button = new Bitmap(RES.getRes('关闭按钮'));
+
+      var i, AList = [], YList = [];
+
+      for (i = 0; i < 7; ++i) {
+        AList.push(new Text('', '12px Arial', '#000000'));
+        YList.push(new Text('', '12px Arial', '#000000'));
+
+        AList[i].set({x: 180 + i * 60, y: 105, textAlign: 'center'});
+        YList[i].set({x: 180 + i * 60, y: 130, textAlign: 'center'});
+      }
+
+      var XField = new Text('', '12px Arial', '#000000');
+      XField.set({x: 360, y: 155, textAlign: 'center'});
+
+      button.set({regX: 18, regY: 18, x: 585, y: 10, cursor: 'pointer'});
+
+      this.addChild(bg);
+      this.addChild(button);
+      this.addChild(XField);
+      this.addChild.apply(this, AList);
+      this.addChild.apply(this, YList);
+
+      this.AList = AList;
+      this.YList = YList;
+      this.XField = XField;
+
+      var self = this;
+
+      button.addEventListener('mousedown', function() {
+        button.set({scaleX: 0.8, scaleY: 0.8});
+      });
+
+      button.addEventListener('pressup', function() {
+        button.set({scaleX: 1.0, scaleY: 1.0});
+        self.dispatchEvent('close');
+});
+    },
+
+    onChange: function(key, val, old) {
+      var index;
+      if (/Y\d/.test(key)) {
+        index = Number(key.slice(1)) - 1;
+        this.YList[index].text = val;
+      } else if (/A\d/.test(key)) {
+        index = Number(key.slice(1)) - 1;
+        this.AList[index].text = val;
+      } else if (key === 'X') {
+        this.XField.text = val;
+      }
+    }
+  });
+
+  ENJ.Reporter_10 = Reporter_10;
+})();
+
+//######################################################################################################################
 // src/skins/SugarBallsBottle.js
 //######################################################################################################################
 (function() {
@@ -3956,7 +4032,8 @@
       powder.set({rotation: -30, visible: false});
       powder2.set({x: 680, y: 310});
       circle.set({x:700, y: 320, scaleX: 0, scaleY: 0});
-      colorCard.visible = false;
+      colorCard.set({x:400, y: 0, visible: false});
+      //colorCard.visible = false;
       phTestPaper.visible = false;
       //circle.set({scaleX: 0, scaleY: 0});
       ladle.set({regX: 7, regY: 130, visible: false});
@@ -4067,7 +4144,8 @@
       //tube.set({x: 470, y: 260});
       funnel.set({x: 515, y: 180});
 
-      colorCard.visible = false;
+      colorCard.set({x:400, y: 0, visible: false});
+      //colorCard.visible = false;
       phTestPaper.visible = false;
 
       this.place(bar, {x: 750, y: 450});
@@ -4746,6 +4824,7 @@
       //var suckBall = new ENJ.SuckBall(/*RES.getRes("蒸馏水瓶")*/);
 
       var spectrophotometer = new ENJ.Spectrophotometer();
+      var reporter = new ENJ.Reporter_10();
 
       var i;
 
@@ -4768,7 +4847,7 @@
       papers.set({x: 750, y: 450});
       paper.visible = false;
       //paper.set({x: 750, y: 450});
-      //stand3.set({x: 600, y: 200});
+      reporter.set({x: 100, y: 100, visible: false});
 
       this.place(paper, {x: 750, y: 430});
       this.place(beaker, {x: 500, y: 400});
@@ -4792,8 +4871,8 @@
         //hand
 
         papers,
-        paper/*,
-        shape*/
+        paper,
+        reporter
       );
 
       this.set({
@@ -4801,6 +4880,7 @@
         cuvettes: cuvettes,
         tubes: tubes,
         paper: paper,
+        reporter: reporter,
         beaker: beaker
       })
 
@@ -4885,6 +4965,7 @@
       //var suckBall = new ENJ.SuckBall(/*RES.getRes("蒸馏水瓶")*/);
 
       var spectrophotometer = new ENJ.Spectrophotometer();
+      var reporter = new ENJ.Reporter_10();
 
       var i;
 
@@ -4906,6 +4987,7 @@
       stand1.set({x: 100, y: 300});
       stand2.set({x: 100, y: 300});
       papers.set({x: 750, y: 450});
+      reporter.set({x: 100, y: 100, visible: false});
       paper.visible = false;
       //paper.set({x: 750, y: 450});
       //stand3.set({x: 600, y: 200});
@@ -4933,8 +5015,8 @@
         //hand
 
         papers,
-        paper/*,
-        shape*/
+        paper,
+        reporter
       );
 
       this.set({
@@ -4942,6 +5024,7 @@
         cuvettes: cuvettes,
         tubes: tubes,
         paper: paper,
+        reporter: reporter,
         beaker: beaker
       })
 
@@ -5153,6 +5236,7 @@
       var cap2 = new Bitmap(RES.getRes('层析缸盖子'));
 
       var clipWithRope = new ENJ.ClipWithRope();
+      var reporter = new ENJ.Reporter_10();
 
       //var body1 = new Bitmap(RES.getRes('毛细管罐身'));
       //var cap1 = new Bitmap(RES.getRes('毛细管盖子'));
@@ -5164,6 +5248,8 @@
       //var bottle = new ENJ.NarrowMouthBottle({volume: 40, color: 0x33ffffff, label: '  乙醇', useCap: true});
 
       bg.set({x: -100, y: -100});
+
+      reporter.set({x: 100, y: 100, visible: false});
 
       cap2.set({x: 704, y: 10, scaleX: 1.00, scaleY: 1.00});
       body2.set({x: 700, y: 100, scaleX: 1.00, scaleY: 1.00});
@@ -5180,7 +5266,7 @@
 
 
       this.addChild(
-        bg, /*shape, */paper, clipWithRope, body2, cap2
+        bg, /*shape, */paper, clipWithRope, body2, cap2, reporter
       );
 
       this.place(cap2, {x: 703, y: 10});
@@ -5189,6 +5275,7 @@
       this.set({
         clipWithRope: clipWithRope,
         nodes: [{x:-100, y:200}, {x:-100, y:200}],
+        reporter: reporter,
         paper: paper,
         cap2: cap2
       });
@@ -7569,7 +7656,7 @@
       Tween.get(phTestPaper)
         .to({alpha: 1.0}, 500)
         .wait(2000)
-        .to({x: 120, y: 85}, 1000)
+        .to({x: 520, y: 85}, 1000)
         .wait(3000)
         .call(function() {
           colorCard.visible = false;
@@ -7629,10 +7716,10 @@
       var x;
       switch (store.ph) {
         case 5:
-          x = 75;
+          x = 75 + 400;
           break;
         case 7:
-          x = 100;
+          x = 100 + 400;
           break;
       }
 
@@ -10818,6 +10905,57 @@
 
 })();
 
+//##############################################################################
+// src/steps/Step_RecordResults.js
+//##############################################################################
+(function() {
+  var Step = ENJ.Step;
+  //var Tween = CreateJS.Tween;
+
+  var base = Step.prototype;
+
+  function Step_RecordResults() {
+    Step.apply(this, arguments);
+  }
+
+  ENJ.defineClass({
+
+    constructor: Step_RecordResults, extend: Step,
+
+    start: function() {
+      base.start.call(this);
+
+      var store = this.store;
+      var scene = this.lab.getScene();
+      var reporter = this.reporter = scene.reporter;//, liquid = scene.liquid;
+
+      this.onClose = this.onClose.bind(this);
+
+
+      reporter.save(store);
+      reporter.visible = true;
+
+      reporter.addEventListener('close', this.onClose)
+
+    },
+
+    onClose: function() {
+      this.reporter.removeEventListener('close', this.onClose);
+      this.reporter.visible = false;
+      this.stop();
+    },
+
+    stop: function() {
+
+      base.stop.call(this);
+    }
+
+  });
+
+  ENJ.Step_RecordResults = Step_RecordResults;
+
+})();
+
 //######################################################################################################################
 //######################################################################################################################
 (function() {
@@ -11215,6 +11353,7 @@
         [ENJ.Step_InstallCuvette, { no: 3, ox: 3, oy: 15}, '放入分光光度计的第四个槽中'],
         [ENJ.Step_CorrectSpectrophotometer, {indices:[0,1,2,3]}, '盖上盖子，校准分光光度计'],
         [ENJ.Step_MeasureLuminosity, { luminosities: [0.230, 0.429, 0.643]}, '拉动拉杆，测定吸光度'],
+        [ENJ.Step_RecordResults, { A1: 50, A2: 100, A3: 150, Y1: 0.230, Y2: 0.429, Y3: 0.643}, '记录结果'],
         //[ENJ.Step_DumpToCuvette, { no: 0, targetVolume: 1, autoPlay: true }, ''],
         //[ENJ.Step_WashCuvette, { no: 0}, ''],
         //[ENJ.Step_DumpToCuvette, { no: 0, targetVolume: 2, autoPlay: true }, ''],
@@ -11233,6 +11372,7 @@
         [ENJ.Step_InstallCuvette, { no: 5, ox: 2, oy: 10}, '放入分光光度计的第三个槽中'],
         [ENJ.Step_CorrectSpectrophotometer, {indices:[4,5]}, '盖上盖子，校准分光光度计'],
         [ENJ.Step_MeasureLuminosity, { luminosities: [0.837, 1.050]}, '拉动拉杆，测定吸光度'],
+        [ENJ.Step_RecordResults, { A4: 200, A5: 250, Y4: 0.837, Y5: 1.050}, '记录结果'],
 
         ////
         [ENJ.Step_Interlude_2, { no: 10, title: '样品吸光度测定' }, ''],
@@ -11253,6 +11393,7 @@
         [ENJ.Step_InstallCuvette, { no: 2, ox: 2, oy: 10}, '放入分光光度计的第三个槽中'],
         [ENJ.Step_CorrectSpectrophotometer, {indices:[0,1,2]}, '盖上盖子，校准分光光度计'],
         [ENJ.Step_MeasureLuminosity, {luminosities: [0.508, 0.526]}, '拉动拉杆，测定吸光度'],
+        [ENJ.Step_RecordResults, { A6: 118.31, A7: 122.60, Y6: 0.508, Y7: 0.526}, '记录结果'],
         [ENJ.Step_RecycleToDish, { }, '测定完毕，将1号样品收集到蒸发皿中'],
 
         [ENJ.Step_Interlude_2, {no: '11', title: '薄层层析定性' }, ''],
@@ -11279,7 +11420,8 @@
         [ENJ.Step_BlowSample, {point: {x: 535, y: 485}, index: 1 }, '用吹风机吹干'],
 
         [ENJ.Step_Interlude_2, {no: '12', title: '薄层层析定性' }, ''],
-        [ENJ.Step_ClipPaper, {}, '']
+        [ENJ.Step_ClipPaper, {}, ''],
+        [ENJ.Step_RecordResults, { X: 11.07}, '实验结果']
       ];
 
       for(i = 0, n = configs.length; i < n; ++i) {
@@ -11506,6 +11648,8 @@
       { id: "称量纸平摊", src: "称量纸平摊.png" },
       { id: "称量纸折边", src: "称量纸折边.png" },
       { id: "称量纸对折", src: "称量纸对折.png" },
+      { id: "结果报告", src: "结果报告.png" },
+      { id: "关闭按钮", src: "关闭按钮.png" },
       { id: "具支试管", src: "具支试管.png" },
       { id: "具支试管液体", src: "具支试管液体.png" },
       { id: "砂芯漏斗", src: "砂芯漏斗.png" },
