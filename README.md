@@ -1,1 +1,1 @@
-Virtual chemistry lab powered by CreateJS
+Virtual Chemistry Lab Powered by CreateJS

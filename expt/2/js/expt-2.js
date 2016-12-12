@@ -987,9 +987,9 @@ ENJ.VolumetricFlask = (function() {
 })();
 
 ///##############################################################################
-// src/elements/SoySauce.js
+// src/elements/Vinegar.js
 //###############################################################################
-ENJ.SoySauce = (function() {
+ENJ.Vinegar = (function() {
   var LiquidContainer = ENJ.LiquidContainer,
     Tween = CRE.Tween,
     Shape = CRE.Shape,
@@ -999,12 +999,12 @@ ENJ.SoySauce = (function() {
   return ENJ.defineClass({
     /**
      *
-     * @class SoySauce
+     * @class Vinegar
      * @extends LiquidContainer
      *
      * @constructor
      */
-    constructor: function SoySauce(store) {
+    constructor: function Vinegar(store) {
       LiquidContainer.call(this, store);
     }, extend: LiquidContainer,
     /**
@@ -1025,7 +1025,7 @@ ENJ.SoySauce = (function() {
 
       //liquid = LiquidContainer.createLiquid("酱油", self.store('color'), shape);
 
-      bottle = new Bitmap(RES.getRes("酱油瓶"));
+      bottle = new Bitmap(RES.getRes("醋瓶"));
 
       cap = new Bitmap(RES.getRes("酱油瓶盖"));
       cap.set({ x: 26, y: -15 });
@@ -1591,85 +1591,9 @@ ENJ.Pipet = (function() {
 
 
 //##############################################################################
-// src/elements/VolumetricPipet.js
+// src/elements/ResultTable_2.js
 //##############################################################################
-ENJ.VolumetricPipet = (function() {
-  var LiquidContainer = ENJ.LiquidContainer,
-    Shape = CRE.Shape,
-    Bitmap = CRE.Bitmap,
-    Graphics = CRE.Graphics;
-
-  return ENJ.defineClass({
-    /**
-     *
-     * @class VolumetricPipet
-     * @extends LiquidContainer
-     *
-     * @constructor
-     * @param {Object} store
-     */
-    constructor: function VolumetricPipet(store) {
-      LiquidContainer.apply(this, arguments);
-    }, extend: LiquidContainer,
-    /**
-     * @override
-     */
-    ready: function() {
-      var self = this, graphics, shape, label, liquid, pipe;
-
-      graphics = new Graphics();
-      graphics.beginFill('#0f0').drawRect(-200, 0, 400, 400);
-
-      shape = new Shape(graphics);
-      shape.x = 8;
-
-      label = new ENJ.NumLabel({ unit: 'ml' });
-      label.visible = false;
-      label.x = 10;
-
-      liquid = LiquidContainer.createLiquid("胖肚移液管液体", self.store('color'), shape);
-
-      pipe = new Bitmap(RES.getRes("胖肚移液管"));
-
-      self.addChild(liquid, pipe, label);
-
-      self.set({
-        label: label,
-        shape: shape,
-        rotation: -90,
-        ratio: this.store('ratio') || 1
-      });
-
-      //this.store('volume', 5);
-      self.storeChanged('volume');
-    },
-
-    /**
-     * @override
-     */
-    storeChanged: function(key) {
-      var value = this.store(key), label = this.label, shape = this.shape;
-      switch (key) {
-        case 'volume':
-          //this.shape.y = 240 - value * 240 / 8 + 16;
-          shape.set({
-            y: 350 - value * 350 / 8 + 50,
-            scaleY: value / 8
-          });
-
-          label.store('num', value * this.ratio);
-          label.y = shape.y - 10;
-          break;
-      }
-    }
-  });
-})();
-
-
-//##############################################################################
-// src/elements/ResultTable_3.js
-//##############################################################################
-ENJ.ResultTable_3 = (function() {
+ENJ.ResultTable_2 = (function() {
   var Element = ENJ.Element,
     Bitmap = CRE.Bitmap,
     Text = CRE.Text;
@@ -1677,21 +1601,21 @@ ENJ.ResultTable_3 = (function() {
   return ENJ.defineClass({
     /**
      *
-     * @class ResultTable_3
+     * @class ResultTable_2
      * @extends Element
      *
      * @constructor
      */
-    constructor: function ResultTable_3(store) {
+    constructor: function ResultTable_2(store) {
       Element.call(this, store);
     }, extend: Element,
     /**
      * @override
      */
     ready: function() {
-      var self = this, bg, btn, label, i, names = ['v0_1', 'v0_2', 'v1_1', 'v1_2', 'v2_1', 'v2_2', 'v1_m', 'v2_m', 'xx'];
+      var self = this, bg, btn, label, i, names = ['v1_1', 'v1_2', 'v1', 'v2_1', 'v2_2', 'xx'];
 
-      bg = new Bitmap(RES.getRes("结果报告3"));
+      bg = new Bitmap(RES.getRes("结果报告2"));
 
       btn = new Bitmap(RES.getRes("关闭按钮"));
       btn.set({ regX: 24, regY: 24, cursor: 'pointer' });
@@ -1710,16 +1634,13 @@ ENJ.ResultTable_3 = (function() {
         self.addChild(label);
       }
 
-      //self.v0_1.set({ x: 620 , y: 125  });
-      self.v0_2.set({ x: 620 , y: 140  });
-      self.v1_1.set({ x: 270 , y: 125  });
-      self.v1_2.set({ x: 385 , y: 125  });
-      self.v2_1.set({ x: 270 , y: 155  });
-      self.v2_2.set({ x: 385 , y: 155  });
-      self.v1_m.set({ x: 500 , y: 125  });
-      self.v2_m.set({ x: 500 , y: 155  });
+      self.v1_1.set({ x: 200 , y: 130  });
+      self.v1_2.set({ x: 310 , y: 130  });
+      self.v1.set({ x: 415 , y: 130  });
+      self.v2_1.set({ x: 525 , y: 130  });
+      self.v2_2.set({ x: 630 , y: 130  });
 
-      self.xx.set({ x: 435 , y: 185 });
+      self.xx.set({ x: 415 , y: 165 });
 
       //self.storeChanged('title');
       btn.addEventListener('mousedown', function() {
@@ -1729,16 +1650,33 @@ ENJ.ResultTable_3 = (function() {
         btn.set({ scaleX: 1.0, scaleY: 1.0 });
         self.dispatchEvent('close');
       });
-      btn.cursor = 'pointer';
+
     },
     /**
      * @override
      */
     storeChanged: function(key) {
-      var self = this, value = self.store(key);
-
-      if (self[key] ) {
-        self[key].text = '' + value;
+      var self = this, value = self.store(key), label = self.label;
+      switch (key) {
+        case 'v1_1':
+          self.v1_1.text = '' + value;
+          break;
+        case 'v1_2':
+          self.v1_2.text = '' + value;
+          //self.v1.text = '' + 0.5 * (self.store('v1_1') + self.store('v1_2'));
+          break;
+        case 'v1':
+          self.v1.text = '' + value;
+          break;
+        case 'v2_1':
+          self.v2_1.text = '' + value;
+          break;
+        case 'v2_2':
+          self.v2_2.text = '' + value;
+          break;
+        case 'xx':
+          self.xx.text = '' + value;
+          break;
       }
     }
 
@@ -1828,33 +1766,33 @@ ENJ.Scene = (function() {
 })();
 
 //##############################################################################
-// src/scenes/Scene_3.js
+// src/scenes/Scene_2.js
 //##############################################################################
-ENJ.Scene_3 = (function() {
+ENJ.Scene_2 = (function() {
   var Scene = ENJ.Scene,
     Bitmap = CRE.Bitmap,
     Point = CRE.Point;
 
   return ENJ.defineClass({
     /**
-     * @class Scene_3
+     * @class Scene_2
      * @extends Scene
      * @constructor
      */
-    constructor: function Scene_3() {
+    constructor: function Scene_2() {
       Scene.apply(this, arguments);
     }, extend: Scene,
     /**
      * @override
      */
     ready: function() {
-      var self = this, bg, paper, curve, data, sheet, drop, tip, board, table,
-        rotor, hand, beaker, i,
+      var self = this, bg, paper, curve, data, sheet, bag, drop, tip,
+        rotor, hand, scissors, beaker, i, board, table,
         pipetStand, waterBottle, volumetricFlask, drainageBar, bigBeaker,
-        beakers = [], volumetricFlasks = [], rotors = [],
-        cylinder, stirrer, phInstrument, buret, titrationStand,
-        phElectrode, reagenBottle, formaldehyde,
-        suckBall, soySauce, pipet, pipet2, bigPipet;
+        bags = [], beakers = [], volumetricFlasks = [], rotors = [],
+        cylinder, stirrer, phInstrument, powder, buret, titrationStand,
+        phElectrode, reagenBottle,
+        suckBall, soySauce, pipet;
 
       // @todo CSS background maybe better.
       bg = new Bitmap(RES.getRes("背景"));
@@ -1862,19 +1800,25 @@ ENJ.Scene_3 = (function() {
       paper = new Bitmap(RES.getRes("纸巾"));
       paper.visible = false;
 
+
       drainageBar = new Bitmap(RES.getRes("引流棒"));
 
       curve = new ENJ.Curve();//new CRE.Shape(new CRE.Graphics());
 
+
       drop = new Bitmap(RES.getRes("水滴"));
       drop.visible = false;
 
-//      data = {
-//        images: [RES.getRes("剪刀")],
-//        frames: { width: 133, height: 73 },
-//        animations: { close: 1, open: 0 }
-//      };
-//      sheet = new CRE.SpriteSheet(data);
+      data = {
+        images: [RES.getRes("剪刀")],
+        frames: { width: 133, height: 73 },
+        animations: { close: 1, open: 0 }
+      };
+      sheet = new CRE.SpriteSheet(data);
+
+      scissors = new CRE.Sprite(sheet);
+      scissors.gotoAndStop('open');
+      scissors.set({ /*rotation: 45, */regX: 73, regY: 36 });
 
       data = {
         images: [RES.getRes("手")],
@@ -1902,6 +1846,24 @@ ENJ.Scene_3 = (function() {
         rotors.push(rotor);
       }
 
+      data = {
+        images: [RES.getRes("袋子")],
+        frames: { width: 100, height: 96 },
+        animations: { normal: 0, open: 1 }
+      };
+      sheet = new CRE.SpriteSheet(data);
+
+      for(i = 0; i < 2; ++ i) {
+        bag = new CRE.Sprite(sheet);
+        bag.gotoAndStop('normal');
+        bag.set({ scaleY: 0.4, skewX: 50, regX: 50, regY: 48 });
+
+        bags.push(bag);
+      }
+
+      powder = new Bitmap(RES.getRes("粉末"));
+      powder.visible = false;
+
       //beaker = new Bitmap(RES.getRes("烧杯"));
       //beaker.set({ x: 200, y: 500 });
 
@@ -1909,10 +1871,9 @@ ENJ.Scene_3 = (function() {
 
       waterBottle = new ENJ.WaterBottle(RES.getRes("蒸馏水瓶"));
 
-      //cap = new Bitmap(RES.getRes("盖子甲"));
+//      cap = new Bitmap(RES.getRes("盖子甲"));
 
       reagenBottle = new ENJ.ReagenBottle({ volume: 500, color: 0x22ffffff, icon: "氢氧化钠标签", cap: "盖子甲" } );
-      formaldehyde = new ENJ.ReagenBottle({ volume: 500, color: 0x66330000, icon: "甲醛标签", cap: "盖子甲", dark: true } );
 
 
       pipetStand = new Bitmap(RES.getRes("移液管架"));
@@ -1925,16 +1886,10 @@ ENJ.Scene_3 = (function() {
 
 
       suckBall = new ENJ.SuckBall();
-      soySauce = new ENJ.SoySauce({ volume: 180, color: 0xdd330000 });
-
-      pipet = new ENJ.Pipet({ volume: 0, color: 0x99402000 });
-      pipet2 = new ENJ.Pipet({ volume: 0, color: 0x66402000 });
-      //bigPipet = new ENJ.Pipet({ volume: 0, color: 0x66330000, ratio: 5 });
-      bigPipet = new ENJ.VolumetricPipet({ volume: 0, color: 0x66330000, ratio: 5 });
+      soySauce = new ENJ.Vinegar({ volume: 180, color: 0x66330000 });
+      pipet = new ENJ.Pipet({ volume: 0, color: 0x66330000 });
 
       pipet.rotation = -90;
-      pipet2.rotation = -90;
-      bigPipet.set({ rotation: -90/*, scaleY: 1.20*/});
       drainageBar.rotation = -90;
 
       phElectrode = new ENJ.PHElectrode();
@@ -1943,12 +1898,11 @@ ENJ.Scene_3 = (function() {
 
       cylinder = new ENJ.Cylinder({ volume: 0, color: 0x22ffffff });
 
-      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x990000ff });
+      //volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
 
-      var colors = [0x22ffffff,0x66330000,0x22ffffff];
-      for (i = 0; i < 3; ++ i) {
-        volumetricFlask = new ENJ.VolumetricFlask({ volume: 100, color: colors[i] });
-        //this.place(volumetricFlask, new Point(130 + 50 * i, 200 + i * 10));
+      for (i = 0; i < 2; ++ i) {
+        volumetricFlask = new ENJ.VolumetricFlask({ volume: 0, color: 0x22ffffff });
+        this.place(volumetricFlask, new Point(130 + 100 * i, 200 + i * 20));
         volumetricFlasks.push(volumetricFlask);
       }
 
@@ -1958,40 +1912,40 @@ ENJ.Scene_3 = (function() {
         beakers.push(beaker);
       }
 
-      bigBeaker = new ENJ.Beaker({ volume: 10, color: 0x66330000 });
+      bigBeaker = new ENJ.Beaker({ volume: 10, color: 0x660000ff });
       bigBeaker.set({ scaleX: 1.25, scaleY: 1.25 });
 
-      table = new ENJ.ResultTable_3();
+      table = new ENJ.ResultTable_2();
       table.set({regX: 360, regY: 200});
       table.set({x: 480, y: 320, visible: false});
 
       tip = new CRE.Text();
       tip.set({x: 50, y: 50, color: "#fff", font: "bold 18px Arial"});
 
+
       board = new ENJ.Board(/*{title:"校准PH计"}*/);
       board.visible = false;
-
 
       self.addChild(
         bg,
         pipetStand,
 
-        //cap,
+//        cap,
+
+        bags[0],
+        bags[1],
 
         stirrer,
-
         reagenBottle,
-        formaldehyde,
 
-
+        cylinder,
         waterBottle,
 
         suckBall,
-
         pipet,
-        pipet2,
-        bigPipet,
 
+        volumetricFlasks[0],
+        volumetricFlasks[1],
 
         titrationStand,
 
@@ -2004,19 +1958,12 @@ ENJ.Scene_3 = (function() {
         curve,
         phInstrument,
 
-        volumetricFlasks[0],
-        volumetricFlasks[1],
-        volumetricFlasks[2],
-
-        //powder,
+        powder,
 
         soySauce,
-
-
-
         phElectrode,
 
-        drop,
+
 
         beakers[0],
         beakers[1],
@@ -2027,11 +1974,11 @@ ENJ.Scene_3 = (function() {
 
         buret,
 
-        cylinder,
+        scissors,
 
         paper,
         hand,
-
+        drop,
 
         table,
 
@@ -2039,31 +1986,30 @@ ENJ.Scene_3 = (function() {
         board
       );
 
-      for (i = 0; i < 3; i += 2) {
-        self.place(volumetricFlasks[i], new Point(130 + 50 * i, 200 + i * 10));
+      for (i = 0; i < 2; ++ i) {
+        self.place(volumetricFlasks[i], new Point(130 + 100 * i, 200 + i * 20));
       }
-      self.place(volumetricFlasks[1], new Point(130 + 60, 200 + 5 * 10));
-      volumetricFlasks[1].visible = false;
-      volumetricFlasks[1].scaleX = 0.8;
-      volumetricFlasks[1].scaleY = 0.8;
 
-      for (i = 0; i < 4; ++ i) {
-        self.place(beakers[i], new Point(100 - 30 * i,450 + 20 * i));
+      for (i = 0; i < 2; ++ i) {
+        self.place(bags[i],{ x: 510 - i * 60, y: 480 + i * 10});
       }
-      //TODO
-      beakers[1].visible = false;
-      beakers[3].visible = false;
 
       for (i = 0; i < 2; ++ i) {
         self.place(rotors[i],{ x: 600 + 20 * i, y: 470 + 10 * i });
       }
 
+      for (i = 0; i < 4; ++ i) {
+        self.place(beakers[i], new Point(100 - 30 * i,450 + 20 * i));
+      }
+
       self.place(bigBeaker, new Point(100, 1000));
+
+
 
       bg.set({regX: 600, regY: 320, scaleX: 1.2});
       self.place(bg, new Point(480, 320));
 
-      self.place(waterBottle, new Point(370, 270));
+      self.place(waterBottle, new Point(425, 230));
       self.place(pipetStand, new Point(700, 270));
 
 //    this.place(titrationStand, new Point(520,160));
@@ -2072,19 +2018,16 @@ ENJ.Scene_3 = (function() {
       self.place(buret, new Point(650,1000));
 
       self.place(phInstrument, new Point(680, 380));
-      self.place(drainageBar, new Point(680, 375));
+      self.place(drainageBar, new Point(680, 320));
 
       self.place(stirrer, new Point(600, 500));
 
-      //self.place(cap, new Point(592,290));
-      self.place(reagenBottle, new Point(580, 300));
-      self.place(formaldehyde, new Point(480, 300));
+//      self.place(cap, new Point(572,290));
+      self.place(reagenBottle, new Point(560, 300));
       self.place(pipet, new Point(700, 300));
-      self.place(pipet2, new Point(700, 325));
-      self.place(bigPipet, new Point(650, 350));
 
       self.place(suckBall, new Point(670, 440));
-      self.place(cylinder, new Point(-50, 180));
+      self.place(cylinder, new Point(340, 180));
       self.place(soySauce, new Point(40, 210));
 
       self.place(phElectrode, new Point(690, 330));
@@ -2095,6 +2038,7 @@ ENJ.Scene_3 = (function() {
         curve: curve,
         hand: hand,
         stirrer: stirrer,
+        scissors: scissors,
         drainageBar: drainageBar,
         titrationStand: titrationStand,
         phElectrode: phElectrode,
@@ -2102,21 +2046,18 @@ ENJ.Scene_3 = (function() {
         bigBeaker: bigBeaker,
         beaker: beakers[3],
         pipet: pipet,
-        pipet2: pipet2,
-        bigPipet: bigPipet,
         waterBottle: waterBottle,
         soySauce: soySauce,
         suckBall: suckBall,
-        //powder: powder,
+        powder: powder,
         paper: paper,
         cylinder: cylinder,
+        bags: bags,
         beakers: beakers,
         rotors: rotors,
         volumetricFlasks: volumetricFlasks,
-        volumetricFlask: volumetricFlasks[1],
         reagenBottle: reagenBottle,
-        formaldehyde: formaldehyde,
-        //cap: cap,
+//        cap: cap,
         drop: drop,
         buret: buret,
         tip: tip,
@@ -2204,6 +2145,348 @@ ENJ.Step = (function() {
     stop: function() {
       this._active = false;
       this.dispatchEvent('complete');
+    }
+  });
+})();
+
+//##############################################################################
+// src/steps/Step_CutBag.js
+//##############################################################################
+ENJ.Step_CutBag = (function() {
+  var Step = ENJ.Step,
+    Tween = CRE.Tween;
+
+  var base = Step.prototype;
+  
+  return ENJ.defineClass({
+    /**
+     * 剪开袋子
+     * 所用：剪刀、袋子
+     *
+     * @constructor
+     */
+    constructor: function Step_CutBag() {
+      Step.apply(this, arguments);
+    }, extend: Step,
+
+    start: function() {
+      base.start.call(this);
+
+      var store = this.store, scene = this.scene, bag, scissors,
+        handlers = this.handlers = [];//, pipet, bottle, suckBall;
+      // @todo 精简
+      bag = this.bag = scene.bags[store['bag']];
+      scissors = this.scissors = scene.scissors;
+
+      bag.cursor = 'pointer';
+      scissors.cursor = 'pointer';
+      scissors.visible = false;
+      /*scene.setToTop(this.suckBall);
+       scene.setToTop(this.pipet);
+       scene.setToTop(this.bottle);
+
+       this.suckBall.cursor = 'pointer';
+       this.pipet.cursor = 'pointer';
+       this.bottle.cursor = 'pointer';*/
+
+      this.flags = [];
+
+      handlers[0] = this.onClickBag.bind(this);
+      handlers[1] = this.onMouseScissors.bind(this);
+
+      scene.setChildIndex(bag, scene.getChildIndex(scissors) - 1);
+
+      //this.bag.addEventListener('click', handlers[0]);
+      Tween.get(bag).wait(1000).to({
+        x: 320, y: 450, scaleY: 1.0, skewX: 0, rotation: -45
+      }, 500).call(function() {
+        scissors.visible = true;
+        scissors.gotoAndStop('open');
+        scissors.addEventListener('mousedown', handlers[1]);
+        scissors.addEventListener('pressup', handlers[1]);
+        //stage.addEventListener('stagemousemove', handlers[2]);
+      });
+    },
+
+    stop: function() {
+      base.stop.call(this);
+
+      var handlers = this.handlers, bag = this.bag, scissors = this.scissors;
+
+      bag.cursor = 'auto';
+      scissors.cursor = 'auto';
+
+      //this.scene.setChildIndex(bag, bag.index);
+      //handlers[0] = this.onClickBag.bind(this);
+
+      //this.bag.removeEventListener('click', handlers[0]);
+      scissors.removeEventListener('pressup', handlers[1]);
+      scissors.removeEventListener('mousedown', handlers[1]);
+      //this.scene.stage.removeEventListener('stagemousemove', handlers[2]);
+      handlers.splice(0);
+
+    },
+
+    onClickBag: function() {
+      var bag = this.bag, scissors = this.scissors, handlers = this.handlers;// stage = this.scene.stage;
+      if (this.flags[0]) { return; }
+      //bag.start();
+      this.flags[0] = true;
+      Tween.get(bag).to({
+        x: 320, y: 450, scaleY: 1.0, skewX: 0, rotation: -45
+      }, 500).call(function() {
+        scissors.visible = true;
+        scissors.gotoAndStop('open');
+        scissors.addEventListener('mousedown', handlers[1]);
+        scissors.addEventListener('pressup', handlers[1]);
+        //stage.addEventListener('stagemousemove', handlers[2]);
+      });
+    },
+
+    onMouseScissors: function(event) {
+      var bag = this.bag, scissors = this.scissors;
+      switch (event.type) {
+        case 'mousedown':
+          this.flags[1] = true;
+          scissors.gotoAndStop('close');
+          break;
+        case 'pressup':
+          scissors.gotoAndStop('open');
+          if (this.flags[1]
+            && scissors.x > bag.x + 20 && scissors.x < bag.x + 80
+            && scissors.y > bag.y - 50 && scissors.y < bag.y) {
+            scissors.visible = false;
+            bag.gotoAndStop('open');
+            this.stop();
+          }
+          this.flags[1] = false;
+          break;
+      }
+    },
+
+    /*onStageMouseMove = function(event) {
+     this.scissors.set({ x: event.stageX, y: event.stageY });
+     };*/
+
+    update: function() {
+      this.scissors.set(this.scene.getLocalMouse());
+    }
+  });
+})();
+
+//##############################################################################
+// src/steps/Step_WashBag.js
+//##############################################################################
+ENJ.Step_WashBag = (function() {
+  var Step = ENJ.Step,
+    Tween = CRE.Tween;
+
+  var base = Step.prototype;
+  
+  return ENJ.defineClass({
+    /**
+     * 清洗袋子内部残留粉末
+     * 所用：蒸馏水、袋子、烧杯、粉末
+     *
+     * @constructor
+     */
+    constructor: function Step_WashBag() {
+      Step.apply(this, arguments);
+    }, extend: Step,
+
+    start: function() {
+      base.start.call(this);
+
+      var store = this.store, scene = this.scene,
+        handlers = this.handlers = [], bottle;
+
+      this.time = 0;
+      this.flags = [];
+
+      this.bag = scene.bags[store.bag];
+      this.beaker = scene.beakers[store.beaker];
+      this.powder = scene.powder;
+      bottle = this.bottle = scene.waterBottle;
+
+      bottle.cursor = 'pointer';
+
+      if(!bottle.active/*this.store.remain*/) {
+        bottle.start();
+        //bottle.active = true;
+        Tween.get(bottle).to({
+          x: 400, y: 400
+        }, 250);
+      }
+
+      handlers[0] = this.onClickBottle.bind(this);
+      bottle.addEventListener('click', handlers[0]);
+    },
+
+    stop: function() {
+      var handlers = this.handlers;
+
+      if(!this.store.remain) {
+        Tween.get(this.bag).to({
+          alpha: 0.0
+        }, 250);
+      } else {
+        Tween.get(this.bag).to({
+          rotation: 30
+        }, 250);
+      }
+
+      /*if(!this.store.remain) {
+       //this.bottle.stop();
+       this.bottle.active = false;
+       }*/
+
+      this.bottle.cursor = 'auto';
+      this.bottle.removeEventListener('click', handlers[0]);
+
+      base.stop.call(this);
+    },
+
+    onClickBottle: function() {
+      var self = this, bag = this.bag, beaker = this.beaker, bottle =  this.bottle;
+      if (this.flags[0]) { return; }
+      this.flags[0] = true;
+      Tween.get(bottle).to({
+        rotation: -30, x: 320, y: 430
+      }, 250).call(function() {
+        self.flags[1] = true;
+
+        //var onComplete;
+
+
+        Tween.get(bottle).wait(1000).to({
+          rotation: 0, x: 400, y: 400
+        }, 250);
+        Tween.get(bag).wait(1000).to({
+          rotation: 120
+        }, 1000);//.call(onComplete);
+      });
+    },
+
+    update: function(event) {
+      var powder = this.powder, beaker = this.beaker, time, volume;
+      if (this.flags[1]) {
+        time = this.time += event.delta;
+        volume = beaker.store('volume');
+        if (volume >= this.store.volume) {
+          //volume = this.store.volume;
+          beaker.store('volume', this.store.volume);
+          //this.flags[1] = false;
+          this.stop();
+        }
+
+        if (time > 1000) {
+          //volume += event.delta / 1000;
+          beaker.store('volume', volume + event.delta / 200);
+          if (powder.alpha > 0) {
+            powder.alpha -= event.delta / 2000;
+          } else {
+            powder.visible = false;
+          }
+        }
+      }
+    }
+  });
+})();
+
+//##############################################################################
+// src/steps/Step_DumpPowder.js
+//##############################################################################
+ENJ.Step_DumpPowder = (function() {
+  var Step = ENJ.Step,
+    Tween = CRE.Tween;
+
+  var base = Step.prototype;
+  
+  return ENJ.defineClass({
+    /**
+     * 将袋中粉末倒入烧杯中
+     * 所用：袋子、粉末（动画）、烧杯
+     *
+     * @constructor
+     */
+    constructor: function Step_DumpPowder() {
+      Step.apply(this, arguments);
+    }, extend: Step,
+
+    start: function() {
+      base.start.call(this);
+
+      var store = this.store, scene = this.scene,
+        handlers = this.handlers = [], flags = this.flags = [],
+        bag, beaker;//, pipet, bottle, suckBall;
+      // @todo 精简
+      bag = this.bag = scene.bags[store.bag];
+      beaker = this.beaker = scene.beakers[store.beaker];
+      this.powder = scene.powder;
+
+      bag.cursor = 'pointer';
+      //this.beaker.cursor = 'pointer';
+
+      var g = new CRE.Graphics();
+      g.beginFill('#0f0').drawEllipse(0, 0, 80, 40);
+
+      this.rect = new CRE.Shape(g);
+
+
+      Tween.get(beaker).to({
+        x: 300, y: 500
+      }, 500);
+
+      Tween.get(bag).to({
+        rotation: 30
+      }, 500).call(function() {
+        flags[0] = true;
+      });
+
+      handlers[0] = this.onClickBag.bind(this);
+      bag.addEventListener('click', handlers[0]);
+      bag.cursor = 'pointer';
+    },
+
+    stop: function() {
+      var handlers = this.handlers;
+
+      this.bag.removeEventListener('click', handlers[0]);
+      this.bag.cursor = 'auto';
+      base.stop.call(this);
+    },
+
+    onClickBag: function() {
+      if (!this.flags[0] || this.flags[1]) { return; }
+      //bag.start();
+      this.flags[1] = true;
+
+      var powder = this.powder, beaker = this.beaker, bag = this.bag, rect = this.rect, self = this;
+      //powder.visible = true;
+      powder.set({ alpha: 1.0, visible: true, x: beaker.x + 15, y: beaker.y + 75 });
+
+      rect.x = powder.x - 10;
+      rect.y = powder.y - 12;
+      powder.mask = rect;
+
+      powder.y += 20;
+
+      //bag.rotation = 30;
+      Tween.get(bag)
+        .to({ rotation: 120 }, 250)
+        .wait(1500)
+        .to({ rotation: 30 }, 250)
+        .call(function() {
+          //bag.rotation = 30;
+          /*Tween.get(bag).wait(1500).to({
+           rotation: 30
+           }, 250);*/
+          self.stop();
+        });
+
+      Tween.get(powder).to({
+        y: beaker.y + 75
+      }, 2000);
     }
   });
 })();
@@ -3533,121 +3816,6 @@ ENJ.Step_AddRotor = (function() {
 })();
 
 //##############################################################################
-// src/steps/Step_AddFormaldehyde.js
-//##############################################################################
-ENJ.Step_AddFormaldehyde = (function() {
-  var Step = ENJ.Step,
-    Tween = CRE.Tween;
-
-  var base = Step.prototype;
-
-  return ENJ.defineClass({
-    /**
-     * 添加甲醛
-     * 所用：甲醛、烧杯、手、移液管
-     *
-     * @constructor
-     */
-    constructor: function Step_AddFormaldehyde() {
-      Step.apply(this, arguments);
-    }, extend: Step,
-
-    start: function() {
-      base.start.call(this);
-      var scene = this.scene, store = this.store,
-        handlers = this.handlers = [], hand, pipet, bottle;
-
-      this.flags = [];
-
-      hand = this.hand = scene.hand;
-      pipet = this.pipet = store.pipet ?  scene[store.pipet] : scene.pipet;
-
-      bottle = this.bottle = scene.beakers[store.beaker];
-      //bottle.fix();
-      bottle.start();
-
-
-      //scene.setChildIndex(pipet, scene.getChildIndex(bottle) - 1);
-
-      handlers[0] = this.onClick.bind(this);
-      hand.addEventListener('click', handlers[0]);
-
-      //this.flags[0] = store.rightNow;
-
-
-      bottle.visible = true;
-      hand.set({visible:true, y:pipet.y - 20});
-
-
-      Tween.get(hand).to({y:bottle.y-270, x: bottle.x},500);
-      Tween.get(pipet).to({y:bottle.y-250, x: bottle.x+10},500);
-    },
-
-    stop: function() {
-      var bottle = this.bottle, hand = this.hand;
-      bottle.stop();
-      hand.visible = false;
-      hand.gotoAndStop('down');
-      //this.scene.setChildIndex(bottle, bottle.index);
-      hand.removeEventListener('click', this.handlers[0]);
-      base.stop.call(this);
-    },
-
-    update: function(event) {
-      var volume, delta, hand = this.hand, bottle = this.bottle, pipet = this.pipet,
-        target = 0, showLabel = this.store.showLabel;
-
-      bottle.refresh();
-      if (this.flags[0] && !this.flags[1]) {
-        volume = pipet.store('volume');
-        delta = event.delta / 1000;
-        if (volume <= target) {
-          volume = target;
-          this.flags[1] = true;
-          hand.gotoAndStop('down');
-
-//                if (remain) {
-
-
-
-          if (showLabel) {
-            pipet.hideLabel();
-          }
-          //if (volume<=0) {
-//          Tween.get(bottle)
-//            .to({
-//              x: bottle.location.x,
-//              y: bottle.location.y
-//            },500);
-
-            Tween.get(pipet)
-              .to({
-                x: pipet.location.x,
-                y: pipet.location.y,
-                rotation: -90
-              },500).call(this.stop.bind(this));
-          //}
-
-        } else {
-          volume -= delta;
-        }
-        if (showLabel) {
-          pipet.showLabel();
-        }
-        pipet.store('volume', volume);
-        bottle.store('volume', bottle.store('volume') + delta );
-      }
-    },
-
-    onClick: function() {
-      if (this.flags[0] ) { return; }
-      this.flags[0] = true;
-      this.hand.gotoAndStop('up');
-    }
-  });
-})();
-
-//##############################################################################
 // src/steps/Step_StartStirrer.js
 //##############################################################################
 ENJ.Step_StartStirrer = (function() {
@@ -4861,73 +5029,6 @@ ENJ.Step_Interlude_2 = (function() {
 })();
 
 //##############################################################################
-// src/steps/Step_Interlude_3.js
-//##############################################################################
-ENJ.Step_Interlude_3 = (function() {
-  var Step = ENJ.Step,
-    Tween = CRE.Tween;
-
-  var base = Step.prototype;
-
-  return ENJ.defineClass({
-    /**
-     * 过场
-     * 所用：
-     *
-     * @constructor
-     */
-    constructor: function Step_Interlude_3() {
-      Step.apply(this, arguments);
-    }, extend: Step,
-
-    start: function() {
-      base.start.call(this);
-      var self = this, scene = this.scene, store = this.store,
-        rotors = scene.rotors, beakers = scene.beakers, board = scene.board, flasks = scene.volumetricFlasks;
-
-      board.store('title', store.title);
-      board.visible = true;
-      Tween.get(board)
-        .to({ alpha: 1.0 }, 500)
-        .call( function() {
-          scene.addChild(rotors[0]);
-          scene.addChild(rotors[1]);
-          scene.setChildIndex(rotors[0], rotors[0].index);
-          scene.setChildIndex(rotors[1], rotors[1].index);
-
-          rotors[0].set(rotors[0].location);
-          rotors[1].set(rotors[1].location);
-
-          var i, beaker;
-          for (i = 0; i < beakers.length; i += 2) {
-            beaker = beakers[i];
-            beaker.visible = true;
-            beaker.set(beaker.location);
-            beaker.store('color', 0x66330000);
-            beaker.store('volume',0);
-          }
-
-          flasks[1].store('volume', 0);
-          flasks[1].visible = true;
-          flasks[0].visible = false;
-          flasks[2].visible = false;
-        })
-        .wait(1000)
-        .to({ alpha: 0.0 }, 500)
-        .call(function() {
-          board.visible = false;
-          self.stop();
-        });
-    },
-
-    stop: function() {
-      base.stop.call(this);
-    }
-  })
-
-})();
-
-//##############################################################################
 // src/steps/Step_Record_2.js
 //##############################################################################
 ENJ.Step_Record_2 = (function() {
@@ -5144,19 +5245,19 @@ ENJ.Script = (function() {
 })();
 
 //##############################################################################
-// src/scripts/Script_3.js
+// src/scripts/Script_2.js
 //##############################################################################
-ENJ.Script_3 = (function() {
+ENJ.Script_2 = (function() {
   var Script = ENJ.Script;
 
   return ENJ.defineClass({
     /**
-     * @class Script_3
+     * @class Script_2
      * @extends Script
      *
      * @constructor
      */
-    constructor: function Script_3() {
+    constructor: function Script_2() {
       Script.apply( this, arguments );
     }, extend: Script,
     /**
@@ -5166,47 +5267,44 @@ ENJ.Script_3 = (function() {
       var i, n, config, configs, steps = [], stores = [], tips = [];
 
       configs  = [
+
         [ENJ.Step_Interlude_1, { title: "校准PH计" }, ''],
-        //// 校准1
-        ///*
-        //[ENJ.Step_CutBag, { bag: 1 }, "剪开一袋PH标准缓冲液（6.86）粉末"],
-        //[ENJ.Step_DumpPowder, { bag: 1, beaker: 3 }, "将粉末倒入干净的烧杯中"],
-        //[ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: true, volume: 5 }, "用蒸馏水清洗粉末袋子"],
-        //[ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: false, volume: 10 }, "用蒸馏水清洗粉末袋子"],
-        //[ENJ.Step_DumpWater, { beaker: 3, volume: 20 }, "加水稀释"],
-        //[ENJ.Step_StirLiquid, { beaker: 3, remain: true }, "用玻璃杯搅拌一下"],
-        //[ENJ.Step_TransferLiquid, { beaker: 3, flask: 2, remain: true }, "将稀释液移入容量瓶中"],
-        //[ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
-        //[ENJ.Step_TransferLiquid, { beaker: 3, flask: 2, remain: true }, "将清洗液移入容量瓶中"],
-        //[ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
-        //[ENJ.Step_TransferLiquid, { beaker: 3, flask: 2 }, "将清洗液移入容量瓶中"],
-        //[ENJ.Step_ConstantVolume, { flask: 2, volume: 100 }, "补加蒸馏水，定容至100ml"],
-        //[ENJ.Step_ShakeUp, { flask: 2 }, "摇匀"],
-        //*/
+        // 校准1
+        [ENJ.Step_CutBag, { bag: 1 }, "剪开一袋PH标准缓冲液（6.86）粉末"],
+        [ENJ.Step_DumpPowder, { bag: 1, beaker: 3 }, "将粉末倒入干净的烧杯中"],
+        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: true, volume: 5 }, "用蒸馏水清洗粉末袋子"],
+        [ENJ.Step_WashBag, { bag: 1, beaker: 3, remain: false, volume: 10 }, "用蒸馏水清洗粉末袋子"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20 }, "加水稀释"],
+        [ENJ.Step_StirLiquid, { beaker: 3, remain: true }, "用玻璃杯搅拌一下"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "将稀释液移入容量瓶中"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1, remain: true }, "将清洗液移入容量瓶中"],
+        [ENJ.Step_DumpWater, { beaker: 3, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
+        [ENJ.Step_TransferLiquid, { beaker: 3, flask: 1 }, "将清洗液移入容量瓶中"],
+        [ENJ.Step_ConstantVolume, { flask: 1, volume: 100 }, "补加蒸馏水，定容至100ml"],
+        [ENJ.Step_ShakeUp, { flask: 1 }, "摇匀"],
         [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
         [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
-        [ENJ.Step_DumpFromFlask, { beaker: 2, flask: 2, volume: 30 }, "倒一些PH标准缓冲液（6.86）至干净的烧杯中"],
+        [ENJ.Step_DumpFromFlask, { beaker: 2, flask: 1, volume: 30 }, "倒一些PH标准缓冲液（6.86）至干净的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "打开电子搅拌器，开始自动搅拌"],
         [ENJ.Step_CorrectPHInstrument, {number: 6.86}, "校准PH计"],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "关闭电子搅拌器"],
-        //
-        //// 校准2
-        ///*
-        //[ENJ.Step_CutBag, { bag: 0 }, "剪开一袋PH标准缓冲液（9.18）粉末"],
-        //[ENJ.Step_DumpPowder, { bag: 0, beaker: 1 }, "将粉末倒入干净的烧杯中"],
-        //[ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: true, volume: 5 }, "用蒸馏水清洗粉末袋子"],
-        //[ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: false, volume: 10 }, "用蒸馏水清洗粉末袋子"],
-        //[ENJ.Step_DumpWater, { beaker: 1, volume: 20 }, "加水稀释"],
-        //[ENJ.Step_StirLiquid, { beaker: 1, remain: true }, "用玻璃杯搅拌一下"],
-        //[ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "将稀释液移入容量瓶中"],
-        //[ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
-        //[ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "将清洗液移入容量瓶中"],
-        //[ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
-        //[ENJ.Step_TransferLiquid, { beaker: 1, flask: 0 }, "将清洗液移入容量瓶中"],
-        //[ENJ.Step_ConstantVolume, { flask: 0, volume: 100 }, "补加蒸馏水，定容至100ml"],
-        //[ENJ.Step_ShakeUp, { flask: 0 }, "摇匀"],
-        //*/
+
+        // 校准2
+        [ENJ.Step_CutBag, { bag: 0 }, "剪开一袋PH标准缓冲液（9.18）粉末"],
+        [ENJ.Step_DumpPowder, { bag: 0, beaker: 1 }, "将粉末倒入干净的烧杯中"],
+        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: true, volume: 5 }, "用蒸馏水清洗粉末袋子"],
+        [ENJ.Step_WashBag, { bag: 0, beaker: 1, remain: false, volume: 10 }, "用蒸馏水清洗粉末袋子"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20 }, "加水稀释"],
+        [ENJ.Step_StirLiquid, { beaker: 1, remain: true }, "用玻璃杯搅拌一下"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "将稀释液移入容量瓶中"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0, remain: true }, "将清洗液移入容量瓶中"],
+        [ENJ.Step_DumpWater, { beaker: 1, volume: 20, washing: true }, "加水清洗烧杯和玻璃杯"],
+        [ENJ.Step_TransferLiquid, { beaker: 1, flask: 0 }, "将清洗液移入容量瓶中"],
+        [ENJ.Step_ConstantVolume, { flask: 0, volume: 100 }, "补加蒸馏水，定容至100ml"],
+        [ENJ.Step_ShakeUp, { flask: 0 }, "摇匀"],
         [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
         [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
         [ENJ.Step_DumpFromFlask, { beaker: 0, flask: 0, volume: 30 }, "倒一些PH标准缓冲液（9.18）至干净的烧杯中"],
@@ -5216,42 +5314,28 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 0 }, "关闭电子搅拌器"],
 
         //
-        [ENJ.Step_Interlude_3, {title: "第一次取样和测试"}, ''],
-
+        [ENJ.Step_Interlude_2, {title: "第一次取样和测试"}, ''],
 
         //取样1
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "用移液管吸取少量酱油样品"],
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "用移液管吸取少量食用醋样品"],
         [ENJ.Step_WashPipe, { pipe: 'pipet' }, "润洗一下移液管"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
         [ENJ.Step_EmptyPipet, { remain: true }, "排入废液缸"],
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "再吸取少量酱油样品"],
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 2, remain: false }, "再吸取少量食用醋样品"],
         [ENJ.Step_WashPipe, { pipe: 'pipet' }, "二次润洗一下移液管"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
         [ENJ.Step_EmptyPipet, { remain: true }, "排入废液缸"],
-        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量酱油样品"],
-        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的酱油样品"],
-        [ENJ.Step_BlowLiquid, { bottle: 'volumetricFlask', volume: 2, remain: 1, rotation: 15, offsetX: -5, offsetY: 50, showLabel: true}, "向干净的容量瓶中加入2ml的酱油样品"],
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
+        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 0, volume: 2, remain: 1, showLabel: true, offsetX: 80, offsetY: 100, rotation:15}, "向干净烧杯中加入2ml的食用醋样品"],
         [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
         [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
-        [ENJ.Step_ConstantVolume, { flask: 1, volume: 100 }, "补加蒸馏水，定容至100ml"],
-        [ENJ.Step_ShakeUp, { flask: 1 }, "摇匀"],
-
-        [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
-        [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
-
-        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 2, remain: false }, "用移液管吸取少量酱油样品"],
-        [ENJ.Step_WashPipe, { pipe: 'bigPipet' }, "润洗一下移液管"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
-        [ENJ.Step_EmptyPipet, { pipet: 'bigPipet',remain: true }, "排入废液缸"],
-        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 2, remain: false }, "再吸取少量酱油样品"],
-        [ENJ.Step_WashPipe, { pipe: 'bigPipet' }, "二次润洗一下移液管"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "排入废液缸"],
-        [ENJ.Step_EmptyPipet, { pipet: 'bigPipet', remain: true }, "排入废液缸"],
-        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 6, remain: true }, "吸取足量的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 5, remain: 1, rotation: 15, offsetX: 10, offsetY: 100, showLabel: true }, "留下25ml的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 0, volume: 0, scale: 5, remain: 0, offsetX: 85, offsetY: 160, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
 
         //测定1
+        [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
+        [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
+        [ENJ.Step_DumpToCylinder, {volume: 20}, "量取20ml的蒸馏水"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 0}, "加入到的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "打开电子搅拌器，开始自动搅拌"],
         [ENJ.Step_DumpToBuret, {volume: 20}, "向滴定管中加入少量氢氧化钠溶液"],
@@ -5263,87 +5347,76 @@ ENJ.Script_3 = (function() {
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.31, remain: true, pHs: [5.8, 8.2]}, "滴定..."], //TODO
-
-        [ENJ.Step_Record_2, { v1_1: 2.31 }, '记录第一次滴定体积'],
-
-        //加甲醛
-        [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
-        [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向烧杯中加入10ml的甲醛"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
-        [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 12.81, pHs: [6.2, 9.2]}, "滴定..."], //TODO
+        [ENJ.Step_DropFromBuret, {volume: 80 - 16.41, pHs: [4.0, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
-        [ENJ.Step_Record_2, { v2_1: 12.81 }, '记录第一次滴定体积'],
+        [ENJ.Step_Record_2, { v1_1: 16.41 }, '记录第一次滴定体积'],
 
 
         [ENJ.Step_Interlude_1, {title: "第二次取样和测试"}, ''],
         //取样2
-        [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
-        [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
-
-        [ENJ.Step_SuckLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 6, remain: true }, "吸取足量的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', bottle: 'volumetricFlask', volume: 5, remain: 1, rotation: 15, offsetX: 10, offsetY: 100, showLabel: true }, "留下25ml的酱油样品"],
-        [ENJ.Step_BlowLiquid, { pipet: 'bigPipet', beaker: 2, volume: 0, scale: 5, remain: 0, offsetX: 85, offsetY: 160, rotation:15 }, "向干净烧杯中加入25ml的酱油样品"],
-
+        [ENJ.Step_SuckLiquid, { bottle: 'soySauce', volume: 6, remain: true }, "吸取足量食用醋样品"],
+        [ENJ.Step_BlowLiquid, { bottle: 'soySauce', volume: 4, remain: 1, rotation: 20, showLabel: true }, "留下4ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { beaker: 2, volume: 2, remain: 1, showLabel: true, offsetX: 80, offsetY: 100, rotation:15 }, "向干净烧杯中加入2ml的食用醋样品"],
+        [ENJ.Step_BlowLiquid, { bottle: 'bigBeaker', volume: 0.8, remain: 2, rightNow: true }, "多余的样品，排入废液缸"],
+        [ENJ.Step_EmptyPipet, {}, "多余的样品，排入废液缸"],
 
         //测定2
+        [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
+        [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
+        [ENJ.Step_DumpToCylinder, {volume: 20}, "量取20ml的蒸馏水"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "加入到的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 2, rotor: 0 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 2, rotor: 0 }, "打开电子搅拌器，开始自动搅拌"],
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 2.36, remain: true, pHs: [5.8, 8.2]}, "滴定..."], //TODO
-
-        [ENJ.Step_Record_2, { v1_2: 2.36, v1_m: 2.34 }, '记录第二次滴定体积，求出平均值'],
-
-        //加甲醛
-        [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
-        [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 2, volume: 0}, "向烧杯中加入10ml的甲醛"],
-        [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
-        [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
-        [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 12.84, pHs: [6.2, 9.2]}, "滴定..."], //TODO
+        [ENJ.Step_DropFromBuret, {volume: 80 - 16.42, pHs: [4.0, 8.2]}, "滴定..."],
         [ENJ.Step_StopStirrer, { beaker: 2, rotor: 0 }, "关闭电子搅拌器"],
 
-        [ENJ.Step_Record_2, { v2_2: 12.84, v2_m: 12.83 }, '记录第二次滴定体积，求出平均值'],
+        [ENJ.Step_Record_2, { v1_2: 16.42, v1: 16.42 }, '记录第二次滴定体积，求出平均值'],
 
 
-        [ENJ.Step_Interlude_2, {title: "空白实验"}, ''],
+        [ENJ.Step_Interlude_2, {title: "第一次空白实验"}, ''],
 
         //空白1
         [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
         [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
-        [ENJ.Step_DumpToCylinder, {volume: 25}, "量取25ml的蒸馏水"],
+        [ENJ.Step_DumpToCylinder, {volume: 22}, "量取22ml的蒸馏水"],
         [ENJ.Step_DumpFromCylinder, {beaker: 0}, "加入到干净的烧杯中"],
         [ENJ.Step_AddRotor, { beaker: 0, rotor: 1 }, "加入一颗转子"],
         [ENJ.Step_StartStirrer, { beaker: 0, rotor: 1 }, "打开电子搅拌器，开始自动搅拌"],
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, ""],
         [ENJ.Step_InstallBuret, {}, ""],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 0.02, remain: true, pHs: [7, 8.2], speed: 20}, ""], //TODO
+        [ENJ.Step_DropFromBuret, {volume: 80 - 0.01, pHs: [6.8, 8.2], speed: 20}, ""],
+        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
 
-        //[ENJ.Step_Record_2, { v0_1: '' }, '记录空白滴定体积，计算酱油的氨基态氮含量'],
+        [ENJ.Step_Record_2, { v2_1: 0.01 }, '记录第一次空白滴定体积'],
 
-        //加甲醛
-        [ENJ.Step_SuckLiquid, { pipet: 'pipet2', bottle: 'formaldehyde', volume: 10, remain: false, showLabel: true }, "吸取10ml的甲醛"],
-        [ENJ.Step_AddFormaldehyde, { pipet: 'pipet2', beaker: 0, volume: 0}, "向烧杯中加入10ml的甲醛"],
+        [ENJ.Step_Interlude_2, {title: "第二次空白实验"}, ''],
+
+        //空白2
+        [ENJ.Step_WashElectrode, {}, "清洗PH电极"],
+        [ENJ.Step_WipeUpElectrode, {}, "擦干PH电极"],
+        [ENJ.Step_DumpToCylinder, {volume: 22}, "量取22ml的蒸馏水"],
+        [ENJ.Step_DumpFromCylinder, {beaker: 2}, "加入到干净的烧杯中"],
+        [ENJ.Step_AddRotor, { beaker: 2, rotor: 1 }, "加入一颗转子"],
+        [ENJ.Step_StartStirrer, { beaker: 2, rotor: 1 }, "打开电子搅拌器，开始自动搅拌"],
         [ENJ.Step_DumpToBuret, {volume: 82}, "向滴定管中加入足量氢氧化钠溶液"],
         [ENJ.Step_BlowBuret, { bottle: 'bigBeaker', volume: 80 }, "滴定管中液面降至零刻度线"],
         [ENJ.Step_InstallBuret, {}, "夹好滴定管"],
-        [ENJ.Step_DropFromBuret, {volume: 80 - 0.59, pHs: [6.2, 9.2], speed: 20}, "滴定..."], //TODO
-        [ENJ.Step_StopStirrer, { beaker: 0, rotor: 1 }, "关闭电子搅拌器"],
+        [ENJ.Step_DropFromBuret, {volume: 80 - 0.02, pHs: [6.8, 8.2], speed: 20}, "滴定..."],
+        [ENJ.Step_StopStirrer, { beaker: 2, rotor: 1 }, "关闭电子搅拌器"],
 
-        [ENJ.Step_Record_2, { v0_2: 0.59, xx: 2036.84, canClose: false }, '记录空白滴定体积，计算酱油的氨基态氮含量']
+        [ENJ.Step_Record_2, { v2_2: 0.02, xx: 5.84, canClose: false }, '记录第二次空白滴定体积，计算食用醋总酸度']
       ];
 
       for(i = 0, n = configs.length; i < n; ++i) {
         config = configs[i];
         steps.push(config[0]);
         stores.push(config[1]);
-        tips.push( config[2] );
+        tips.push(config[2]);
       }
 
       this.steps = steps;
@@ -5591,14 +5664,14 @@ RES.addEventListener('complete', function() {
   lab.progress(1.0);
 
 
-//  var scene = new ENJ.Scene_2();
-//  var script = new ENJ.Script_2();
-  var scene = new ENJ.Scene_3();
-  var script = new ENJ.Script_3();
+  var scene = new ENJ.Scene_2();
+  var script = new ENJ.Script_2();
 
   scene.set({
     x: 60, scaleX: ENJ.scaleY, scaleY: ENJ.scaleY
   });
+//  var scene = new ENJ.Scene_3();
+//  var script = new ENJ.Script_3();
   //ENJ.invalid = true;
   //update();
   /*var prevBtn =  new jQuick('#prev-btn');
@@ -5638,7 +5711,7 @@ RES.addEventListener('progress', function(evt) {
 });
 
 RES.loadManifest({
-  path: '../../assets/',
+  path: './assets/',
   manifest: [
     { id: "手", src: "手.png" },
     { id: "水滴", src: "水滴.png" },
@@ -5662,7 +5735,8 @@ RES.loadManifest({
     { id: "PH仪面板", src: "PH仪面板.png" },
     { id: "PH电极", src: "PH电极.png" },
     { id: "PH电极套", src: "PH电极套.png" },
-    { id: "酱油瓶", src: "酱油瓶.png" },
+    { id: "醋瓶", src: "醋瓶.png" },
+    //{ id: "酱油瓶", src: "酱油瓶.png" },
     { id: "酱油瓶盖", src: "酱油瓶盖.png" },
     { id: "酱油", src: "酱油.png" },
     { id: "容量瓶", src: "容量瓶.png" },
@@ -5674,17 +5748,14 @@ RES.loadManifest({
     { id: "试剂瓶", src: "试剂瓶.png" },
     { id: "试剂瓶液体", src: "试剂瓶液体.png" },
     { id: "氢氧化钠标签", src: "氢氧化钠标签.png" },
-    { id: "甲醛标签", src: "甲醛标签.png" },
     { id: "移液管", src: "移液管.png" },
     { id: "移液管液体", src: "移液管液体.png" },
-    { id: "胖肚移液管", src: "胖肚移液管.png" },
-    { id: "胖肚移液管液体", src: "胖肚移液管液体.png" },
     { id: "移液管架", src: "移液管架.png" },
     { id: "蒸馏水瓶", src: "蒸馏水瓶.png" },
     { id: "烧杯", src: "烧杯.png" },
     { id: "烧杯液体", src: "烧杯液体.png" },
     { id: "关闭按钮", src: "关闭按钮.png" },
-    { id: "结果报告3", src: "结果报告3.png" },
+    { id: "结果报告2", src: "结果报告2.png" },
     { id: "背景", src: "背景.png" }
   ]
 });
