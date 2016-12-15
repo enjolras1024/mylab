@@ -11618,7 +11618,7 @@
   });
 
   RES.loadManifest({
-    path: '../../assets/10/',
+    path: './assets/',
     manifest: [
       { id: "手", src: "手.png" },
       { id: "标签", src: "标签.png" },
